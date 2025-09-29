@@ -31,8 +31,8 @@ Sigue estos pasos para configurar el proyecto en tu entorno de desarrollo local:
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone https://URL-DEL-REPOSITORIO.git
-    cd flotaVehicular
+    git clone [https://URL-DEL-REPOSITORIO.git](https://github.com/JordyPradaYanes/FlotaVehiculo)
+    cd flotaVehiculo
     ```
 
 2.  **Instalar dependencias de PHP:**
