@@ -30,6 +30,36 @@
     <!-- Vite Assets (comentado para evitar conflictos) -->
     {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
     
+    <!-- Estilos globales para páginas de autenticación -->
+    <style>
+        /* Asegurar que todo el fondo sea transparente */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: transparent !important;
+        }
+        
+        body.login-page {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        }
+        
+        #app {
+            background: transparent !important;
+            height: 100%;
+        }
+        
+        /* Eliminar el fondo blanco del main */
+        main, main.d-flex, .min-vh-100 {
+            background: transparent !important;
+        }
+        
+        /* Forzar transparencia en todos los contenedores */
+        .d-flex.align-items-center.justify-content-center {
+            background: transparent !important;
+        }
+    </style>
+    
     @stack('css')
     @stack('styles')
 </head>
@@ -93,7 +123,7 @@
         @endif
 
         <!-- Content principal -->
-        <main class="@if(in_array(Route::currentRouteName(), ['login', 'register', 'password.request', 'password.reset'])) d-flex align-items-center justify-content-center min-vh-100 @else py-4 @endif">
+        <main class="@if(in_array(Route::currentRouteName(), ['login', 'register', 'password.request', 'password.reset'])) d-flex align-items-center justify-content-center min-vh-100 @else py-4 @endif" style="@if(in_array(Route::currentRouteName(), ['login', 'register', 'password.request', 'password.reset'])) background: transparent !important; @endif">
             @yield('content')
         </main>
     </div>
