@@ -1,0 +1,28 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('licencias', function (Blueprint $table) {
+            $table->id();
+            $table->string('numero_licencia')->unique();
+            $table->string('tipo_licencia');
+            $table->date('fecha_expedicion');
+            $table->date('fecha_vencimiento');
+            $table->string('entidad_emisora');
+            $table->string('estado');
+            $table->string('registrado_por');
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('licencias');
+    }
+};
