@@ -10,14 +10,13 @@ return new class extends Migration
     {
         Schema::create('viajes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_vehiculos')->constrained('vehiculos');
-            $table->foreignId('id_conductores')->constrained('conductores');
-            $table->foreignId('id_rutas')->constrained('rutas');
+            $table->foreignId('vehiculos_id')->constrained('vehiculos');
+            $table->foreignId('conductores_id')->constrained('conductores');
+            $table->foreignId('rutas_id')->constrained('rutas');
+            $table->string('descripcion')->nullable();
+            $table->decimal('distancia_km', 10, 2)->nullable();
             $table->dateTime('tiempo_estimado');
-            $table->decimal('km_inicial', 10, 2);
-            $table->decimal('km_final', 10, 2)->nullable();
-            $table->decimal('kilometraje', 10, 2)->nullable();
-            $table->decimal('costo_total', 10, 2)->nullable();
+            $table->decimal('costo_peaje', 10, 2)->nullable();
             $table->string('estado');
             $table->string('registrado_por');
             $table->timestamps();

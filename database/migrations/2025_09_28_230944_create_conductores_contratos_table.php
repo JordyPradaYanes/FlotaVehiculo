@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('conductores_contratos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_conductor')->constrained('conductores');
-            $table->foreignId('id_contrato')->constrained('contratos');
+            $table->foreignId('conductor_id')->constrained('conductores');
+            $table->foreignId('contrato_id')->constrained('contratos');
             $table->date('fecha_asignacion');
             $table->string('estado_asignacion');
             $table->timestamps();
