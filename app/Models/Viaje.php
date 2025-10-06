@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Viaje extends Model
 {
     Use HasFactory;
     protected $table = 'viajes';
     protected $primaryKey = 'id';
-    protected $fillable = ['id',
-        'vehiculos_id',
-        'conductores_id',
-        'rutas_id',
+    protected $fillable = [
+        'vehiculo_id',
+        'conductor_id',
+        'ruta_id',
         'descripcion',
         'recorrido',
         'tiempo_estimado',
@@ -28,16 +30,16 @@ class Viaje extends Model
     //relacion con vehiculo(muchos a uno)
     public function vehiculo()
     {
-        return $this->belongto(Vehiculo::class, 'vehiculos_id');
+        return $this->belongsTo(Vehiculo::class);
     }
     //relacion con ruta(muchos a uno)
     public function ruta()
     {
-        return $this->belongto(Ruta::class, 'rutas_id');
+        return $this->belongsTo(Ruta::class, 'ruta_id');
     }
     //relacion con conductor(muchos a uno)
     public function conductor()
     {
-        return $this->belongto(Conductor::class);
+        return $this->belongsTo(Conductor::class, 'conductor_id');
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Vehiculo extends Model
 {
@@ -10,13 +12,15 @@ class Vehiculo extends Model
     protected $table = 'vehiculos';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'marca',
-        'modelo',
-        'anio',
-        'color',
+        'marca_id',
+        'tipo_vehiculo_id',
         'placa',
-        'tipo_vehiculo',
+        'modelo',
+        'año',
+        'color',
+        'kilometraje',
         'estado',
+        'registrado_por'
     ];
     protected $guarded=[ 'id',
     'created_at',
@@ -26,21 +30,21 @@ class Vehiculo extends Model
     //relacion con marca(muchos a uno)
     public function marca()
     {
-        return $this->belongto(Marca::class);
+        return $this->belongsTo(Marca::class);
     }
     //relacion con tipo_vehiculo(muchos a uno)
     public function tipo_vehiculo()
     {
-        return $this->belongto(Tipo_Vehiculo::class);   
+        return $this->belongsTo(Tipo_Vehiculo::class);   
     }
     //relacion con viaje(uno a muchos)
     public function viaje()
     {
-        return $this->hasMany(Viaje::class, 'vehiculos_id');   
+        return $this->hasMany(Viaje::class, 'vehiculo_id');   
     }
     //relacion con recarga_combustible(uno a muchos)
     public function recarga_combustible()
     {
-        return $this->hasMany(Recarga_Combustible::class, 'vehiculos_id');   
+        return $this->hasMany(Recarga_Combustible::class, 'vehiculo_id');   
     }
 }

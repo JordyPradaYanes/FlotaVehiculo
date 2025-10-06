@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Empresa extends Model
 {
     Use HasFactory;
     protected $table = 'empresas';
     protected $primaryKey = 'id';
-    protected $fillable = ['id',
+    protected $fillable = [
         'nombre_empresa',
         'direccion',
         'telefono',

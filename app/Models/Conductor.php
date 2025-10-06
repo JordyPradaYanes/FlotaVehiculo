@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Conductor extends Model
 {
     Use HasFactory;
     protected $table = 'conductores';
     protected $primaryKey = 'id';
-    protected $fillable = ['id',
+    protected $fillable = [
         'nombre',
         'apellido',
         'documento',
@@ -23,12 +25,12 @@ class Conductor extends Model
     ];
 
     //relacion con viaje(uno a muchos)
-    public function viajes()
+    public function viaje()
     {
-        return $this->hasMany(Viaje::class, 'conductores_id');
+        return $this->hasMany(Viaje::class, 'conductor_id');
     }
     //relacion con Conductor_Contrato(uno a muchos)
-    public function conductor_contratos()
+    public function conductor_contrato()
     {
         return $this->hasMany(Conductor_Contrato::class, 'conductor_id');
     }

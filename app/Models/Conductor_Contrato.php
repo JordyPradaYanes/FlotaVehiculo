@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Conductor_Contrato extends Model
 {
     Use HasFactory;
     protected $table = 'conductores_contratos';
-    protected $fillable = ['id',
+    protected $primaryKey = 'id';
+    protected $fillable = [
         'conductor_id',
         'contrato_id',
         'fecha_asignacion',

@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Ruta extends Model
 {
     Use HasFactory;
     protected $table = 'rutas';
     protected $primaryKey = 'id';
-    protected $fillable = ['id',
+    protected $fillable = [
         'nombre_ruta',
         'descripcion',
         'distancia_en_km',
@@ -26,7 +28,7 @@ class Ruta extends Model
     //relacion con viaje(uno a muchos)
     public function viajes()
     {
-        return $this->hasMany(Viaje::class, 'rutas_id');
+        return $this->hasMany(Viaje::class, 'ruta_id');
     }
 
 }

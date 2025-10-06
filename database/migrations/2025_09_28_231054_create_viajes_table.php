@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('viajes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vehiculos_id')->constrained('vehiculos');
-            $table->foreignId('conductores_id')->constrained('conductores');
-            $table->foreignId('rutas_id')->constrained('rutas');
+            $table->foreignId('vehiculo_id')->constrained('vehiculos');
+            $table->foreignId('conductor_id')->constrained('conductores');
+            $table->foreignId('ruta_id')->constrained('rutas');
             $table->string('descripcion')->nullable();
             $table->decimal('recorrido', 10, 2)->nullable();
             $table->dateTime('tiempo_estimado');
