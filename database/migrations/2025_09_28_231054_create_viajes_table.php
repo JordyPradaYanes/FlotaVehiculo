@@ -14,9 +14,9 @@ return new class extends Migration
             $table->foreignId('conductores_id')->constrained('conductores');
             $table->foreignId('rutas_id')->constrained('rutas');
             $table->string('descripcion')->nullable();
-            $table->decimal('distancia_km', 10, 2)->nullable();
+            $table->decimal('recorrido', 10, 2)->nullable();
             $table->dateTime('tiempo_estimado');
-            $table->decimal('costo_peaje', 10, 2)->nullable();
+            $table->decimal('costo_total', 10, 2)->nullable();
             $table->string('estado');
             $table->string('registrado_por');
             $table->timestamps();
