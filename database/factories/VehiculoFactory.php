@@ -20,7 +20,7 @@ class VehiculoFactory extends Factory
         return [
             'marca_id' => Marca::inRandomOrder()->first()->id,
             'tipo_vehiculo_id' => Tipo_Vehiculo::inRandomOrder()->first()->id,
-            'placa' => strtoupper($this->faker->bothify('???-####')),
+            'placa' => strtoupper($this->faker->bothify('???-###')),
             'modelo' => $this->faker->word(),
             'año' => $this->faker->year(),
             'color' => $this->faker->safeColorName(),
