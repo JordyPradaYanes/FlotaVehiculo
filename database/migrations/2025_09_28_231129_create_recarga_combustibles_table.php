@@ -13,7 +13,6 @@ return new class extends Migration
             $table->decimal('cantidad_litros', 10, 2);
             $table->decimal('precio_litro', 10, 2);
             $table->decimal('costo_total', 10, 2);
-            $table->string('tipo_combustible');
             $table->string('estacion_servicio');
             $table->string('registrado_por');
             $table->timestamps();
