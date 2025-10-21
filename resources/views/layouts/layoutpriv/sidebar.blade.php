@@ -58,9 +58,63 @@
                 <!-- Examples Section -->
                 
                 <li class="nav-item">
+                    <a href="{{route('conductores.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>Conductores</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('contratos.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-paste"></i>
+                        <p>Contratos</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('empresas.index')}}" class="nav-link">
+                        <i class="nav-icon 	fas fa-building"></i>
+                        <p>Empresas</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('licencias.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-address-card"></i>
+                        <p>Licencias</p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{route('marcas.index')}}" class="nav-link">
+                        <i class="nav-icon fab fa-delicious"></i>
+                        <p>Marcas</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('recarga_combustibles.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-gas-pump"></i>
+                        <p>Recarga Combustible</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('rutas.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-map-marked-alt"></i>
+                        <p>Rutas</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('tipo_vehiculos.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>Tipo Vehiculos</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('vehiculos.index')}}" class="nav-link">
                         <i class="nav-icon fas fa-car"></i>
-                        <p>Marca</p>
+                        <p>Vehiculos</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('viajes.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-passport"></i>
+                        <p>Viajes</p>
                     </a>
                 </li>
             </ul>

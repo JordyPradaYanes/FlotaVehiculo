@@ -26,7 +26,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('empresas', EmpresaController::class);
     Route::resource('licencias', LicenciaController::class);
     Route::resource('marcas', MarcaController::class);
-    Route::resource('recarga_combustible', Recarga_CombustibleController::class);
+    Route::resource('recarga_combustibles', Recarga_CombustibleController::class);
     Route::resource('rutas', RutaController::class);
     Route::resource('tipo_vehiculos', Tipo_VehiculoController::class);
     Route::resource('vehiculos', VehiculoController::class);
