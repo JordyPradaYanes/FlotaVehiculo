@@ -58,9 +58,9 @@
                 <!-- Examples Section -->
                 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon far fa-image"></i>
-                        <p>Gallery</p>
+                    <a href="{{route('marcas.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-car"></i>
+                        <p>Marca</p>
                     </a>
                 </li>
             </ul>
