@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Recarga_Combustible;
 
 class Recarga_CombustibleController extends Controller
 {
