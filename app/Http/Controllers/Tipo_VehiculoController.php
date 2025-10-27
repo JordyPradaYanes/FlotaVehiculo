@@ -12,8 +12,8 @@ class Tipo_VehiculoController extends Controller
      */
     public function index()
     {
-        $tipos_vehiculos = Tipo_Vehiculo::all();
-        return view('tipo_vehiculos.index', compact('tipos_vehiculos'));
+        $tipo_vehiculos = Tipo_Vehiculo::all();
+        return view('tipo_vehiculos.index', compact('tipo_vehiculos'));
     }
 
     /**
