@@ -12,7 +12,7 @@ class ViajeController extends Controller
      */
     public function index()
     {
-        $viajes = Viaje::all();
+        $viajes = Viaje::paginate(10);
         return view('viajes.index', compact('viajes'));
     }
 

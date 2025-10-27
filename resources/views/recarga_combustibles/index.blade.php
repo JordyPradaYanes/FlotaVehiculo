@@ -133,6 +133,18 @@
                                 </table>
                             </div>
                         </div>
+                        {{-- Agregada sección de paginación en el footer de la card --}}
+                        <div class="card-footer bg-white border-top">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-muted">
+                                    Mostrando {{ $recarga_combustibles->firstItem() ?? 0 }} a {{ $recarga_combustibles->lastItem() ?? 0 }}
+                                    de {{ $recarga_combustibles->total() }} registros
+                                </div>
+                                <div>
+                                    {{ $recarga_combustibles->links('pagination::bootstrap-4') }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

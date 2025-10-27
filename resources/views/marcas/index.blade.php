@@ -81,12 +81,13 @@
                                                 {{ $marca->pais_origen }}
                                             </td>
                                             <td class="text-center">
+                                                {{-- Badge ahora es clickeable para cambiar estado --}}
                                                 @if($marca->estado)
-                                                    <span class="badge badge-success px-3 py-2">
+                                                    <span class="badge badge-success px-3 py-2" style="cursor: pointer;" title="Clic para cambiar estado">
                                                         <i class="fas fa-check-circle mr-1"></i> Activo
                                                     </span>
                                                 @else
-                                                    <span class="badge badge-danger px-3 py-2">
+                                                    <span class="badge badge-danger px-3 py-2" style="cursor: pointer;" title="Clic para cambiar estado">
                                                         <i class="fas fa-times-circle mr-1"></i> Inactivo
                                                     </span>
                                                 @endif
@@ -118,6 +119,17 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-muted">
+                                    Mostrando {{ $marcas->firstItem() ?? 0 }} a {{ $marcas->lastItem() ?? 0 }}
+                                    de {{ $marcas->total() }} registros
+                                </div>
+                                <div>
+                                    {{ $marcas->links('pagination::bootstrap-4') }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -160,6 +172,23 @@
         font-size: 0.75rem;
         font-weight: 600;
         letter-spacing: 0.3px;
+        transition: all 0.3s ease;
+    }
+    
+    .badge:hover {
+        transform: scale(1.05);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    
+    /* Animación para feedback visual al cambiar estado */
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+    
+    .pulse-animation {
+        animation: pulse 0.6s ease;
     }
     
     .btn-group .btn {
@@ -214,7 +243,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const paisOrigen = row.cells[3].textContent.toLowerCase();
             const id = row.cells[0].textContent.toLowerCase();
             
-            // Buscar en todas las columnas relevantes
             if (nombre.includes(searchTerm) || 
                 registradoPor.includes(searchTerm) || 
                 paisOrigen.includes(searchTerm) ||
@@ -229,3 +257,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 @endsection
+
+{{-- Incluir el script de cambio de estado --}}
+@push('scripts')
+<script src="{{ asset('/backend/dist/js/statuschange.js') }}"></script>
+@endpush

@@ -29,7 +29,7 @@
           <div class="col-lg-3 col-6">
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>{{ $totalVehiculos ?? 0 }}</h3>
+                <h3>{{ $totalVehiculos ?? 20  }}</h3>
                 <p>Total Vehículos</p>
               </div>
               <div class="icon">
@@ -350,5 +350,4 @@
   }
 </script>
 @endpush
-
 @endsection

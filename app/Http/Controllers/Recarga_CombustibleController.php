@@ -12,7 +12,7 @@ class Recarga_CombustibleController extends Controller
      */
     public function index()
     {
-        $recarga_combustibles = Recarga_Combustible::all();
+        $recarga_combustibles = Recarga_Combustible::paginate(10);
         return view('recarga_combustibles.index', compact('recarga_combustibles'));
     }
 

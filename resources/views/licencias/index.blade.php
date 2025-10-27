@@ -135,6 +135,18 @@
                                 </table>
                             </div>
                         </div>
+                        {{-- Agregada sección de paginación en el footer de la card --}}
+                        <div class="card-footer bg-white border-top">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-muted">
+                                    Mostrando {{ $licencias->firstItem() ?? 0 }} a {{ $licencias->lastItem() ?? 0 }}
+                                    de {{ $licencias->total() }} registros
+                                </div>
+                                <div>
+                                    {{ $licencias->links('pagination::bootstrap-4') }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

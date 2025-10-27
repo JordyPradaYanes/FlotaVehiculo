@@ -137,6 +137,18 @@
                                 </table>
                             </div>
                         </div>
+                        {{-- Agregada sección de paginación en el footer de la card --}}
+                        <div class="card-footer bg-white border-top">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-muted">
+                                    Mostrando {{ $tipo_vehiculos->firstItem() ?? 0 }} a {{ $tipo_vehiculos->lastItem() ?? 0 }}
+                                    de {{ $tipo_vehiculos->total() }} registros
+                                </div>
+                                <div>
+                                    {{ $tipo_vehiculos->links('pagination::bootstrap-4') }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

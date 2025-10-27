@@ -33,8 +33,8 @@
                                                 <i class="fas fa-search text-muted"></i>
                                             </span>
                                         </div>
-                                        <input type="text" id="searchTable" class="form-control border-left-0" 
-                                               placeholder="Buscar empresa...">
+                                        <input type="text" id="searchTable" class="form-control border-left-0"
+                                            placeholder="Buscar empresa...">
                                     </div>
                                 </div>
                             </div>
@@ -77,7 +77,8 @@
                                                 {{ $empresa->id }}
                                             </td>
                                             <td>
-                                                <span class="font-weight-bold text-dark">{{ $empresa->nombre_empresa }}</span>
+                                                <span
+                                                    class="font-weight-bold text-dark">{{ $empresa->nombre_empresa }}</span>
                                             </td>
                                             <td>
                                                 <i class="fas fa-location-arrow text-info mr-1"></i>
@@ -96,19 +97,17 @@
                                             </td>
                                             <td class="text-center">
                                                 @if($empresa->estado)
-                                                    <span class="badge badge-success px-3 py-2">
-                                                        <i class="fas fa-check-circle mr-1"></i> Activo
-                                                    </span>
+                                                <span class="badge badge-success px-3 py-2">
+                                                    <i class="fas fa-check-circle mr-1"></i> Activo
+                                                </span>
                                                 @else
-                                                    <span class="badge badge-danger px-3 py-2">
-                                                        <i class="fas fa-times-circle mr-1"></i> Inactivo
-                                                    </span>
+                                                <span class="badge badge-danger px-3 py-2">
+                                                    <i class="fas fa-times-circle mr-1"></i> Inactivo
+                                                </span>
                                                 @endif
                                                 <input data-type="empresas" data-id="{{ $empresa->id }}"
-                                                    class="toggle-class d-none" type="checkbox" 
-                                                    data-onstyle="success"
-                                                    data-offstyle="danger" data-toggle="toggle" 
-                                                    data-on="Activo"
+                                                    class="toggle-class d-none" type="checkbox" data-onstyle="success"
+                                                    data-offstyle="danger" data-toggle="toggle" data-on="Activo"
                                                     data-off="Inactivo" {{ $empresa->estado ? 'checked' : '' }}>
                                             </td>
                                             <td class="text-center">
@@ -119,10 +118,12 @@
                                                     </a>
 
                                                     <form class="d-inline delete-form"
-                                                        action="{{ route('empresas.destroy', $empresa->id) }}" method="POST">
+                                                        action="{{ route('empresas.destroy', $empresa->id) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+                                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                            title="Eliminar">
                                                             <i class="fas fa-trash-alt"></i>
                                                         </button>
                                                     </form>
@@ -134,82 +135,93 @@
                                 </table>
                             </div>
                         </div>
+                        {{-- Agregada sección de paginación en el footer de la card --}}
+                        <div class="card-footer bg-white border-top">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-muted">
+                                    Mostrando {{ $empresas->firstItem() ?? 0 }} a {{ $empresas->lastItem() ?? 0 }}
+                                    de {{ $empresas->total() }} registros
+                                </div>
+                                <div>
+                                    {{ $empresas->links('pagination::bootstrap-4') }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 </div>
 
 <style>
-    .card {
-        border-radius: 10px;
-        overflow: hidden;
-    }
-    
-    .card-header {
-        padding: 1.25rem;
-    }
-    
-    .table thead th {
-        border-bottom: 2px solid #dee2e6;
-        font-weight: 600;
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        padding: 1rem;
-    }
-    
-    .table tbody td {
-        padding: 1rem;
-        vertical-align: middle;
-    }
-    
-    .table-hover tbody tr:hover {
-        background-color: #f8f9fa;
-        transition: background-color 0.2s ease;
-    }
-    
-    .badge {
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.3px;
-    }
-    
-    .btn-group .btn {
-        padding: 0.375rem 0.75rem;
-    }
-    
-    .shadow-sm {
-        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-    }
-    
-    .search-box .input-group-text {
-        border: 1px solid #ced4da;
-        border-right: 0;
-    }
-    
-    .search-box .form-control {
-        border: 1px solid #ced4da;
-        border-left: 0;
-    }
-    
-    .search-box .form-control:focus {
-        box-shadow: none;
-        border-color: #80bdff;
-    }
-    
-    .search-box .input-group-text {
-        background-color: #fff;
-    }
-    
-    .search-box .form-control:focus + .input-group-prepend .input-group-text {
-        border-color: #80bdff;
-    }
-    
-    .table tbody tr.hidden {
-        display: none;
-    }
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1.25rem;
+}
+
+.table thead th {
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1rem;
+}
+
+.table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s ease;
+}
+
+.badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+.btn-group .btn {
+    padding: 0.375rem 0.75rem;
+}
+
+.shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.search-box .input-group-text {
+    border: 1px solid #ced4da;
+    border-right: 0;
+}
+
+.search-box .form-control {
+    border: 1px solid #ced4da;
+    border-left: 0;
+}
+
+.search-box .form-control:focus {
+    box-shadow: none;
+    border-color: #80bdff;
+}
+
+.search-box .input-group-text {
+    background-color: #fff;
+}
+
+.search-box .form-control:focus+.input-group-prepend .input-group-text {
+    border-color: #80bdff;
+}
+
+.table tbody tr.hidden {
+    display: none;
+}
 </style>
 
 <script>
@@ -218,10 +230,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const table = document.getElementById('example1');
     const tbody = table.querySelector('tbody');
     const rows = tbody.querySelectorAll('tr');
-    
+
     searchInput.addEventListener('keyup', function() {
         const searchTerm = this.value.toLowerCase().trim();
-        
+
         rows.forEach(function(row) {
             const id = row.cells[0].textContent.toLowerCase();
             const nombreEmpresa = row.cells[1].textContent.toLowerCase();
@@ -229,10 +241,10 @@ document.addEventListener('DOMContentLoaded', function() {
             const telefono = row.cells[3].textContent.toLowerCase();
             const email = row.cells[4].textContent.toLowerCase();
             const registradoPor = row.cells[5].textContent.toLowerCase();
-            
+
             // Buscar en todas las columnas relevantes
-            if (id.includes(searchTerm) || 
-                nombreEmpresa.includes(searchTerm) || 
+            if (id.includes(searchTerm) ||
+                nombreEmpresa.includes(searchTerm) ||
                 direccion.includes(searchTerm) ||
                 telefono.includes(searchTerm) ||
                 email.includes(searchTerm) ||

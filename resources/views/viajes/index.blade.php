@@ -134,6 +134,18 @@
                                 </table>
                             </div>
                         </div>
+                        {{-- Agregada sección de paginación en el footer de la card --}}
+                        <div class="card-footer bg-white border-top">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-muted">
+                                    Mostrando {{ $viajes->firstItem() ?? 0 }} a {{ $viajes->lastItem() ?? 0 }}
+                                    de {{ $viajes->total() }} registros
+                                </div>
+                                <div>
+                                    {{ $viajes->links('pagination::bootstrap-4') }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

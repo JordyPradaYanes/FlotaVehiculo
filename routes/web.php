@@ -26,6 +26,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('empresas', EmpresaController::class);
     Route::resource('licencias', LicenciaController::class);
     Route::resource('marcas', MarcaController::class);
+    Route::post('marcas/{marca}/cambio-estado', [MarcaController::class, 'cambioEstado'])->name('marcas.cambio-estado');
     Route::resource('recarga_combustibles', Recarga_CombustibleController::class);
     Route::resource('rutas', RutaController::class);
     Route::resource('tipo_vehiculos', Tipo_VehiculoController::class);

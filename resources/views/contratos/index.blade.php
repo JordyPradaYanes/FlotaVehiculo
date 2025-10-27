@@ -133,6 +133,19 @@
                                 </table>
                             </div>
                         </div>
+                        
+                        {{-- Agregada sección de paginación en el footer de la card --}}
+                        <div class="card-footer bg-white border-top">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="text-muted">
+                                    Mostrando {{ $contratos->firstItem() ?? 0 }} a {{ $contratos->lastItem() ?? 0 }} 
+                                    de {{ $contratos->total() }} registros
+                                </div>
+                                <div>
+                                    {{ $contratos->links('pagination::bootstrap-4') }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -208,6 +221,38 @@
     
     .table tbody tr.hidden {
         display: none;
+    }
+    
+    /* Estilos personalizados para la paginación */
+    .card-footer {
+        padding: 1rem 1.25rem;
+    }
+    
+    .pagination {
+        margin-bottom: 0;
+    }
+    
+    .page-link {
+        color: #007bff;
+        border-radius: 5px;
+        margin: 0 2px;
+        border: 1px solid #dee2e6;
+    }
+    
+    .page-link:hover {
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
+    
+    .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    
+    .page-item.disabled .page-link {
+        color: #6c757d;
+        background-color: #fff;
+        border-color: #dee2e6;
     }
 </style>
 

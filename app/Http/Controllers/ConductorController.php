@@ -12,7 +12,7 @@ class ConductorController extends Controller
      */
     public function index()
     {
-        $conductores = Conductor::all();
+        $conductores = Conductor::paginate(10);
         return view('conductores.index', compact('conductores'));
     }
 
@@ -61,6 +61,23 @@ class ConductorController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try{
+            $conductor = Conductor::findOrFail($id);
+            $conductor->delete();
+            return redirect()->route('conductores.index')->with('successMsg', 'Conductor eliminado exitosamente.');
+        } catch (QueryException $e) {
+            log::error('Error al eliminar el conductor: ' . $e->getMessage());
+            return redirect()->route('conductores.index')->with('error', 'Error al eliminar el conductor: ' . $e->getMessage());
+        }catch (\Exception $e) {
+            log::error('Error inesperado al eliminar el conductor: ' . $e->getMessage());
+            return redirect()->route('conductores.index')->with('error', 'Error inesperado al eliminar el conductor: ' . $e->getMessage());
+        }
+    }
+    public function cambioEstado(Conductor $conductor)
+    {
+        $conductor->estado = !$conductor->estado;
+        $conductor->save();
+
+        return redirect()->route('conductores.index')->with('successMsg', 'Estado del conductor actualizado exitosamente.');
     }
 }

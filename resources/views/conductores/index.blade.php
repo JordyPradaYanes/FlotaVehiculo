@@ -41,7 +41,7 @@
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table id="example1" class="table table-hover align-middle mb-0" style="width:100%">
+                                <table id="conductoresTable" class="table table-hover align-middle mb-0" style="width:100%">
                                     <thead class="bg-light">
                                         <tr>
                                             <th class="text-center" style="width: 60px;">
@@ -136,6 +136,15 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <!-- Agregada sección de paginación -->
+                            <div class="pagination-wrapper">
+                                <div class="pagination-info">
+                                    Mostrando {{ $conductores->firstItem() ?? 0 }} a {{ $conductores->lastItem() ?? 0 }} de {{ $conductores->total() }} registros
+                                </div>
+                                <div>
+                                    {{ $conductores->links('pagination::bootstrap-4') }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -213,17 +222,65 @@
     .table tbody tr.hidden {
         display: none;
     }
+    
+    /* Estilos para la paginación */
+    .pagination-wrapper {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-top: 1px solid #dee2e6;
+    }
+    
+    .pagination-info {
+        color: #6c757d;
+        font-size: 14px;
+    }
+    
+    .pagination {
+        margin: 0;
+    }
+    
+    .pagination .page-link {
+        color: #007bff;
+        border: 1px solid #dee2e6;
+        padding: 8px 12px;
+        margin: 0 2px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+    
+    .pagination .page-link:hover {
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+    }
+    
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+    }
+    
+    .pagination .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #fff;
+        border-color: #dee2e6;
+    }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('searchTable');
-    const table = document.getElementById('example1');
+    const table = document.getElementById('conductoresTable');
     const tbody = table.querySelector('tbody');
     const rows = tbody.querySelectorAll('tr');
+    const paginationWrapper = document.querySelector('.pagination-wrapper');
     
     searchInput.addEventListener('keyup', function() {
         const searchTerm = this.value.toLowerCase().trim();
+        let hasVisibleRows = false;
         
         rows.forEach(function(row) {
             const id = row.cells[0].textContent.toLowerCase();
@@ -241,10 +298,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 fechaNacimiento.includes(searchTerm) ||
                 registradoPor.includes(searchTerm)) {
                 row.style.display = '';
+                hasVisibleRows = true;
             } else {
                 row.style.display = 'none';
             }
         });
+        
+        // Ocultar paginación cuando hay búsqueda activa
+        if (searchTerm.length > 0) {
+            paginationWrapper.style.display = 'none';
+        } else {
+            paginationWrapper.style.display = 'flex';
+        }
     });
 });
 </script>

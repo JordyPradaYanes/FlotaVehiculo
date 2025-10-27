@@ -12,7 +12,7 @@ class Tipo_VehiculoController extends Controller
      */
     public function index()
     {
-        $tipo_vehiculos = Tipo_Vehiculo::all();
+        $tipo_vehiculos = Tipo_Vehiculo::paginate(10);
         return view('tipo_vehiculos.index', compact('tipo_vehiculos'));
     }
 
