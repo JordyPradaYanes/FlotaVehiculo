@@ -4,19 +4,40 @@ Este es un sistema de gestión de flotas de vehículos desarrollado con el frame
 
 ## ✨ Características Principales
 
-*   **Gestión de Vehículos:**
-    *   Registro de vehículos con detalles como marca, modelo y tipo.
-    *   Administración de marcas y tipos de vehículos.
-*   **Gestión de Conductores:**
-    *   Registro de conductores y asignación a vehículos.
-    *   Administración de licencias de conducir y contratos.
-*   **Planificación y Seguimiento:**
-    *   Creación y gestión de rutas.
-    *   Registro y seguimiento de viajes.
+*   **Gestión Integral de Vehículos:**
+    *   Registro detallado de vehículos, incluyendo placa, modelo, año, color y kilometraje.
+    *   Clasificación por marca y tipo para una organización más eficiente.
+    *   Seguimiento del estado actual de cada vehículo (disponible, en viaje, en mantenimiento).
+
+*   **Administración Completa de Conductores:**
+    *   Registro de conductores con su información personal y de contacto.
+    *   Gestión del ciclo de vida de contratos y licencias de conducir, asegurando que todo esté al día.
+
+*   **Planificación y Seguimiento de Viajes:**
+    *   Creación y gestión de rutas personalizadas.
+    *   Asignación de viajes a conductores y vehículos específicos.
+    *   Seguimiento de cada viaje con detalles como recorrido, tiempo estimado y costo total.
+
 *   **Control de Combustible:**
-    *   Registro de recargas de combustible para cada vehículo.
-*   **Administración General:**
-    *   Gestión de empresas o clientes.
+    *   Registro de cada recarga de combustible, asociándola a un vehículo para un control de gastos preciso.
+
+*   **Administración General del Sistema:**
+    *   Gestión de empresas o clientes para un entorno multi-tenant.
+    *   Administración centralizada de catálogos como marcas, tipos de vehículos, y tipos de contrato.
+
+## 🗃️ Modelo de Datos
+
+El sistema se estructura en torno a los siguientes modelos principales:
+
+*   **Vehiculo:** Representa un vehículo de la flota.
+    *   Se relaciona con `Marca` y `Tipo_Vehiculo`.
+    *   Registra `Viaje` y `Recarga_Combustible`.
+*   **Conductor:** Representa a un conductor.
+    *   Asociado a `Viaje` y gestiona `Conductor_Contrato` y `Conductor_Licencia`.
+*   **Viaje:** Modela un viaje, conectando `Vehiculo`, `Conductor` y `Ruta`.
+*   **Empresa:** Gestiona la información de las empresas o clientes.
+*   **Ruta:** Define las rutas para los viajes.
+*   **Contrato y Licencia:** Administran los contratos y licencias de los conductores.
 
 ## 🛠️ Tecnologías Utilizadas
 
@@ -29,10 +50,19 @@ Este es un sistema de gestión de flotas de vehículos desarrollado con el frame
 
 Sigue estos pasos para configurar el proyecto en tu entorno de desarrollo local:
 
+### Requisitos Previos
+
+*   PHP >= 8.1
+*   Composer
+*   Node.js & npm
+*   Un servidor de base de datos (MySQL, PostgreSQL, etc.)
+
+### Pasos de Instalación
+
 1.  **Clonar el repositorio:**
     ```bash
-    git clone [https://URL-DEL-REPOSITORIO.git](https://github.com/JordyPradaYanes/FlotaVehiculo)
-    cd flotaVehiculo
+    git clone https://github.com/JordyPradaYanes/FlotaVehiculo.git
+    cd FlotaVehiculo
     ```
 
 2.  **Instalar dependencias de PHP:**
@@ -63,13 +93,17 @@ Sigue estos pasos para configurar el proyecto en tu entorno de desarrollo local:
         ```bash
         php artisan migrate
         ```
-
-7.  **Compilar los assets:**
+7.  **(Opcional) Ejecutar los seeders:**
+    *   Para poblar la base de datos con datos de ejemplo, ejecuta:
+        ```bash
+        php artisan db:seed
+        ```
+8.  **Compilar los assets:**
     ```bash
     npm run dev
     ```
 
-8.  **Iniciar el servidor de desarrollo:**
+9.  **Iniciar el servidor de desarrollo:**
     ```bash
     php artisan serve
     ```
