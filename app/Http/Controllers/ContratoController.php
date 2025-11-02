@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contrato;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
 
 class ContratoController extends Controller
 {
@@ -16,51 +18,79 @@ class ContratoController extends Controller
         return view('contratos.index', compact('contratos'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('contratos.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        try {
+            $validated = $request->validate([
+                'fecha_inicio' => 'required|date',
+                'fecha_final' => 'required|date|after:fecha_inicio',
+                'salario' => 'required|numeric|min:0',
+                'estado' => 'required|boolean'
+            ]);
+
+            $validated['registrado_por'] = auth()->user()->name;
+
+            // Crear el contrato con los datos validados
+            $contrato = Contrato::create($validated);
+
+            return redirect()->route('contratos.index')
+                ->with('successMsg', 'Contrato creado exitosamente.');
+                
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+                
+        } catch (QueryException $e) {
+            Log::error('Error al crear el contrato: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al crear el contrato en la base de datos.')
+                ->withInput();
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Cambiar el estado del contrato (activo/inactivo)
      */
-    public function show(string $id)
+    public function cambioEstado(Contrato $contrato)
     {
-        //
-    }
+        try {
+            $contrato->estado = !$contrato->estado;
+            $contrato->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+            return response()->json([
+                'success' => true,
+                'message' => 'Estado del contrato actualizado exitosamente.',
+                'nuevo_estado' => $contrato->estado
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error al cambiar estado de contrato: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cambiar el estado del contrato.'
+            ], 500);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Contrato $contrato)
     {
-        //
+        try {
+            $contrato->delete();
+            return redirect()->route('contratos.index')->with('successMsg', 'Contrato eliminado exitosamente.');
+        } catch (QueryException $e) {
+            Log::error('Error al eliminar el contrato: ' . $e->getMessage());
+            return redirect()->route('contratos.index')->with('error', 'Error al eliminar el contrato: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            Log::error('Error inesperado al eliminar el contrato: ' . $e->getMessage());
+            return redirect()->route('contratos.index')->with('error', 'Error inesperado al eliminar el contrato: ' . $e->getMessage());
+        }
     }
 }

@@ -21,7 +21,7 @@ class ViajeController extends Controller
      */
     public function create()
     {
-        //
+        return view('viajes.create');
     }
 
     /**
@@ -29,7 +29,34 @@ class ViajeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $validated = $request->validate([
+                'vehiculo_id' => 'required|exists:vehiculos,id',
+                'conductor_id' => 'required|exists:conductores,id',
+                'ruta_id' => 'required|exists:rutas,id',
+                'descripcion' => 'nullable|string',
+                'recorrido' => 'required|numeric|min:0',
+                'tiempo_estimado' => 'required|integer|min:0',
+                'costo_total' => 'required|numeric|min:0',
+                'estado' => 'required|boolean',
+            ]);
+
+            $validated['registrado_por'] = auth()->user()->name;
+
+            Viaje::create($validated);
+
+            return redirect()->route('viajes.index')
+                ->with('successMsg', 'Viaje creado exitosamente.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        } catch (QueryException $e) {
+            Log::error('Error al crear el viaje: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al crear el viaje en la base de datos.')
+                ->withInput();
+        }
     }
 
     /**
@@ -59,8 +86,40 @@ class ViajeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Viaje $viaje)
     {
-        //
+        try{
+            $viaje->delete();
+            return redirect()->route('viajes.index')
+                ->with('successMsg', 'Viaje eliminado exitosamente.');
+        } catch (QueryException $e) {
+            Log::error('Error al eliminar el viaje: ' . $e->getMessage());
+            return redirect()->route('viajes.index')
+                ->with('error', 'Error al eliminar el viaje de la base de datos.');
+        } catch (\Exception $e) {
+            Log::error('Error inesperado al eliminar el viaje: ' . $e->getMessage());
+            return redirect()->route('viajes.index')
+                ->with('error', 'Error inesperado al eliminar el viaje.');
+        }
+    }
+
+    public function cambioEstado(Viaje $viaje)
+    {
+        try {
+            $viaje->estado = !$viaje->estado;
+            $viaje->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Estado del viaje actualizado exitosamente.',
+                'nuevo_estado' => $viaje->estado
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error al cambiar estado del viaje: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cambiar el estado del viaje.'
+            ], 500);
+        }
     }
 }

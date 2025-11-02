@@ -18,12 +18,43 @@ class MarcaController extends Controller
 
     public function create()
     {
-        //
+        return view('marcas.create');
     }
 
     public function store(Request $request)
     {
-        //
+        try {
+            $validated = $request->validate([
+                'nombre' => 'required|string|max:255',
+                'pais_origen' => 'required|string|max:255',
+                'estado' => 'required|boolean'
+            ]);
+
+            $validated['registrado_por'] = auth()->user()->name;
+
+            // Crear la marca con los datos validados
+            $marca = Marca::create($validated);
+
+            return redirect()->route('marcas.index')
+                ->with('successMsg', 'Marca creada exitosamente.');
+                
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+                
+        } catch (QueryException $e) {
+            Log::error('Error al crear la marca: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al crear la marca en la base de datos.')
+                ->withInput();
+                
+        } catch (\Exception $e) {
+            Log::error('Error inesperado al crear la marca: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error inesperado al crear la marca.')
+                ->withInput();
+        }
     }
 
     public function show(string $id)
@@ -36,37 +67,41 @@ class MarcaController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Marca $marca)
+    public function destroy($id)
     {
-        try{
+        try {
+            $marca = Marca::findOrFail($id);
             $marca->delete();
-            return redirect()->route('marcas.index')->with('successMsg', 'Marca eliminada exitosamente.');
+            
+            return redirect()->route('marcas.index')
+                ->with('successMsg', 'Marca eliminada exitosamente.');
+                
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error('Marca no encontrada: ' . $e->getMessage());
+            return redirect()->route('marcas.index')
+                ->with('error', 'La marca no fue encontrada.');
+                
         } catch (QueryException $e) {
             Log::error('Error al eliminar la marca: ' . $e->getMessage());
-            return redirect()->route('marcas.index')->with('error', 'Error al eliminar la marca: ' . $e->getMessage());
-        }catch (\Exception $e) {
+            return redirect()->route('marcas.index')
+                ->with('error', 'No se puede eliminar la marca porque tiene registros relacionados.');
+                
+        } catch (\Exception $e) {
             Log::error('Error inesperado al eliminar la marca: ' . $e->getMessage());
-            return redirect()->route('marcas.index')->with('error', 'Error inesperado al eliminar la marca: ' . $e->getMessage());
+            return redirect()->route('marcas.index')
+                ->with('error', 'Error inesperado al eliminar la marca.');
         }
     }
     
-    /**
-     * Cambiar el estado de la marca (activo/inactivo)
-     */
-    public function cambioEstado(Marca $marca)
+    public function cambioEstado($id)
     {
         try {
+            $marca = Marca::findOrFail($id);
             $marca->estado = !$marca->estado;
             $marca->save();
 

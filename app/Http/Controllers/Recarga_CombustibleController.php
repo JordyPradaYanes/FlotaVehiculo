@@ -21,7 +21,7 @@ class Recarga_CombustibleController extends Controller
      */
     public function create()
     {
-        //
+        return view('recarga_combustibles.create');
     }
 
     /**
@@ -29,7 +29,33 @@ class Recarga_CombustibleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $validated = $request->validate([
+                'cantidad_litros' => 'required|numeric|min:0',
+                'precio_por_litro' => 'required|numeric|min:0',
+                'cost_total' => 'required|numeric|min:0',
+                'estacion_servicio' => 'required|string|max:255'
+            ]);
+
+            $validated['registrado_por'] = auth()->user()->name;
+
+            // Crear la recarga de combustible con los datos validados
+            $recarga_combustible = Recarga_Combustible::create($validated);
+
+            return redirect()->route('recarga_combustibles.index')
+                ->with('successMsg', 'Recarga de combustible creada exitosamente.');
+                
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+                
+        } catch (\Illuminate\Database\QueryException $e) {
+            \Log::error('Error al crear la recarga de combustible: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al crear la recarga de combustible en la base de datos.')
+                ->withInput();
+        }
     }
 
     /**
@@ -59,8 +85,29 @@ class Recarga_CombustibleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        try {
+            $recarga_combustible = Recarga_Combustible::findOrFail($id);
+            $recarga_combustible->delete();
+            
+            return redirect()->route('recarga_combustibles.index')
+                ->with('successMsg', 'Combustible eliminado exitosamente.');
+                
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error('Combustible no encontrada: ' . $e->getMessage());
+            return redirect()->route('recarga_combustibles.index')
+                ->with('error', 'El combustible no fue encontrado.');
+                
+        } catch (QueryException $e) {
+            Log::error('Error al eliminar el Combustible: ' . $e->getMessage());
+            return redirect()->route('recarga_combustibles.index')
+                ->with('error', 'No se puede eliminar el combustible porque tiene registros relacionados.');
+                
+        } catch (\Exception $e) {
+            Log::error('Error inesperado al eliminar el combustible: ' . $e->getMessage());
+            return redirect()->route('recarga_combustibles.index')
+                ->with('error', 'Error inesperado al eliminar el combustible.');
+        }
     }
 }

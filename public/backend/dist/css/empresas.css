@@ -1,0 +1,335 @@
+/**
+ * Empresas.css - Estilos personalizados para el módulo de empresas
+ */
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ============================================
+   CARD DE EMPRESA
+   ============================================ */
+
+.empresa-card {
+  animation: fadeInUp 0.6s ease-out;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.empresa-card .card-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  padding: 1.25rem;
+}
+
+.empresa-card .card-body {
+  padding: 2rem;
+}
+
+/* ============================================
+   FORMULARIO
+   ============================================ */
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.form-control {
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  padding: 0.6rem 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+  transform: translateY(-2px);
+}
+
+.form-control:hover {
+  border-color: #b8b8b8;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* ============================================
+   TABLA
+   ============================================ */
+
+#example1 {
+  font-size: 0.9rem;
+}
+
+#example1 thead th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  padding: 1rem 0.75rem;
+}
+
+#example1 tbody tr {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+#example1 tbody tr:hover {
+  background-color: #f8f9fa;
+  transform: translateX(5px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+#example1 tbody td {
+  padding: 1rem 0.75rem;
+  vertical-align: middle;
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
+
+.badge {
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.badge:hover {
+  animation: pulse 0.5s ease-in-out;
+}
+
+.badge-success {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.badge-danger {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+
+.btn {
+  border-radius: 6px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #63408a 100%);
+}
+
+.btn-info {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #868f96 0%, #596164 100%);
+}
+
+.btn-group .btn {
+  margin: 0 2px;
+}
+
+/* ============================================
+   SEARCH BOX
+   ============================================ */
+
+.search-box .input-group {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.search-box .input-group:focus-within {
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+  transform: translateY(-2px);
+}
+
+.search-box .input-group-text {
+  border: 1px solid #e0e0e0;
+  background-color: #fff;
+}
+
+.search-box .form-control {
+  border: 1px solid #e0e0e0;
+  border-left: none;
+}
+
+.search-box .form-control:focus {
+  box-shadow: none;
+  border-color: #e0e0e0;
+}
+
+/* ============================================
+   ALERTAS
+   ============================================ */
+
+.alert {
+  border-radius: 8px;
+  border: none;
+  animation: slideInRight 0.5s ease-out;
+}
+
+.alert-info {
+  background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+  color: #00695c;
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  color: #c62828;
+}
+
+/* ============================================
+   CARD FOOTER
+   ============================================ */
+
+.card-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  padding: 1.25rem;
+}
+
+/* ============================================
+   PAGINACIÓN
+   ============================================ */
+
+.pagination {
+  margin-bottom: 0;
+}
+
+.page-link {
+  border-radius: 6px;
+  margin: 0 3px;
+  border: 1px solid #dee2e6;
+  color: #667eea;
+  transition: all 0.3s ease;
+}
+
+.page-link:hover {
+  background-color: #667eea;
+  border-color: #667eea;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.page-item.active .page-link {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: #667eea;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .empresa-card .card-body {
+    padding: 1.5rem;
+  }
+
+  .search-box {
+    width: 100% !important;
+    margin-top: 1rem;
+  }
+
+  #example1 {
+    font-size: 0.85rem;
+  }
+
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .btn-group .btn {
+    margin: 2px 0;
+  }
+}
+
+/* ============================================
+   EFECTOS ADICIONALES
+   ============================================ */
+
+.table-active {
+  background-color: rgba(102, 126, 234, 0.05) !important;
+}
+
+/* Efecto de carga para la tabla */
+#example1 tbody tr {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* Mensaje de no resultados */
+#no-results-message {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+#no-results-message i {
+  opacity: 0.3;
+}

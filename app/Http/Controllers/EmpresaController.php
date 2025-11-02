@@ -21,7 +21,7 @@ class EmpresaController extends Controller
      */
     public function create()
     {
-        //
+        return view('empresas.create');
     }
 
     /**
@@ -29,7 +29,32 @@ class EmpresaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $validated = $request->validate([
+                'nombre_empresa' => 'required|string|max:255',
+                'direccion' => 'required|string|max:500',
+                'telefono' => 'required|string|max:20',
+                'email' => 'required|email|max:255|unique:empresas,email',
+                'estado' => 'required|boolean',
+            ]);
+
+            $validated['registrado_por'] = auth()->user()->name;
+
+            Empresa::create($validated);
+
+            return redirect()->route('empresas.index')
+                ->with('successMsg', 'Empresa creada exitosamente.');
+                
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        } catch (QueryException $e) {
+            Log::error('Error al crear la empresa: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al crear la empresa en la base de datos.')
+                ->withInput();
+        }
     }
 
     /**
@@ -59,8 +84,36 @@ class EmpresaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Empresa $empresa)
     {
-        //
+        try {
+            $empresa->delete();
+            return redirect()->route('empresas.index')
+                ->with('successMsg', 'Empresa eliminada exitosamente.');
+        } catch (\Exception $e) {
+            Log::error('Error al eliminar la empresa: ' . $e->getMessage());
+            return redirect()->route('empresas.index')
+                ->with('error', 'Error al eliminar la empresa.');
+        }
+    }
+
+    public function cambioEstado(Empresa $empresa)
+    {
+        try {
+            $empresa->estado = !$empresa->estado;
+            $empresa->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Estado de la empresa actualizado exitosamente.',
+                'nuevo_estado' => $empresa->estado
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error al cambiar estado de la empresa: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cambiar el estado de la empresa.'
+            ], 500);
+        }
     }
 }

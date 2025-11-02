@@ -2,6 +2,11 @@
 
 @section('title','Listado De Marcas')
 
+{{-- Importar estilos de marcas --}}
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/marcas.css') }}">
+@endpush
+
 @section('content')
 
 <div class="content-wrapper pb-4">
@@ -18,6 +23,25 @@
 
     <section class="content">
         <div class="container-fluid">
+            {{-- Agregando mensajes de éxito y error --}}
+            @if(session('successMsg'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle mr-2"></i>{{ session('successMsg') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle mr-2"></i>{{ session('error') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
             <div class="row">
                 <div class="col-12">
                     <div class="card shadow-sm border-0">
@@ -81,7 +105,6 @@
                                                 {{ $marca->pais_origen }}
                                             </td>
                                             <td class="text-center">
-                                                {{-- Badge ahora es clickeable para cambiar estado --}}
                                                 @if($marca->estado)
                                                     <span class="badge badge-success px-3 py-2" style="cursor: pointer;" title="Clic para cambiar estado">
                                                         <i class="fas fa-check-circle mr-1"></i> Activo
@@ -105,8 +128,10 @@
                                                         <i class="fas fa-edit"></i>
                                                     </a>
 
-                                                    <form class="d-inline delete-form"
-                                                        action="{{ route('marcas.destroy', $marca->id) }}" method="POST">
+                                                    {{-- Formulario de eliminación corregido --}}
+                                                    <form class="delete-form d-inline" 
+                                                          action="{{ route('marcas.destroy', $marca->id) }}" 
+                                                          method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
@@ -139,126 +164,16 @@
     </section>
 </div>
 
-<style>
-    .card {
-        border-radius: 10px;
-        overflow: hidden;
-    }
-    
-    .card-header {
-        padding: 1.25rem;
-    }
-    
-    .table thead th {
-        border-bottom: 2px solid #dee2e6;
-        font-weight: 600;
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        padding: 1rem;
-    }
-    
-    .table tbody td {
-        padding: 1rem;
-        vertical-align: middle;
-    }
-    
-    .table-hover tbody tr:hover {
-        background-color: #f8f9fa;
-        transition: background-color 0.2s ease;
-    }
-    
-    .badge {
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.3px;
-        transition: all 0.3s ease;
-    }
-    
-    .badge:hover {
-        transform: scale(1.05);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-    
-    /* Animación para feedback visual al cambiar estado */
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.1); }
-        100% { transform: scale(1); }
-    }
-    
-    .pulse-animation {
-        animation: pulse 0.6s ease;
-    }
-    
-    .btn-group .btn {
-        padding: 0.375rem 0.75rem;
-    }
-    
-    .shadow-sm {
-        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-    }
-    
-    .search-box .input-group-text {
-        border: 1px solid #ced4da;
-        border-right: 0;
-    }
-    
-    .search-box .form-control {
-        border: 1px solid #ced4da;
-        border-left: 0;
-    }
-    
-    .search-box .form-control:focus {
-        box-shadow: none;
-        border-color: #80bdff;
-    }
-    
-    .search-box .input-group-text {
-        background-color: #fff;
-    }
-    
-    .search-box .form-control:focus + .input-group-prepend .input-group-text {
-        border-color: #80bdff;
-    }
-    
-    .table tbody tr.hidden {
-        display: none;
-    }
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchTable');
-    const table = document.getElementById('example1');
-    const tbody = table.querySelector('tbody');
-    const rows = tbody.querySelectorAll('tr');
-    
-    searchInput.addEventListener('keyup', function() {
-        const searchTerm = this.value.toLowerCase().trim();
-        
-        rows.forEach(function(row) {
-            const nombre = row.cells[1].textContent.toLowerCase();
-            const registradoPor = row.cells[2].textContent.toLowerCase();
-            const paisOrigen = row.cells[3].textContent.toLowerCase();
-            const id = row.cells[0].textContent.toLowerCase();
-            
-            if (nombre.includes(searchTerm) || 
-                registradoPor.includes(searchTerm) || 
-                paisOrigen.includes(searchTerm) ||
-                id.includes(searchTerm)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    });
-});
-</script>
-
 @endsection
 
-{{-- Incluir el script de cambio de estado --}}
+{{-- Scripts en el orden correcto --}}
 @push('scripts')
-<script src="{{ asset('/backend/dist/js/statuschange.js') }}"></script>
+<!-- IMPORTANTE: jQuery PRIMERO (si no está en el layout) -->
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Scripts personalizados -->
+<script src="{{ asset('backend/dist/js/marcas.js') }}"></script>
+<script src="{{ asset('backend/dist/js/statuschange.js') }}"></script>
+<script src="{{ asset('backend/dist/js/delete-confirm.js') }}"></script>
 @endpush

@@ -1,118 +1,165 @@
-;(() => {
-  // Esperar a que el DOM y jQuery estén listos
-  document.addEventListener("DOMContentLoaded", () => {
-    console.log("[v0] DOM cargado")
+// Script para cambiar estado de registros (activo/inactivo)
+document.addEventListener("DOMContentLoaded", () => {
+  // Manejar clicks en los badges de estado
+  document.querySelectorAll(".badge").forEach((badge) => {
+    badge.addEventListener("click", function () {
+      const row = this.closest("tr")
+      const input = row.querySelector(".toggle-class")
 
-    // Verificar que jQuery esté disponible
-    if (typeof window.$ === "undefined") {
-      console.error("[v0] jQuery no está disponible")
-      return
-    }
+      if (input) {
+        const id = input.getAttribute("data-id")
+        const type = input.getAttribute("data-type")
+        const currentState = input.checked
 
-    const $ = window.$
-    console.log("[v0] jQuery disponible")
+        const Swal = window.Swal // Declare the Swal variable
+        Swal.fire({
+          title: "¿Cambiar estado?",
+          text: currentState ? "¿Desactivar este registro?" : "¿Activar este registro?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#6c757d",
+          confirmButtonText: "Sí, cambiar",
+          cancelButtonText: "Cancelar",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // Cambiar el estado
+            cambiarEstado(id, type, currentState, badge, input)
+          }
+        })
+      }
+    })
+  })
 
-    // Verificar que el token CSRF esté disponible
-    const csrfToken = $('meta[name="csrf-token"]').attr("content")
-    if (!csrfToken) {
-      console.error("[v0] Token CSRF no encontrado")
-      return
-    }
-    console.log("[v0] Token CSRF encontrado")
+  // También manejar el input oculto por si acaso
+  document.querySelectorAll(".toggle-class").forEach((toggle) => {
+    toggle.addEventListener("change", function () {
+      const id = this.getAttribute("data-id")
+      const type = this.getAttribute("data-type")
+      const currentState = this.checked
+      const badge = this.closest("td").querySelector(".badge")
 
-    // Configurar AJAX para incluir el token CSRF en todas las peticiones
-    $.ajaxSetup({
-      headers: {
-        "X-CSRF-TOKEN": csrfToken,
+      const Swal = window.Swal // Declare the Swal variable
+      Swal.fire({
+        title: "¿Cambiar estado?",
+        text: currentState ? "¿Desactivar este registro?" : "¿Activar este registro?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Sí, cambiar",
+        cancelButtonText: "Cancelar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          cambiarEstado(id, type, currentState, badge, this)
+        } else {
+          // Revertir el cambio si se cancela
+          this.checked = currentState
+        }
+      })
+    })
+  })
+})
+
+function cambiarEstado(id, type, currentState, badgeElement, inputElement) {
+  // Construir la URL según el tipo
+  let url = ""
+  switch (type) {
+    case "marcas":
+      url = `/marcas/${id}/cambio-estado`
+      break
+    case "modelos":
+      url = `/modelos/${id}/cambio-estado`
+      break
+    case "clientes":
+      url = `/clientes/${id}/cambio-estado`
+      break
+    case "conductores":
+      url = `/conductores/${id}/cambio-estado`
+      break
+    default:
+      url = `/${type}/${id}/cambio-estado`
+  }
+
+  // Mostrar loader si SweetAlert2 está disponible
+  const Swal = window.Swal // Declare the Swal variable
+  if (typeof Swal !== "undefined") {
+    Swal.fire({
+      title: "Actualizando...",
+      text: "Por favor espera",
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      didOpen: () => {
+        Swal.showLoading()
       },
     })
+  }
 
-    // Manejar clic en badges de estado
-    $(document).on("click", '.badge[style*="cursor: pointer"]', function (e) {
-      e.preventDefault()
-      console.log("[v0] Clic en badge detectado")
-
-      const $badge = $(this)
-      const $checkbox = $badge.siblings(".toggle-class")
-
-      if ($checkbox.length === 0) {
-        console.error("[v0] No se encontró el checkbox asociado")
-        return
-      }
-
-      const elementType = $checkbox.data("type")
-      const elementId = $checkbox.data("id")
-      const currentState = $checkbox.prop("checked")
-
-      console.log("[v0] Datos del elemento:", {
-        tipo: elementType,
-        id: elementId,
-        estadoActual: currentState,
-      })
-
-      // Determinar la URL según el tipo
-      let url
-      switch (elementType) {
-        case "marcas":
-          url = "/marcas/" + elementId + "/cambio-estado"
-          break
-        case "contratos":
-          url = "/contratos/" + elementId + "/cambio-estado"
-          break
-        default:
-          console.error("[v0] Tipo de elemento no válido:", elementType)
-          return
-      }
-
-      console.log("[v0] URL de petición:", url)
-
-      // Deshabilitar el badge temporalmente
-      $badge.css("pointer-events", "none").css("opacity", "0.6")
-
-      // Realizar petición AJAX
-      $.ajax({
-        type: "POST",
-        url: url,
-        dataType: "json",
-        success: (response) => {
-          console.log("[v0] Respuesta exitosa:", response)
-
-          // Actualizar el checkbox
-          $checkbox.prop("checked", response.nuevo_estado)
-
-          // Actualizar el badge visualmente
-          if (response.nuevo_estado) {
-            $badge.removeClass("badge-danger").addClass("badge-success")
-            $badge.html('<i class="fas fa-check-circle mr-1"></i> Activo')
-          } else {
-            $badge.removeClass("badge-success").addClass("badge-danger")
-            $badge.html('<i class="fas fa-times-circle mr-1"></i> Inactivo')
-          }
-
-          // Agregar animación de éxito
-          $badge.addClass("pulse-animation")
-          setTimeout(() => {
-            $badge.removeClass("pulse-animation")
-          }, 600)
-
-          console.log("[v0] Estado actualizado correctamente")
-        },
-        error: (xhr, status, error) => {
-          console.error("[v0] Error en la petición:", {
-            status: status,
-            error: error,
-            response: xhr.responseText,
-          })
-
-          alert("Error al cambiar el estado. Por favor, revise la consola para más detalles.")
-        },
-        complete: () => {
-          // Rehabilitar el badge
-          $badge.css("pointer-events", "auto").css("opacity", "1")
-        },
-      })
-    })
-
-    console.log("[v0] Script de cambio de estado inicializado correctamente")
+  // Hacer la petición AJAX
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+      Accept: "application/json",
+    },
   })
-})()
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        // Actualizar el badge
+        actualizarBadge(badgeElement, data.nuevo_estado)
+
+        // Actualizar el checkbox
+        inputElement.checked = data.nuevo_estado
+
+        // Mostrar mensaje de éxito
+        if (typeof Swal !== "undefined") {
+          Swal.fire({
+            icon: "success",
+            title: "¡Éxito!",
+            text: data.message || "Estado actualizado correctamente",
+            timer: 1500,
+            showConfirmButton: false,
+          })
+        }
+      } else {
+        throw new Error(data.message || "Error al actualizar el estado")
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error)
+
+      // Revertir el cambio visual
+      inputElement.checked = currentState
+      actualizarBadge(badgeElement, currentState)
+
+      // Mostrar error
+      if (typeof Swal !== "undefined") {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error.message || "No se pudo actualizar el estado",
+          confirmButtonText: "Aceptar",
+        })
+      } else {
+        alert("Error: " + (error.message || "No se pudo actualizar el estado"))
+      }
+    })
+}
+
+function actualizarBadge(badgeElement, nuevoEstado) {
+  if (nuevoEstado) {
+    // Estado activo
+    badgeElement.className = "badge badge-success px-3 py-2"
+    badgeElement.style.cursor = "pointer"
+    badgeElement.title = "Clic para cambiar estado"
+    badgeElement.innerHTML = '<i class="fas fa-check-circle mr-1"></i> Activo'
+  } else {
+    // Estado inactivo
+    badgeElement.className = "badge badge-danger px-3 py-2"
+    badgeElement.style.cursor = "pointer"
+    badgeElement.title = "Clic para cambiar estado"
+    badgeElement.innerHTML = '<i class="fas fa-times-circle mr-1"></i> Inactivo'
+  }
+}

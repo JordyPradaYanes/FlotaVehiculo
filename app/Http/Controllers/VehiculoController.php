@@ -21,7 +21,7 @@ class VehiculoController extends Controller
      */
     public function create()
     {
-        //
+        return view('vehiculos.create');
     }
 
     /**
@@ -29,7 +29,34 @@ class VehiculoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $validated = $request->validate([
+                'marca_id' => 'required|exists:marcas,id',
+                'tipo_vehiculo_id' => 'required|exists:tipo_vehiculos,id',
+                'placa' => 'required|string|max:20|unique:vehiculos,placa',
+                'modelo' => 'required|string|max:100',
+                'año' => 'required|integer|min:1900|max:' . date('Y'),
+                'color' => 'required|string|max:50',
+                'kilometraje' => 'required|numeric|min:0',
+                'estado' => 'required|boolean',
+            ]);
+
+            $validated['registrado_por'] = auth()->user()->name;
+
+            Vehiculo::create($validated);
+
+            return redirect()->route('vehiculos.index')
+                ->with('successMsg', 'Vehículo creado exitosamente.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        } catch (QueryException $e) {
+            Log::error('Error al crear el vehículo: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al crear el vehículo en la base de datos.')
+                ->withInput();
+        }
     }
 
     /**
@@ -59,8 +86,20 @@ class VehiculoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Vehiculo $vehiculo)
     {
-        //
+        try{
+            $vehiculo->delete();
+            return redirect()->route('vehiculos.index')
+                ->with('successMsg', 'Vehículo eliminado exitosamente.');
+        } catch (QueryException $e) {
+            Log::error('Error al eliminar el vehículo: ' . $e->getMessage());
+            return redirect()->route('vehiculos.index')
+                ->with('error', 'Error al eliminar el vehículo de la base de datos.');
+        } catch (\Exception $e) {
+            Log::error('Error inesperado al eliminar el vehículo: ' . $e->getMessage());
+            return redirect()->route('vehiculos.index')
+                ->with('error', 'Error inesperado al eliminar el vehículo.');
+        }
     }
 }

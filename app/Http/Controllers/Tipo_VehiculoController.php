@@ -21,7 +21,7 @@ class Tipo_VehiculoController extends Controller
      */
     public function create()
     {
-        //
+        return view('tipo_vehiculos.create');
     }
 
     /**
@@ -29,7 +29,32 @@ class Tipo_VehiculoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $validated = $request->validate([
+                'nombre' => 'required|string|max:255',
+                'descripcion' => 'nullable|string',
+                'capacidad_pasajero' => 'required|integer|min:0',
+                'capacidad_carga' => 'required|numeric|min:0',
+                'capacidad_gasolina' => 'required|numeric|min:0',
+                'estado' => 'required|boolean',
+            ]);
+
+            $validated['registrado_por'] = auth()->user()->name;
+
+            Tipo_Vehiculo::create($validated);
+
+            return redirect()->route('tipo_vehiculos.index')
+                ->with('successMsg', 'Tipo de Vehículo creado exitosamente.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        } catch (QueryException $e) {
+            Log::error('Error al crear el tipo de vehículo: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al crear el tipo de vehículo en la base de datos.')
+                ->withInput();
+        }
     }
 
     /**
@@ -59,8 +84,36 @@ class Tipo_VehiculoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Tipo_Vehiculo $tipo_vehiculo)
     {
-        //
+        try {
+            $tipo_vehiculo->delete();
+            return redirect()->route('tipo_vehiculos.index')
+                ->with('successMsg', 'Tipo de Vehículo eliminado exitosamente.');
+        } catch (QueryException $e) {
+            Log::error('Error al eliminar el tipo de vehículo: ' . $e->getMessage());
+            return redirect()->route('tipo_vehiculos.index')
+                ->with('error', 'Error al eliminar el tipo de vehículo de la base de datos.');
+        }
+    }
+
+    public function cambioEstado(Tipo_Vehiculo $tipo_vehiculo)
+    {
+        try {
+            $tipo_vehiculo->estado = !$tipo_vehiculo->estado;
+            $tipo_vehiculo->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Estado del Tipo de Vehículo actualizado exitosamente.',
+                'nuevo_estado' => $tipo_vehiculo->estado
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error al cambiar estado del tipo de vehículo: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cambiar el estado del Tipo de Vehículo.'
+            ], 500);
+        }
     }
 }
