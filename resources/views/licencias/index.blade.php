@@ -163,6 +163,7 @@
 
 @push('scripts')
 {{-- Agregando scripts necesarios para SweetAlert2 y funcionalidad del buscador --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('backend/dist/js/delete-confirm.js') }}"></script>
 <script src="{{ asset('backend/dist/js/statuschange.js') }}"></script>
 <script src="{{ asset('backend/dist/js/licencias.js') }}"></script>

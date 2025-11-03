@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Recarga_Combustible;
+use App\Models\Vehiculo;
 
 class Recarga_CombustibleController extends Controller
 {
@@ -21,7 +22,8 @@ class Recarga_CombustibleController extends Controller
      */
     public function create()
     {
-        return view('recarga_combustibles.create');
+        $vehiculos = Vehiculo::all();
+        return view('recarga_combustibles.create', compact('vehiculos'));
     }
 
     /**
