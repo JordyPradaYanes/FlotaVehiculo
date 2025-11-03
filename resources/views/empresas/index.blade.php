@@ -153,7 +153,6 @@
             </div>
     </section>
 </div>
-
 @endsection
 
 @push('styles')

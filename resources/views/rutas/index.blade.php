@@ -155,89 +155,18 @@
     </section>
 </div>
 
-<style>
-    .card {
-        border-radius: 10px;
-        overflow: hidden;
-    }
-    
-    .card-header {
-        padding: 1.25rem;
-    }
-    
-    .table thead th {
-        border-bottom: 2px solid #dee2e6;
-        font-weight: 600;
-        font-size: 0.875rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        padding: 1rem;
-    }
-    
-    .table tbody td {
-        padding: 1rem;
-        vertical-align: middle;
-    }
-    
-    .table-hover tbody tr:hover {
-        background-color: #f8f9fa;
-        transition: background-color 0.2s ease;
-    }
-    
-    .badge {
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.3px;
-    }
-    
-    .btn-group .btn {
-        padding: 0.375rem 0.75rem;
-    }
-    
-    .shadow-sm {
-        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-    }
-    
-    .search-box .input-group-text {
-        border: 1px solid #ced4da;
-        border-right: 0;
-    }
-    
-    .search-box .form-control {
-        border: 1px solid #ced4da;
-        border-left: 0;
-    }
-    
-    .search-box .form-control:focus {
-        box-shadow: none;
-        border-color: #80bdff;
-    }
-    
-    .search-box .input-group-text {
-        background-color: #fff;
-    }
-    
-    .search-box .form-control:focus + .input-group-prepend .input-group-text {
-        border-color: #80bdff;
-    }
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('searchTable');
-    const table = document.getElementById('example1');
-    const tbody = table.querySelector('tbody');
-    const rows = tbody.querySelectorAll('tr');
-    
-    searchInput.addEventListener('keyup', function() {
-        const searchTerm = this.value.toLowerCase().trim();
-        
-        rows.forEach(function(row) {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(searchTerm) ? '' : 'none';
-        });
-    });
-});
-</script>
-
 @endsection
+
+@push('styles')
+{{-- Agregando estilos personalizados de empresas --}}
+<link rel="stylesheet" href="{{ asset('backend/dist/css/rutas.css') }}">
+@endpush
+
+{{-- Scripts en el orden correcto --}}
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="{{ asset('backend/dist/js/rutas.js') }}"></script>
+<script src="{{ asset('backend/dist/js/statuschange.js') }}"></script>
+<script src="{{ asset('backend/dist/js/delete-confirm.js') }}"></script>
+@endpush

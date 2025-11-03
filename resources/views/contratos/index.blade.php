@@ -2,11 +2,6 @@
 
 @section('title','Listado De Contratos')
 
-{{-- Importar estilos de conductores --}}
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/contratos.css') }}">
-@endpush
-
 @section('content')
 
 <div class="content-wrapper pb-4">
@@ -178,8 +173,12 @@
         </div>
     </section>
 </div>
-
 @endsection
+
+{{-- Importar estilos de conductores --}}
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/contratos.css') }}">
+@endpush
 
 {{-- Scripts en el orden correcto --}}
 @push('scripts')

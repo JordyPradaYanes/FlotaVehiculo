@@ -166,13 +166,15 @@
 
 @endsection
 
+@push('styles')
+{{-- Agregando estilos personalizados de empresas --}}
+<link rel="stylesheet" href="{{ asset('backend/dist/css/marcas.css') }}">
+@endpush
+
 {{-- Scripts en el orden correcto --}}
 @push('scripts')
-<!-- IMPORTANTE: jQuery PRIMERO (si no está en el layout) -->
-<!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<!-- Scripts personalizados -->
 <script src="{{ asset('backend/dist/js/marcas.js') }}"></script>
 <script src="{{ asset('backend/dist/js/statuschange.js') }}"></script>
 <script src="{{ asset('backend/dist/js/delete-confirm.js') }}"></script>

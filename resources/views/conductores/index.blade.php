@@ -2,11 +2,6 @@
 
 @section('title','Listado De Conductores')
 
-{{-- Importar estilos --}}
-@push('styles')
-<link rel="stylesheet" href="{{ asset('css/conductores.css') }}">
-@endpush
-
 @section('content')
 
 <div class="content-wrapper pb-4">
@@ -173,6 +168,13 @@
 </div>
 
 @endsection
+
+{{-- Importar estilos --}}
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/conductores.css') }}">
+@endpush
+
+{{-- Importar scripts --}}
 
 @push('scripts')
 <!-- SweetAlert2 PRIMERO -->

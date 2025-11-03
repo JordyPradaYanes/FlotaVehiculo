@@ -174,9 +174,16 @@
 
 @endsection
 
+@push('styles')
+{{-- Agregando estilos personalizados de empresas --}}
+<link rel="stylesheet" href="{{ asset('backend/dist/css/recarga.css') }}">
+@endpush
+
+{{-- Scripts en el orden correcto --}}
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- Scripts personalizados -->
-<script src="{{ asset('backend/dist/js/recarga_combustibles.js') }}"></script>
+
+<script src="{{ asset('backend/dist/js/recarga.js') }}"></script>
+<script src="{{ asset('backend/dist/js/statuschange.js') }}"></script>
 <script src="{{ asset('backend/dist/js/delete-confirm.js') }}"></script>
 @endpush
