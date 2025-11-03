@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contrato;
+use App\Models\Conductor;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 
@@ -20,7 +21,8 @@ class ContratoController extends Controller
 
     public function create()
     {
-        return view('contratos.create');
+        $conductores = Conductor::all();
+        return view('contratos.create', compact('conductores'));
     }
 
     public function store(Request $request)

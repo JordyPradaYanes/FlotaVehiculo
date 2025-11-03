@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Licencia;
+use App\Models\Conductor;
 
 class LicenciaController extends Controller
 {
@@ -21,7 +22,8 @@ class LicenciaController extends Controller
      */
     public function create()
     {
-        return view('licencias.create');
+        $conductores = Conductor::all();
+        return view('licencias.create', compact('conductores'));
     }
 
     /**
