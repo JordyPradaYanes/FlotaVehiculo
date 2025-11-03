@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Viaje;
+use App\Models\Ruta;
+use App\Models\Vehiculo;
+use App\Models\Conductor;
 
 class ViajeController extends Controller
 {
@@ -21,7 +24,10 @@ class ViajeController extends Controller
      */
     public function create()
     {
-        return view('viajes.create');
+        $rutas = Ruta::all();
+        $vehiculos = Vehiculo::all();
+        $conductores = Conductor::all();
+        return view('viajes.create', compact('rutas', 'vehiculos', 'conductores'));
     }
 
     /**

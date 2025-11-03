@@ -46,6 +46,20 @@
                                 <div class="row">
                                     <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
                                         <div class="form-group label-floating">
+                                            <label class="control-label">Conductor <strong
+                                                    style="color:red;">(*)</strong></label>
+                                            <select class="form-control" name="conductor_id" required>
+                                                <option value="">Seleccione un conductor</option>
+                                                @foreach($conductores as $conductor)
+                                                    <option value="{{ $conductor->id }}">{{ $conductor->nombre }} {{ $conductor->apellido }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+                                        <div class="form-group label-floating">
                                                 <label class="control-label">Fecha de Inicio <strong
                                                         style="color:red;">(*)</strong></label>
                                                 <input type="date" class="form-control" name="fecha_inicio"

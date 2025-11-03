@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Vehiculo;
+use App\Models\Marca;
+use App\Models\Tipo_Vehiculo;
 
 class VehiculoController extends Controller
 {
@@ -21,7 +23,9 @@ class VehiculoController extends Controller
      */
     public function create()
     {
-        return view('vehiculos.create');
+        $marcas = Marca::all();
+        $tipo_vehiculos = Tipo_Vehiculo::all();
+        return view('vehiculos.create', compact('marcas', 'tipo_vehiculos'));
     }
 
     /**
