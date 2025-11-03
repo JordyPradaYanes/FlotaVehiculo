@@ -26,8 +26,8 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 
                 <!-- Charts Section -->
-                <li class="nav-item menu-section">
-                    <a href="#" class="nav-link nav-link-modern">
+                <li class="nav-item menu-section {{ Request::is('charts*') ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link nav-link-modern {{ Request::is('charts*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Gráficos
@@ -36,13 +36,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link nav-link-sub">
+                            <a href="#" class="nav-link nav-link-sub {{ Request::is('charts/chartjs') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>ChartJS</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link nav-link-sub">
+                            <a href="#" class="nav-link nav-link-sub {{ Request::is('charts/flot') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Flot</p>
                             </a>
@@ -57,7 +57,7 @@
                 
                 <!-- Conductores -->
                 <li class="nav-item">
-                    <a href="{{route('conductores.index')}}" class="nav-link nav-link-modern">
+                    <a href="{{route('conductores.index')}}" class="nav-link nav-link-modern {{ Request::is('conductores*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>Conductores</p>
                     </a>
@@ -65,7 +65,7 @@
 
                 <!-- Contratos -->
                 <li class="nav-item">
-                    <a href="{{route('contratos.index')}}" class="nav-link nav-link-modern">
+                    <a href="{{route('contratos.index')}}" class="nav-link nav-link-modern {{ Request::is('contratos*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-file-contract"></i>
                         <p>Contratos</p>
                     </a>
@@ -73,7 +73,7 @@
 
                 <!-- Empresas -->
                 <li class="nav-item">
-                    <a href="{{route('empresas.index')}}" class="nav-link nav-link-modern">
+                    <a href="{{route('empresas.index')}}" class="nav-link nav-link-modern {{ Request::is('empresas*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-building"></i>
                         <p>Empresas</p>
                     </a>
@@ -81,7 +81,7 @@
 
                 <!-- Licencias -->
                 <li class="nav-item">
-                    <a href="{{route('licencias.index')}}" class="nav-link nav-link-modern">
+                    <a href="{{route('licencias.index')}}" class="nav-link nav-link-modern {{ Request::is('licencias*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-id-card"></i>
                         <p>Licencias</p>
                     </a>
@@ -94,7 +94,7 @@
 
                 <!-- Marcas -->
                 <li class="nav-item">
-                    <a href="{{route('marcas.index')}}" class="nav-link nav-link-modern">
+                    <a href="{{route('marcas.index')}}" class="nav-link nav-link-modern {{ Request::is('marcas*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tag"></i>
                         <p>Marcas</p>
                     </a>
@@ -102,7 +102,7 @@
 
                 <!-- Tipo Vehículos -->
                 <li class="nav-item">
-                    <a href="{{route('tipo_vehiculos.index')}}" class="nav-link nav-link-modern">
+                    <a href="{{route('tipo_vehiculos.index')}}" class="nav-link nav-link-modern {{ Request::is('tipo_vehiculos*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-list-alt"></i>
                         <p>Tipo Vehículos</p>
                     </a>
@@ -110,7 +110,7 @@
 
                 <!-- Vehículos -->
                 <li class="nav-item">
-                    <a href="{{route('vehiculos.index')}}" class="nav-link nav-link-modern">
+                    <a href="{{route('vehiculos.index')}}" class="nav-link nav-link-modern {{ Request::is('vehiculos*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-bus"></i>
                         <p>Vehículos</p>
                     </a>
@@ -123,7 +123,7 @@
 
                 <!-- Recarga Combustible -->
                 <li class="nav-item">
-                    <a href="{{route('recarga_combustibles.index')}}" class="nav-link nav-link-modern">
+                    <a href="{{route('recarga_combustibles.index')}}" class="nav-link nav-link-modern {{ Request::is('recarga_combustibles*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-gas-pump"></i>
                         <p>Combustible</p>
                     </a>
@@ -131,7 +131,7 @@
 
                 <!-- Rutas -->
                 <li class="nav-item">
-                    <a href="{{route('rutas.index')}}" class="nav-link nav-link-modern">
+                    <a href="{{route('rutas.index')}}" class="nav-link nav-link-modern {{ Request::is('rutas*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-route"></i>
                         <p>Rutas</p>
                     </a>
@@ -139,7 +139,7 @@
 
                 <!-- Viajes -->
                 <li class="nav-item">
-                    <a href="{{route('viajes.index')}}" class="nav-link nav-link-modern">
+                    <a href="{{route('viajes.index')}}" class="nav-link nav-link-modern {{ Request::is('viajes*') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-map-marked-alt"></i>
                         <p>Viajes</p>
                     </a>
