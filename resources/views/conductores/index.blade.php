@@ -20,21 +20,31 @@
         <div class="container-fluid">
             {{-- Mensajes de éxito y error --}}
             @if(session('successMsg'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <i class="fas fa-check-circle mr-2"></i>{{ session('successMsg') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle mr-2"></i>{{ session('successMsg') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             @endif
 
             @if(session('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <i class="fas fa-exclamation-circle mr-2"></i>{{ session('error') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle mr-2"></i>{{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
+
+            {{-- Nuevo: Mensaje de error con HTML --}}
+            @if(session('errorHtml'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle mr-2"></i>{!! session('errorHtml') !!}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             @endif
 
             <div class="row">
@@ -52,8 +62,8 @@
                                                 <i class="fas fa-search text-muted"></i>
                                             </span>
                                         </div>
-                                        <input type="text" id="searchTable" class="form-control border-left-0" 
-                                               placeholder="Buscar conductor...">
+                                        <input type="text" id="searchTable" class="form-control border-left-0"
+                                            placeholder="Buscar conductor...">
                                     </div>
                                 </div>
                             </div>
@@ -72,9 +82,9 @@
                                             <th>
                                                 <i class="fas fa-id-card text-muted"></i> DNI
                                             </th>
-                                            <th>
+                                            <!-- <th>
                                                 <i class="fas fa-phone text-muted"></i> Teléfono
-                                            </th>
+                                            </th> -->
                                             <th>
                                                 <i class="fas fa-birthday-cake text-muted"></i> Fecha Nacimiento
                                             </th>
@@ -93,35 +103,38 @@
                                                 {{ $conductor->id }}
                                             </td>
                                             <td>
-                                                <span class="font-weight-bold text-dark">{{ $conductor->nombre }}</span>
+                                                <span
+                                                    class="font-weight-bold text-dark">{{ $conductor->nombre . " " . $conductor->apellido }}
+
+                                                </span>
                                             </td>
                                             <td>
-                                                <span class="text-secondary">{{ $conductor->dni }}</span>
+                                                <span class="text-secondary">{{ $conductor->documento }}</span>
                                             </td>
-                                            <td>
+                                            <!-- <td>
                                                 <i class="fas fa-mobile-alt text-success mr-1"></i>
-                                                {{ $conductor->telefono }}
-                                            </td>
+                                                {{ $conductor->fecha_nacimiento }}
+                                            </td> -->
                                             <td>
                                                 <i class="fas fa-calendar text-info mr-1"></i>
                                                 {{ \Carbon\Carbon::parse($conductor->fecha_nacimiento)->format('d/m/Y') }}
                                             </td>
                                             <td class="text-center">
                                                 @if($conductor->estado)
-                                                    <span class="badge badge-success px-3 py-2" style="cursor: pointer;" title="Clic para cambiar estado">
-                                                        <i class="fas fa-check-circle mr-1"></i> Activo
-                                                    </span>
+                                                <span class="badge badge-success px-3 py-2" style="cursor: pointer;"
+                                                    title="Clic para cambiar estado">
+                                                    <i class="fas fa-check-circle mr-1"></i> Activo
+                                                </span>
                                                 @else
-                                                    <span class="badge badge-danger px-3 py-2" style="cursor: pointer;" title="Clic para cambiar estado">
-                                                        <i class="fas fa-times-circle mr-1"></i> Inactivo
-                                                    </span>
+                                                <span class="badge badge-danger px-3 py-2" style="cursor: pointer;"
+                                                    title="Clic para cambiar estado">
+                                                    <i class="fas fa-times-circle mr-1"></i> Inactivo
+                                                </span>
                                                 @endif
                                                 {{-- Agregado data-type="conductores" para el script de cambio de estado --}}
                                                 <input data-type="conductores" data-id="{{ $conductor->id }}"
-                                                    class="toggle-class d-none" type="checkbox" 
-                                                    data-onstyle="success"
-                                                    data-offstyle="danger" data-toggle="toggle" 
-                                                    data-on="Activo"
+                                                    class="toggle-class d-none" type="checkbox" data-onstyle="success"
+                                                    data-offstyle="danger" data-toggle="toggle" data-on="Activo"
                                                     data-off="Inactivo" {{ $conductor->estado ? 'checked' : '' }}>
                                             </td>
                                             <td class="text-center">
@@ -132,12 +145,13 @@
                                                     </a>
 
                                                     {{-- Agregada clase delete-form para activar SweetAlert2 --}}
-                                                    <form class="delete-form d-inline" 
-                                                          action="{{ route('conductores.destroy', $conductor->id) }}" 
-                                                          method="POST">
+                                                    <form class="delete-form d-inline"
+                                                        action="{{ route('conductores.destroy', $conductor->id) }}"
+                                                        method="POST">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+                                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                            title="Eliminar">
                                                             <i class="fas fa-trash-alt"></i>
                                                         </button>
                                                     </form>
@@ -171,11 +185,10 @@
 
 {{-- Importar estilos --}}
 @push('styles')
-<link rel="stylesheet" href="{{ asset('css/conductores.css') }}">
+<link rel="stylesheet" href="{{ asset('backend/dist/css/conductores.css') }}">
 @endpush
 
 {{-- Importar scripts --}}
-
 @push('scripts')
 <!-- SweetAlert2 PRIMERO -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

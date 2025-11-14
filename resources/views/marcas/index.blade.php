@@ -71,12 +71,12 @@
                                             <th class="text-center" style="width: 60px;">
                                                 <i class="fas fa-hashtag text-muted"></i> ID
                                             </th>
+                                            <th class="text-center" style="width: 80px;">
+                                                <i class="fas fa-image text-muted"></i> Logo
+                                            </th>
                                             <th>
                                                 <i class="fas fa-building text-muted"></i> Nombre
                                             </th>
-                                            <!-- <th>
-                                                <i class="fas fa-user text-muted"></i> Registrado por
-                                            </th> -->
                                             <th>
                                                 <i class="fas fa-globe-americas text-muted"></i> País Origen
                                             </th>
@@ -94,12 +94,16 @@
                                             <td class="text-center font-weight-bold text-muted">
                                                 {{ $marca->id }}
                                             </td>
+                                            <td class="text-center">
+                                                <img src="https://logo.clearbit.com/{{ strtolower($marca->nombre) }}.com" 
+                                                     alt="{{ $marca->nombre }}" 
+                                                     class="rounded border"
+                                                     style="width: 50px; height: 50px; object-fit: contain; padding: 5px; background: #f8f9fa;"
+                                                     onerror="this.onerror=null; this.outerHTML='<div class=\'d-inline-flex justify-content-center align-items-center\' style=\'width: 50px; height: 50px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; color: white; font-weight: bold; font-size: 16px;\'>{{ strtoupper(substr($marca->nombre, 0, 2)) }}</div>'">
+                                            </td>
                                             <td>
                                                 <span class="font-weight-bold text-dark">{{ $marca->nombre }}</span>
                                             </td>
-                                            <!-- <td>
-                                                <span class="text-secondary">{{ $marca->registrado_por }}</span>
-                                            </td> -->
                                             <td>
                                                 <i class="fas fa-map-marker-alt text-danger mr-1"></i>
                                                 {{ $marca->pais_origen }}

@@ -18,6 +18,24 @@
 
     <section class="content">
         <div class="container-fluid">
+            {{-- Mensajes de éxito y error --}}
+            @if(session('successMsg'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle mr-2"></i>{{ session('successMsg') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle mr-2"></i>{{ session('error') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             <div class="row">
                 <div class="col-12">
                     <div class="card shadow-sm border-0">
