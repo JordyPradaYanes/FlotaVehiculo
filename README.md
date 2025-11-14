@@ -112,3 +112,15 @@ Sigue estos pasos para configurar el proyecto en tu entorno de desarrollo local:
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+
+## Corrección del Botón de Eliminar
+
+Se ha corregido un problema en el botón de eliminar de la vista de conductores, que no mostraba la confirmación de SweetAlert antes de eliminar un registro.
+
+### El Problema
+
+El archivo `public/backend/dist/js/delete-confirm.js` utilizaba la sintaxis de módulos de ES (`import`) para cargar las dependencias de jQuery y SweetAlert2. Sin embargo, el proyecto no estaba configurado para procesar este archivo como un módulo, lo que provocaba que el script no se ejecutara correctamente en el navegador y, por lo tanto, la confirmación de eliminación no aparecía.
+
+### La Solución
+
+Para solucionar este problema, se ha modificado el archivo `public/backend/dist/js/delete-confirm.js` para que utilice la sintaxis tradicional de `require` y el evento `document.ready` de jQuery. Esto asegura que el script sea compatible con la configuración actual del proyecto y que la confirmación de SweetAlert se muestre correctamente al hacer clic en el botón de eliminar.
