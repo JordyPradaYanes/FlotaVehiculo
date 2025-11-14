@@ -65,8 +65,13 @@
                                             <th class="text-center" style="width: 60px;">
                                                 <i class="fas fa-hashtag text-muted"></i> ID
                                             </th>
+                                            {{-- Agregada columna NIT según migración --}}
                                             <th>
-                                                <i class="fas fa-building text-muted"></i> Nombre Empresa
+                                                <i class="fas fa-id-card text-muted"></i> NIT
+                                            </th>
+                                            {{-- Cambiado de "Nombre Empresa" y usando $empresa->nombre --}}
+                                            <th>
+                                                <i class="fas fa-building text-muted"></i> Nombre
                                             </th>
                                             <th>
                                                 <i class="fas fa-map-marker-alt text-muted"></i> Dirección
@@ -94,9 +99,13 @@
                                             <td class="text-center font-weight-bold text-muted">
                                                 {{ $empresa->id }}
                                             </td>
+                                            {{-- Agregada celda para mostrar NIT --}}
                                             <td>
-                                                <span
-                                                    class="font-weight-bold text-dark">{{ $empresa->nombre_empresa }}</span>
+                                                <span class="badge badge-light px-2 py-1">{{ $empresa->nit }}</span>
+                                            </td>
+                                            {{-- Cambiado de $empresa->nombre_empresa a $empresa->nombre --}}
+                                            <td>
+                                                <span class="font-weight-bold text-dark">{{ $empresa->nombre }}</span>
                                             </td>
                                             <td>
                                                 <i class="fas fa-location-arrow text-info mr-1"></i>

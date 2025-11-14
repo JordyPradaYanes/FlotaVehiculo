@@ -1,4 +1,4 @@
-//marcas - funcionalidad de busqueda y confirmación de eliminación
+// Empresas - Funcionalidad de búsqueda, confirmación de eliminación y validación
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Empresas.js cargado correctamente');
 
@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ===== ANIMACIÓN AL CAMBIAR ESTADO =====
     initializeBadgeAnimations();
+
+    // ===== VALIDACIÓN DEL FORMULARIO CREATE =====
+    initializeFormValidation();
 });
 
 // Función para inicializar la búsqueda
@@ -27,26 +30,31 @@ function initializeSearch() {
     }
     const rows = Array.from(tbody.querySelectorAll('tr'));
     console.log(`Búsqueda inicializada. ${rows.length} filas encontradas`);
+    
     searchInput.addEventListener('keyup', function(e) {
         const searchTerm = this.value.toLowerCase().trim();
         rows.forEach(function(row) {
             try {
                 const cells = row.querySelectorAll('td');
-                if (cells.length < 4) return;
+                if (cells.length < 5) return;
+                
                 const id = cells[0].textContent.toLowerCase();
-                const nombre_empresa = cells[1].textContent.toLowerCase();
-                const direccion = cells[2].textContent.toLowerCase();
-                const telefono = cells[3].textContent.toLowerCase();
-                const email = cells[4].textContent.toLowerCase();
-                const registradoPor = cells[5].textContent.toLowerCase();
-                const matches = nombre_empresa.includes(searchTerm) || 
+                const nit = cells[1].textContent.toLowerCase(); // NIT agregado
+                const nombre = cells[2].textContent.toLowerCase(); // Cambió de nombre_empresa a nombre
+                const direccion = cells[3].textContent.toLowerCase();
+                const telefono = cells[4].textContent.toLowerCase();
+                const email = cells[5].textContent.toLowerCase();
+                const registradoPor = cells[6].textContent.toLowerCase();
+                
+                const matches = id.includes(searchTerm) ||
+                               nit.includes(searchTerm) ||
+                               nombre.includes(searchTerm) || 
                                direccion.includes(searchTerm) || 
                                telefono.includes(searchTerm) ||
-                                email.includes(searchTerm) ||
-                                registradoPor.includes(searchTerm) ||
-                                id.includes(searchTerm);
+                               email.includes(searchTerm) ||
+                               registradoPor.includes(searchTerm);
+                
                 row.style.display = matches ? '' : 'none';
-
             }
             catch (error) {
                 console.error('Error procesando fila:', error);
@@ -54,6 +62,7 @@ function initializeSearch() {
         });
     });
 }
+
 // Función para inicializar la confirmación de eliminación
 function initializeDeleteConfirmation() {
     const deleteForms = document.querySelectorAll('.delete-form');
@@ -78,6 +87,7 @@ function initializeDeleteConfirmation() {
         });
     });
 }
+
 // Función para inicializar animaciones en badges al cambiar estado
 function initializeBadgeAnimations() {
     const statusBadges = document.querySelectorAll('.status-badge');
@@ -91,7 +101,46 @@ function initializeBadgeAnimations() {
     });
 }
 
-// manejo de errores en consola
+function initializeFormValidation() {
+    const empresaForm = document.getElementById('empresaForm');
+    if (!empresaForm) {
+        console.warn('Formulario empresaForm no encontrado');
+        return;
+    }
+
+    empresaForm.addEventListener('submit', function(e) {
+        const telefono = document.getElementById('telefono').value;
+        const email = document.getElementById('email').value;
+        
+        // Validar formato de teléfono (números, espacios, guiones y +)
+        const telefonoRegex = /^[\d\s\-\+()]+$/;
+        if (!telefonoRegex.test(telefono)) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Error en el teléfono',
+                text: 'El teléfono solo puede contener números, espacios, guiones y el símbolo +',
+                confirmButtonColor: '#3085d6'
+            });
+            return false;
+        }
+        
+        // Validar formato de email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            e.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Error en el email',
+                text: 'Por favor ingrese un email válido',
+                confirmButtonColor: '#3085d6'
+            });
+            return false;
+        }
+    });
+}
+
+// Manejo de errores en consola
 window.addEventListener('error', function(event) {
     if (event.filename.includes('empresas.js')) {
         console.error('Error en empresas.js:', event.message, 'en', event.filename, 'línea', event.lineno);

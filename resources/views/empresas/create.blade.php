@@ -44,21 +44,43 @@
                                 @endif
 
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    {{-- Agregado campo NIT requerido por la migración --}}
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="nombre_empresa" class="font-weight-bold">
+                                            <label for="nit" class="font-weight-bold">
+                                                <i class="fas fa-id-card text-warning mr-1"></i>
+                                                NIT
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" 
+                                                   class="form-control @error('nit') is-invalid @enderror" 
+                                                   id="nit" 
+                                                   name="nit" 
+                                                   value="{{ old('nit') }}"
+                                                   placeholder="Ingrese el NIT de la empresa"
+                                                   required>
+                                            @error('nit')
+                                            <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    {{-- Cambiado nombre_empresa a nombre según migración --}}
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="nombre" class="font-weight-bold">
                                                 <i class="fas fa-building text-primary mr-1"></i>
                                                 Nombre de la Empresa
                                                 <span class="text-danger">*</span>
                                             </label>
                                             <input type="text" 
-                                                   class="form-control @error('nombre_empresa') is-invalid @enderror" 
-                                                   id="nombre_empresa" 
-                                                   name="nombre_empresa" 
-                                                   value="{{ old('nombre_empresa') }}"
+                                                   class="form-control @error('nombre') is-invalid @enderror" 
+                                                   id="nombre" 
+                                                   name="nombre" 
+                                                   value="{{ old('nombre') }}"
                                                    placeholder="Ingrese el nombre de la empresa"
                                                    required>
-                                            @error('nombre_empresa')
+                                            @error('nombre')
                                             <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -122,33 +144,16 @@
                                             @enderror
                                         </div>
                                     </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="estado" class="font-weight-bold">
-                                                <i class="fas fa-toggle-on text-warning mr-1"></i>
-                                                Estado
-                                                <span class="text-danger">*</span>
-                                            </label>
-                                            <select class="form-control @error('estado') is-invalid @enderror" 
-                                                    id="estado" 
-                                                    name="estado"
-                                                    required>
-                                                <option value="">Seleccione un estado</option>
-                                                <option value="1" {{ old('estado') == '1' ? 'selected' : '' }}>Activo</option>
-                                                <option value="0" {{ old('estado') == '0' ? 'selected' : '' }}>Inactivo</option>
-                                            </select>
-                                            @error('estado')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
+                                    <input type="hidden" name="estado" value="1">
+                                    <input type="hidden" name="registrado_por" value="{{ Auth::user()->name }}">
+                                    
                                 </div>
 
                                 <div class="alert alert-info mt-3">
                                     <i class="fas fa-info-circle mr-2"></i>
                                     <strong>Nota:</strong> Todos los campos marcados con <span class="text-danger">*</span> son obligatorios.
                                 </div>
+                                
                             </div>
 
                             <div class="card-footer bg-light">
@@ -173,40 +178,4 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('backend/dist/css/empresas.css') }}">
-@endpush
-
-@push('scripts')
-<script>
-    // Validación adicional del formulario
-    document.getElementById('empresaForm').addEventListener('submit', function(e) {
-        const telefono = document.getElementById('telefono').value;
-        const email = document.getElementById('email').value;
-        
-        // Validar formato de teléfono (números, espacios, guiones y +)
-        const telefonoRegex = /^[\d\s\-\+$$$$]+$/;
-        if (!telefonoRegex.test(telefono)) {
-            e.preventDefault();
-            Swal.fire({
-                icon: 'error',
-                title: 'Error en el teléfono',
-                text: 'El teléfono solo puede contener números, espacios, guiones y el símbolo +',
-                confirmButtonColor: '#3085d6'
-            });
-            return false;
-        }
-        
-        // Validar formato de email
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            e.preventDefault();
-            Swal.fire({
-                icon: 'error',
-                title: 'Error en el email',
-                text: 'Por favor ingrese un email válido',
-                confirmButtonColor: '#3085d6'
-            });
-            return false;
-        }
-    });
-</script>
 @endpush

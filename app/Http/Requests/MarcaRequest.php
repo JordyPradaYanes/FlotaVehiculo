@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use app\Models\Marca;
 
 class MarcaRequest extends FormRequest
 {

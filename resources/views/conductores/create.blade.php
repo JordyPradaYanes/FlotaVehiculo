@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title','Crear Conductor')
+@section('title', 'Registrar Conductor')
 
 @section('content')
 <div class="content-wrapper">
@@ -13,98 +13,106 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card">
+                    <div class="card shadow-sm border-0">
                         <div class="card-header bg-secondary">
-                            <h3>@yield('title')</h3>
+                            <h3 class="mb-0 text-white">@yield('title')</h3>
                         </div>
+
                         <form method="POST" action="{{ route('conductores.store') }}">
                             @csrf
                             <div class="card-body">
-                                {{-- Agregado mensaje de error si existe --}}
+
+                                {{-- Mensaje de error general --}}
                                 @if(session('error'))
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        {{ session('error') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {{ session('error') }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
                                 @endif
 
+                                {{-- Errores de validación --}}
                                 @if($errors->any())
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <ul class="mb-0">
-                                            @foreach($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <ul class="mb-0">
+                                        @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
                                 @endif
 
+                                {{-- Campos del formulario --}}
                                 <div class="row">
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                                        <div class="form-group label-floating">
-                                                <label class="control-label">Nombre <strong
-                                                        style="color:red;">(*)</strong></label>
-                                                <input type="text" class="form-control" name="nombre"
-                                                    placeholder="Por ejemplo, Juan" autocomplete="off"
-                                                    value="{{ old('nombre') }}" required>
+                                    <!-- Nombre -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="nombre">Nombre <strong class="text-danger">*</strong></label>
+                                            <input type="text" id="nombre" name="nombre" class="form-control"
+                                                placeholder="Ejemplo: Juan" value="{{ old('nombre') }}" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Apellido -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="apellido">Apellido <strong
+                                                    class="text-danger">*</strong></label>
+                                            <input type="text" id="apellido" name="apellido" class="form-control"
+                                                placeholder="Ejemplo: Pérez" value="{{ old('apellido') }}" required>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row">
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                                        <div class="form-group label-floating">
-                                                <label class="control-label">Apellido <strong
-                                                        style="color:red;">(*)</strong></label>
-                                                <input type="text" class="form-control" name="apellido"
-                                                    placeholder="Por ejemplo, Pérez" autocomplete="off"
-                                                    value="{{ old('apellido') }}" required>
+                                    <!-- Documento -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="documento">Documento <strong
+                                                    class="text-danger">*</strong></label>
+                                            <input type="text" id="documento" name="documento" class="form-control"
+                                                placeholder="Número de documento" value="{{ old('documento') }}"
+                                                required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Fecha de contrato -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="fecha_contrato">Fecha de Contrato</label>
+                                            <input type="date" id="fecha_contrato" name="fecha_contrato"
+                                                class="form-control" value="{{ old('fecha_contrato') }}">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Documento<strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="text" class="form-control" name="documento"
-                                                placeholder="Por ejemplo, 1094566924" autocomplete="off"
-                                                value="{{ old('documento') }}" required>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Fecha de nacimiento<strong
-                                                    style="color:red;">(*)</strong></label>
-                                            {{-- Cambiado de type="text" a type="date" para validación correcta --}}
-                                            <input type="date" class="form-control" name="fecha_nacimiento"
-                                                autocomplete="off"
-                                                value="{{ old('fecha_nacimiento') }}" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <input type="hidden" class="form-control" name="estado" value="1">
+
+                                <!-- Estado -->
+                                <input type="hidden" name="estado" value="activo">
+
+                                <!-- Registrado por -->
+                                <input type="hidden" name="registrado_por" value="{{ Auth::user()->name }}">
                             </div>
+
                             <div class="card-footer">
-                                {{-- Actualizado para coincidir con el estilo de marcas --}}
                                 <div class="row">
-                                    <div class="col-lg-2 col-xs-4">
-                                        <button type="submit"
-                                            class="btn btn-primary btn-block btn-flat">Registrar</button>
+                                    <div class="col-lg-2 col-xs-4 mb-2 mb-lg-0">
+                                        <button type="submit" class="btn btn-primary btn-block">
+                                            Registrar
+                                        </button>
                                     </div>
                                     <div class="col-lg-2 col-xs-4">
-                                        <a href="{{ route('conductores.index') }}"
-                                            class="btn btn-danger btn-block btn-flat">Atrás</a>
+                                        <a href="{{ route('conductores.index') }}" class="btn btn-danger btn-block">
+                                            Atrás
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>

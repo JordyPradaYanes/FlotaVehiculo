@@ -28,7 +28,11 @@ class EmpresaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    {   
+        $empresa = Empresa::create($request->All());
+        return redirect()->route('empresas.index')
+            ->with('successMsg', 'Empresa creada exitosamente.');
+        /*
         try{
             $validated = $request->validate([
                 'nombre_empresa' => 'required|string|max:255',
@@ -54,7 +58,7 @@ class EmpresaController extends Controller
             return redirect()->back()
                 ->with('error', 'Error al crear la empresa en la base de datos.')
                 ->withInput();
-        }
+        }*/
     }
 
     /**

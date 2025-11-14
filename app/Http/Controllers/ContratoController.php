@@ -27,6 +27,10 @@ class ContratoController extends Controller
 
     public function store(Request $request)
     {
+        $contrato = Contrato::create($request->All());
+        return redirect()->route('contratos.index')
+            ->with('successMsg', 'Contrato creado exitosamente.');
+        /*
         try {
             $validated = $request->validate([
                 'fecha_inicio' => 'required|date',
@@ -53,7 +57,7 @@ class ContratoController extends Controller
             return redirect()->back()
                 ->with('error', 'Error al crear el contrato en la base de datos.')
                 ->withInput();
-        }
+        }*/
     }
 
     /**

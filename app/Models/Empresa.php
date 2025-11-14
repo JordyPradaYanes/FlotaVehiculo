@@ -12,12 +12,13 @@ class Empresa extends Model
     protected $table = 'empresas';
     protected $primaryKey = 'id';
     protected $fillable = [
-        'nombre_empresa',
+        'nit',
+        'nombre',
         'direccion',
         'telefono',
         'email',
         'estado',
-        'registrado_por',
+        'registrado_por'
     ];
     protected $guarded=['id',
         'created_at',

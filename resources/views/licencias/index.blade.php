@@ -121,14 +121,21 @@
                                             </td>
                                             <td class="text-center">
                                                 @if($licencia->estado)
-                                                    <span class="badge badge-success px-3 py-2">
-                                                        <i class="fas fa-check-circle mr-1"></i> Activo
-                                                    </span>
+                                                <span class="badge badge-success px-3 py-2" style="cursor: pointer;"
+                                                    title="Clic para cambiar estado">
+                                                    <i class="fas fa-check-circle mr-1"></i> Activo
+                                                </span>
                                                 @else
-                                                    <span class="badge badge-danger px-3 py-2">
-                                                        <i class="fas fa-times-circle mr-1"></i> Inactivo
-                                                    </span>
+                                                <span class="badge badge-danger px-3 py-2" style="cursor: pointer;"
+                                                    title="Clic para cambiar estado">
+                                                    <i class="fas fa-times-circle mr-1"></i> Inactivo
+                                                </span>
                                                 @endif
+                                                {{-- Agregado data-type="licencias" para el script de cambio de estado --}}
+                                                <input data-type="licencias" data-id="{{ $licencia->id }}"
+                                                    class="toggle-class d-none" type="checkbox" data-onstyle="success"
+                                                    data-offstyle="danger" data-toggle="toggle" data-on="Activo"
+                                                    data-off="Inactivo" {{ $licencia->estado ? 'checked' : '' }}>
                                             </td>
                                             <td class="text-center">
                                                 <div class="btn-group" role="group">

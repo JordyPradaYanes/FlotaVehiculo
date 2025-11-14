@@ -32,6 +32,10 @@ class ConductorController extends Controller
      */
     public function store(Request $request)
     {
+        $conductor = Conductor::create($request->All());
+        return redirect()->route('conductores.index')
+            ->with('successMsg', 'Conductor creado exitosamente.');
+        /*
         try {
             $validated = $request->validate([
                 'nombre' => 'required|string|max:255',
@@ -66,6 +70,7 @@ class ConductorController extends Controller
                 ->with('error', 'Error inesperado al crear el conductor.')
                 ->withInput();
         }
+                */
     }
 
     /**
