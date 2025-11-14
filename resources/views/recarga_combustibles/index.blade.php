@@ -183,7 +183,7 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script src="{{ asset('backend/dist/js/recarga.js') }}"></script>
+<script src="{{ asset('backend/dist/js/recarga_combustibles.js') }}"></script>
 <script src="{{ asset('backend/dist/js/statuschange.js') }}"></script>
 <script src="{{ asset('backend/dist/js/delete-confirm.js') }}"></script>
 @endpush
