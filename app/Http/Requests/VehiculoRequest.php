@@ -15,21 +15,41 @@ class VehiculoRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * Validation rules for store & update
      */
     public function rules(): array
     {
-        return [
-            'marca_id' => 'required|exists:marcas,id',
-            'tipo_vehiculo_id' => 'required|exists:tipo_vehiculos,id',
-            'placa' => 'required|string|max:10|unique:vehiculos,placa',
-            'modelo' => 'required|string|max:100',
-            'año' => 'required|integer|min:1900|max:' . date('Y'),
-            'color' => 'required|string|max:50',
-            'kilometraje' => 'required|numeric|min:0',
-            'estado' => 'required|boolean'
-        ];
+        // Crear (POST)
+        if ($this->isMethod('post')) {
+            return [
+                'marca_id'          => 'required|exists:marcas,id',
+                'tipo_vehiculo_id'  => 'required|exists:tipo__vehiculos,id',
+                'placa'             => 'required|string|max:10|unique:vehiculos,placa',
+                'modelo'            => 'required|string|max:255',
+                'año'               => 'required|integer|min:1900|max:' . date('Y'),
+                'color'             => 'required|string|max:255',
+                'kilometraje'       => 'nullable|numeric|min:0',
+                'estado' => 'required|boolean'
+            ];
+        }
+
+        // Actualizar (PUT / PATCH)
+        if ($this->isMethod('put') || $this->isMethod('patch')) {
+
+            $vehiculoId = $this->route('vehiculo');
+
+            return [
+                'marca_id'          => 'required|exists:marcas,id',
+                'tipo_vehiculo_id'  => 'required|exists:tipo__vehiculos,id',
+                'placa'             => 'required|string|max:10|unique:vehiculos,placa,' . $vehiculoId,
+                'modelo'            => 'required|string|max:255',
+                'año'               => 'required|integer|min:1900|max:' . date('Y'),
+                'color'             => 'required|string|max:255',
+                'kilometraje'       => 'nullable|numeric|min:0',
+                'estado' => 'required|boolean'
+            ];
+        }
+
+        return [];
     }
 }

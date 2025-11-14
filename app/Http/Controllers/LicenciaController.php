@@ -31,6 +31,10 @@ class LicenciaController extends Controller
      */
     public function store(Request $request)
     {
+        $licencia = Licencia::create($request->All());
+        return redirect()->route('licencias.index')
+            ->with('successMsg', 'Licencia creada exitosamente.');
+        /*
         try{
             $validated = $request->validate([
                 'numero_licencia' => 'required|string|max:50|unique:licencias,numero_licencia',
@@ -59,7 +63,7 @@ class LicenciaController extends Controller
             return redirect()->back()
                 ->with('error', 'Error al crear la licencia en la base de datos.')
                 ->withInput();
-        }
+        }*/
     }
 
     /**
