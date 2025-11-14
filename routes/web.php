@@ -96,6 +96,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/probar403', function () {
         abort(403);
     });
+    Route::get('/probar419', function () {
+        abort(419);
+    });
 });
 
 /*
