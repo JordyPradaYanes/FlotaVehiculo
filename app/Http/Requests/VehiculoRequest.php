@@ -29,8 +29,7 @@ class VehiculoRequest extends FormRequest
             'año' => 'required|integer|min:1900|max:' . date('Y'),
             'color' => 'required|string|max:50',
             'kilometraje' => 'required|numeric|min:0',
-            'estado' => 'required|boolean',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'estado' => 'required|boolean'
         ];
     }
 }

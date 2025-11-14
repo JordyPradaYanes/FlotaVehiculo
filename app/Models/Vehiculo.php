@@ -19,7 +19,6 @@ class Vehiculo extends Model
         'año',
         'color',
         'kilometraje',
-        'imagen',
         'estado',
         'registrado_por'
     ];

@@ -86,9 +86,6 @@
                                             <th class="text-center">
                                                 <i class="fas fa-tachometer-alt text-muted"></i> Kilometraje
                                             </th>
-                                            <th class="text-center" style="width: 120px;">
-                                                <i class="fas fa-cog text-muted"></i> Imagen
-                                            </th>
                                             <th>
                                                 <i class="fas fa-user text-muted"></i> Registrado por
                                             </th>
@@ -132,11 +129,6 @@
                                             <td class="text-center">
                                                 <span class="badge badge-warning px-2 py-1">
                                                     {{ number_format($vehiculo->kilometraje) }} km
-                                                </span>
-                                            </td>
-                                            <td class="text-center">
-                                                <span class="badge badge-warning px-2 py-1">
-                                                    {{ $vehiculo->$vehiculo->imagen}} .jpg
                                                 </span>
                                             </td>
                                             <td>
