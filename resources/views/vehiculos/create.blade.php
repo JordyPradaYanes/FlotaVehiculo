@@ -6,23 +6,39 @@
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1><i class="fas fa-car"></i> Nuevo Vehículo</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ route('vehiculos.index') }}">Vehículos</a></li>
+                        <li class="breadcrumb-item active">Crear</li>
+                    </ol>
+                </div>
+            </div>
         </div>
     </section>
 
     <section class="content">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header bg-secondary">
-                            <h3>@yield('title')</h3>
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-md-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="card-title mb-0">
+                                <i class="fas fa-plus-circle"></i> Registrar Nuevo Vehículo
+                            </h3>
                         </div>
-                        <form method="POST" action="{{ route('vehiculos.store') }}">
+                        
+                        <form method="POST" action="{{ route('vehiculos.store') }}" id="vehiculoForm">
                             @csrf
                             <div class="card-body">
+                                {{-- Mensajes de error --}}
                                 @if(session('error'))
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        {{ session('error') }}
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <strong>Error:</strong> {{ session('error') }}
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -31,7 +47,9 @@
 
                                 @if($errors->any())
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <ul class="mb-0">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        <strong>Por favor, corrija los siguientes errores:</strong>
+                                        <ul class="mb-0 mt-2">
                                             @foreach($errors->all() as $error)
                                                 <li>{{ $error }}</li>
                                             @endforeach
@@ -42,98 +60,188 @@
                                     </div>
                                 @endif
 
+                                {{-- Información del vehículo --}}
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <h5 class="text-primary border-bottom pb-2">
+                                            <i class="fas fa-info-circle"></i> Información General
+                                        </h5>
+                                    </div>
+                                </div>
+
                                 <div class="row">
-                                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Marca <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <select class="form-control" name="marca_id" required>
-                                                <option value="">Seleccione una marca</option>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">
+                                                <i class="fas fa-copyright"></i> Marca 
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <select class="form-control @error('marca_id') is-invalid @enderror" 
+                                                    name="marca_id" id="marca_id" required>
+                                                <option value="">-- Seleccione una marca --</option>
                                                 @foreach($marcas as $marca)
-                                                    <option value="{{ $marca->id }}">{{ $marca->nombre }}</option>
+                                                    <option value="{{ $marca->id }}" {{ old('marca_id') == $marca->id ? 'selected' : '' }}>
+                                                        {{ $marca->nombre }}
+                                                    </option>
                                                 @endforeach
                                             </select>
+                                            @error('marca_id')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-sm-6 col-md-6 col-xs-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Tipo de Vehículo <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <select class="form-control" name="tipo_vehiculo_id" required>
-                                                <option value="">Seleccione un tipo de vehículo</option>
+
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">
+                                                <i class="fas fa-truck"></i> Tipo de Vehículo 
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <select class="form-control @error('tipo_vehiculo_id') is-invalid @enderror" 
+                                                    name="tipo_vehiculo_id" id="tipo_vehiculo_id" required>
+                                                <option value="">-- Seleccione un tipo --</option>
                                                 @foreach($tipo_vehiculos as $tipo_vehiculo)
-                                                    <option value="{{ $tipo_vehiculo->id }}">{{ $tipo_vehiculo->nombre }}</option>
+                                                    <option value="{{ $tipo_vehiculo->id }}" {{ old('tipo_vehiculo_id') == $tipo_vehiculo->id ? 'selected' : '' }}>
+                                                        {{ $tipo_vehiculo->nombre }}
+                                                    </option>
                                                 @endforeach
                                             </select>
+                                            @error('tipo_vehiculo_id')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row">
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Placa <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="text" class="form-control" name="placa"
-                                                placeholder="Por ejemplo, ABC-123" autocomplete="off"
-                                                value="{{ old('placa') }}" required>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">
+                                                <i class="fas fa-id-card"></i> Placa 
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" 
+                                                   class="form-control text-uppercase @error('placa') is-invalid @enderror" 
+                                                   name="placa" id="placa"
+                                                   placeholder="Ej: ABC-123" 
+                                                   autocomplete="off"
+                                                   value="{{ old('placa') }}" 
+                                                   maxlength="10"
+                                                   required>
+                                            <small class="form-text text-muted">Formato: ABC-123</small>
+                                            @error('placa')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">
+                                                <i class="fas fa-car-side"></i> Modelo 
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" 
+                                                   class="form-control @error('modelo') is-invalid @enderror" 
+                                                   name="modelo" id="modelo"
+                                                   placeholder="Ej: Corolla, Civic, Spark" 
+                                                   autocomplete="off"
+                                                   value="{{ old('modelo') }}" 
+                                                   required>
+                                            @error('modelo')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row">
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Modelo <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="text" class="form-control" name="modelo"
-                                                placeholder="Por ejemplo, Corolla" autocomplete="off"
-                                                value="{{ old('modelo') }}" required>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">
+                                                <i class="fas fa-calendar-alt"></i> Año 
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="number" 
+                                                   class="form-control @error('año') is-invalid @enderror" 
+                                                   name="año" id="año"
+                                                   placeholder="Ej: 2023" 
+                                                   autocomplete="off"
+                                                   value="{{ old('año') }}" 
+                                                   min="1900" 
+                                                   max="{{ date('Y') + 1 }}"
+                                                   required>
+                                            @error('año')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">
+                                                <i class="fas fa-palette"></i> Color 
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="text" 
+                                                   class="form-control @error('color') is-invalid @enderror" 
+                                                   name="color" id="color"
+                                                   placeholder="Ej: Rojo, Azul, Negro" 
+                                                   autocomplete="off"
+                                                   value="{{ old('color') }}" 
+                                                   required>
+                                            @error('color')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">
+                                                <i class="fas fa-tachometer-alt"></i> Kilometraje 
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <input type="number" 
+                                                   class="form-control @error('kilometraje') is-invalid @enderror" 
+                                                   name="kilometraje" id="kilometraje"
+                                                   placeholder="Ej: 10000" 
+                                                   autocomplete="off"
+                                                   value="{{ old('kilometraje') }}" 
+                                                   min="0"
+                                                   required>
+                                            <small class="form-text text-muted">En kilómetros</small>
+                                            @error('kilometraje')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Año <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="number" class="form-control" name="año"
-                                                placeholder="Por ejemplo, 2023" autocomplete="off"
-                                                value="{{ old('año') }}" required>
+
+                                <input type="hidden" name="estado" value="1">
+                                <input type="hidden" name="registrado_por" value="{{ Auth::user()->name }}">
+
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="alert alert-info mb-0">
+                                            <i class="fas fa-info-circle"></i>
+                                            <strong>Nota:</strong> Los campos marcados con <span class="text-danger">*</span> son obligatorios.
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Color <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="text" class="form-control" name="color"
-                                                placeholder="Por ejemplo, Rojo" autocomplete="off"
-                                                value="{{ old('color') }}" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Kilometraje <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="number" class="form-control" name="kilometraje"
-                                                placeholder="Por ejemplo, 10000" autocomplete="off"
-                                                value="{{ old('kilometraje') }}" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <input type="hidden" class="form-control" name="estado" value="1">
                             </div>
-                            <div class="card-footer">
+
+                            <div class="card-footer bg-light">
                                 <div class="row">
-                                    <div class="col-lg-2 col-xs-4">
-                                        <button type="submit"
-                                            class="btn btn-primary btn-block btn-flat">Registrar</button>
+                                    <div class="col-md-6 mb-2 mb-md-0">
+                                        <button type="submit" class="btn btn-primary btn-block">
+                                            <i class="fas fa-save"></i> Registrar Vehículo
+                                        </button>
                                     </div>
-                                    <div class="col-lg-2 col-xs-4">
-                                        <a href="{{ route('vehiculos.index') }}"
-                                            class="btn btn-danger btn-block btn-flat">Atrás</a>
+                                    <div class="col-md-6">
+                                        <a href="{{ route('vehiculos.index') }}" class="btn btn-secondary btn-block">
+                                            <i class="fas fa-arrow-left"></i> Cancelar
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -144,4 +252,39 @@
         </div>
     </section>
 </div>
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        // Convertir placa a mayúsculas automáticamente
+        $('#placa').on('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+
+        // Validación adicional del formulario
+        $('#vehiculoForm').on('submit', function(e) {
+            let isValid = true;
+            
+            // Validar año
+            const año = parseInt($('#año').val());
+            const añoActual = new Date().getFullYear();
+            if (año < 1900 || año > añoActual + 1) {
+                alert('Por favor, ingrese un año válido entre 1900 y ' + (añoActual + 1));
+                isValid = false;
+            }
+            
+            // Validar kilometraje
+            const kilometraje = parseInt($('#kilometraje').val());
+            if (kilometraje < 0) {
+                alert('El kilometraje no puede ser negativo');
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+@endpush
 @endsection

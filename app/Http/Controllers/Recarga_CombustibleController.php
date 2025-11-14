@@ -30,7 +30,11 @@ class Recarga_CombustibleController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    {  
+        $recarga_combustible = Recarga_Combustible::create($request->All());
+        return redirect()->route('recarga_combustibles.index')
+            ->with('successMsg', 'Recarga de combustible creada exitosamente.');
+        /*
         try{
             $validated = $request->validate([
                 'cantidad_litros' => 'required|numeric|min:0',
@@ -57,7 +61,7 @@ class Recarga_CombustibleController extends Controller
             return redirect()->back()
                 ->with('error', 'Error al crear la recarga de combustible en la base de datos.')
                 ->withInput();
-        }
+        }*/
     }
 
     /**

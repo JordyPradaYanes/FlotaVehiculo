@@ -69,13 +69,13 @@
                                                 <i class="fas fa-id-card text-muted"></i> Placa
                                             </th>
                                             <th>
-                                                <i class="fas fa-tags text-muted"></i> Marca
+                                                <i class="fas fa-copyright text-muted"></i> Marca
                                             </th>
                                             <th>
                                                 <i class="fas fa-truck text-muted"></i> Tipo
                                             </th>
                                             <th>
-                                                <i class="fas fa-calendar text-muted"></i> Modelo
+                                                <i class="fas fa-car-side text-muted"></i> Modelo
                                             </th>
                                             <th class="text-center">
                                                 <i class="fas fa-calendar-alt text-muted"></i> Año
@@ -98,7 +98,43 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @php
+                                        // Mapeo de colores en español a código hexadecimal
+                                        $coloresMap = [
+                                            'rojo' => '#DC3545',
+                                            'azul' => '#007BFF',
+                                            'verde' => '#28A745',
+                                            'amarillo' => '#FFC107',
+                                            'negro' => '#343A40',
+                                            'blanco' => '#F8F9FA',
+                                            'gris' => '#6C757D',
+                                            'plateado' => '#C0C0C0',
+                                            'dorado' => '#FFD700',
+                                            'naranja' => '#FD7E14',
+                                            'morado' => '#6F42C1',
+                                            'rosa' => '#E83E8C',
+                                            'café' => '#8B4513',
+                                            'beige' => '#F5F5DC',
+                                            'verde claro' => '#90EE90',
+                                            'azul claro' => '#87CEEB',
+                                            'gris oscuro' => '#4B4B4B',
+                                            'rojo oscuro' => '#8B0000',
+                                            'azul oscuro' => '#00008B',
+                                            'verde oscuro' => '#006400',
+                                        ];
+                                        @endphp
+                                        
                                         @foreach($vehiculos as $vehiculo)
+                                        @php
+                                            // Obtener el color en minúsculas para buscar en el mapa
+                                            $colorNombre = strtolower(trim($vehiculo->color));
+                                            $colorHex = $coloresMap[$colorNombre] ?? '#6C757D';
+                                            
+                                            // Si el color ya viene en formato hexadecimal (#), usarlo directamente
+                                            if (str_starts_with($vehiculo->color, '#')) {
+                                                $colorHex = $vehiculo->color;
+                                            }
+                                        @endphp
                                         <tr>
                                             <td class="text-center font-weight-bold text-muted">
                                                 {{ $vehiculo->id }}
@@ -111,7 +147,7 @@
                                             </td>
                                             <td>
                                                 <span class="badge badge-primary px-2 py-1">
-                                                    {{ $vehiculo->tipo_vehiculo->nombre ?? 'N/A' }}
+                                                    {{ $vehiculo->tipoVehiculo->nombre ?? 'N/A' }}
                                                 </span>
                                             </td>
                                             <td>
@@ -123,8 +159,19 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <i class="fas fa-circle mr-1" style="color: {{ $vehiculo->color }};"></i>
-                                                {{ $vehiculo->color }}
+                                                <div class="d-flex align-items-center">
+                                                    <span class="color-circle mr-2" 
+                                                          style="display: inline-block; 
+                                                                 width: 20px; 
+                                                                 height: 20px; 
+                                                                 border-radius: 50%; 
+                                                                 background-color: {{ $colorHex }};
+                                                                 border: 2px solid #dee2e6;
+                                                                 box-shadow: 0 1px 3px rgba(0,0,0,0.12);"
+                                                          title="{{ ucfirst($vehiculo->color) }}">
+                                                    </span>
+                                                    <span class="text-secondary">{{ ucfirst($vehiculo->color) }}</span>
+                                                </div>
                                             </td>
                                             <td class="text-center">
                                                 <span class="badge badge-warning px-2 py-1">
@@ -132,18 +179,24 @@
                                                 </span>
                                             </td>
                                             <td>
-                                                <span class="text-secondary">{{ $vehiculo->registrado_por }}</span>
+                                                <span class="text-secondary">{{ $vehiculo->registrado_por ?? 'Sistema' }}</span>
                                             </td>
                                             <td class="text-center">
                                                 @if($vehiculo->estado)
-                                                    <span class="badge badge-success px-3 py-2">
+                                                    <span class="badge badge-success px-3 py-2" style="cursor: pointer;" title="Clic para cambiar estado">
                                                         <i class="fas fa-check-circle mr-1"></i> Activo
                                                     </span>
                                                 @else
-                                                    <span class="badge badge-danger px-3 py-2">
+                                                    <span class="badge badge-danger px-3 py-2" style="cursor: pointer;" title="Clic para cambiar estado">
                                                         <i class="fas fa-times-circle mr-1"></i> Inactivo
                                                     </span>
                                                 @endif
+                                                <input data-type="vehiculos" data-id="{{ $vehiculo->id }}"
+                                                    class="toggle-class d-none" type="checkbox" 
+                                                    data-onstyle="success"
+                                                    data-offstyle="danger" data-toggle="toggle" 
+                                                    data-on="Activo"
+                                                    data-off="Inactivo" {{ $vehiculo->estado ? 'checked' : '' }}>
                                             </td>
                                             <td class="text-center">
                                                 <div class="btn-group" role="group">
@@ -191,7 +244,7 @@
 
 
 @push('styles')
-{{-- Agregando estilos personalizados de empresas --}}
+{{-- Agregando estilos personalizados de vehiculos --}}
 <link rel="stylesheet" href="{{ asset('backend/dist/css/vehiculos.css') }}">
 @endpush
 

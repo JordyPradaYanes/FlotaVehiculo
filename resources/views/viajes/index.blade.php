@@ -69,7 +69,7 @@
                                                 <i class="fas fa-car text-muted"></i> Vehículo
                                             </th>
                                             <th>
-                                                <i class="fas fa-road text-muted"></i> Ruta
+                                                <i class="fas fa-road text-muted"></i> viaje
                                             </th>
                                             <th>
                                                 <i class="fas fa-align-left text-muted"></i> Descripción
@@ -101,7 +101,7 @@
                                                 <span class="font-weight-bold text-dark">{{ $viaje->vehiculo->placa ?? 'N/A' }}</span>
                                             </td>
                                             <td>
-                                                <span class="text-secondary">{{ $viaje->ruta->nombre_ruta ?? 'N/A' }}</span>
+                                                <span class="text-secondary">{{ $viaje->viaje->nombre_viaje ?? 'N/A' }}</span>
                                             </td>
                                             <td>
                                                 <span class="text-secondary">{{ Str::limit($viaje->descripcion, 30) }}</span>
@@ -120,14 +120,20 @@
                                             </td>
                                             <td class="text-center">
                                                 @if($viaje->estado)
-                                                    <span class="badge badge-success px-3 py-2">
+                                                    <span class="badge badge-success px-3 py-2" style="cursor: pointer;" title="Clic para cambiar estado">
                                                         <i class="fas fa-check-circle mr-1"></i> Activo
                                                     </span>
                                                 @else
-                                                    <span class="badge badge-danger px-3 py-2">
+                                                    <span class="badge badge-danger px-3 py-2" style="cursor: pointer;" title="Clic para cambiar estado">
                                                         <i class="fas fa-times-circle mr-1"></i> Inactivo
                                                     </span>
                                                 @endif
+                                                <input data-type="viajes" data-id="{{ $viaje->id }}"
+                                                    class="toggle-class d-none" type="checkbox" 
+                                                    data-onstyle="success"
+                                                    data-offstyle="danger" data-toggle="toggle" 
+                                                    data-on="Activo"
+                                                    data-off="Inactivo" {{ $viaje->estado ? 'checked' : '' }}>
                                             </td>
                                             <td class="text-center">
                                                 <div class="btn-group" role="group">

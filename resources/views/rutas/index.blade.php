@@ -122,14 +122,20 @@
                                             </td>
                                             <td class="text-center">
                                                 @if($ruta->estado)
-                                                    <span class="badge badge-success px-3 py-2">
+                                                    <span class="badge badge-success px-3 py-2" style="cursor: pointer;" title="Clic para cambiar estado">
                                                         <i class="fas fa-check-circle mr-1"></i> Activo
                                                     </span>
                                                 @else
-                                                    <span class="badge badge-danger px-3 py-2">
+                                                    <span class="badge badge-danger px-3 py-2" style="cursor: pointer;" title="Clic para cambiar estado">
                                                         <i class="fas fa-times-circle mr-1"></i> Inactivo
                                                     </span>
                                                 @endif
+                                                <input data-type="rutas" data-id="{{ $ruta->id }}"
+                                                    class="toggle-class d-none" type="checkbox" 
+                                                    data-onstyle="success"
+                                                    data-offstyle="danger" data-toggle="toggle" 
+                                                    data-on="Activo"
+                                                    data-off="Inactivo" {{ $ruta->estado ? 'checked' : '' }}>
                                             </td>
                                             <td class="text-center">
                                                 <div class="btn-group" role="group">

@@ -40,4 +40,14 @@ class Recarga_CombustibleRequest extends FormRequest
             ];
         }
     }
+    public function messages(): array
+    {
+        return [
+            'cantidad_litros.required' => 'La cantidad de litros es obligatoria.',
+            'precio_litro.required' => 'El precio por litro es obligatorio.',
+            'costo_total.required' => 'El costo total es obligatorio.',
+            'estacion_servicio.required' => 'La estación de servicio es obligatoria.',
+            'estado.required' => 'El estado es obligatorio.',
+        ];
+    }
 }

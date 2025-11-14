@@ -26,23 +26,23 @@
                                 <i class="fas fa-plus-circle mr-2"></i>Registrar Nueva Recarga
                             </h3>
                         </div>
-                        
+
                         <form action="{{ route('recarga_combustibles.store') }}" method="POST">
                             @csrf
                             <div class="card-body">
                                 {{-- Mensajes de error --}}
                                 @if ($errors->any())
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <h5><i class="icon fas fa-ban"></i> Por favor corrige los siguientes errores:</h5>
-                                        <ul class="mb-0">
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <h5><i class="icon fas fa-ban"></i> Por favor corrige los siguientes errores:</h5>
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
                                 @endif
 
                                 <div class="row">
@@ -53,24 +53,27 @@
                                                 <i class="fas fa-car text-primary mr-1"></i>
                                                 Vehículo <strong style="color:red;">(*)</strong>
                                             </label>
-                                            <select class="form-control @error('vehiculo_id') is-invalid @enderror" 
-                                                    name="vehiculo_id" 
-                                                    id="vehiculo_id" 
-                                                    required>
+                                            <select class="form-control @error('vehiculo_id') is-invalid @enderror"
+                                                name="vehiculo_id" id="vehiculo_id" required>
                                                 <option value="">-- Seleccionar Vehículo --</option>
                                                 @foreach($vehiculos as $vehiculo)
-                                                    <option value="{{ $vehiculo->id }}" {{ old('vehiculo_id') == $vehiculo->id ? 'selected' : '' }}>
-                                                        {{ $vehiculo->placa }} - {{ $vehiculo->marca->nombre ?? 'Sin marca' }}
-                                                    </option>
+                                                <option value="{{ $vehiculo->id }}"
+                                                    {{ old('vehiculo_id') == $vehiculo->id ? 'selected' : '' }}>
+                                                    {{ $vehiculo->placa }} -
+                                                    {{ $vehiculo->marca->nombre ?? 'Sin marca' }}
+                                                </option>
                                                 @endforeach
                                             </select>
                                             @error('vehiculo_id')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                             @enderror
                                         </div>
                                     </div>
+                                    <input type="hidden" class="form-control" name="estado" value="1">
+                                    <input type="hidden" class="form-control" name="registrado_por"
+                                        value="{{ Auth::user()->name }}">
 
                                     {{-- Estación de Servicio --}}
                                     <div class="col-md-6">
@@ -79,17 +82,15 @@
                                                 <i class="fas fa-building text-warning mr-1"></i>
                                                 Estación de Servicio <strong style="color:red;">(*)</strong>
                                             </label>
-                                            <input type="text" 
-                                                   class="form-control @error('estacion_servicio') is-invalid @enderror" 
-                                                   name="estacion_servicio" 
-                                                   id="estacion_servicio" 
-                                                   value="{{ old('estacion_servicio') }}"
-                                                   placeholder="Ej: Gasolinera Central"
-                                                   required>
+                                            <input type="text"
+                                                class="form-control @error('estacion_servicio') is-invalid @enderror"
+                                                name="estacion_servicio" id="estacion_servicio"
+                                                value="{{ old('estacion_servicio') }}"
+                                                placeholder="Ej: Gasolinera Central" required>
                                             @error('estacion_servicio')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                             @enderror
                                         </div>
                                     </div>
@@ -103,19 +104,15 @@
                                                 <i class="fas fa-tint text-info mr-1"></i>
                                                 Cantidad (Litros) <strong style="color:red;">(*)</strong>
                                             </label>
-                                            <input type="number" 
-                                                   class="form-control @error('cantidad_litros') is-invalid @enderror" 
-                                                   name="cantidad_litros" 
-                                                   id="cantidad_litros" 
-                                                   value="{{ old('cantidad_litros') }}"
-                                                   placeholder="0.00"
-                                                   step="0.01"
-                                                   min="0"
-                                                   required>
+                                            <input type="number"
+                                                class="form-control @error('cantidad_litros') is-invalid @enderror"
+                                                name="cantidad_litros" id="cantidad_litros"
+                                                value="{{ old('cantidad_litros') }}" placeholder="0.00" step="0.01"
+                                                min="0" required>
                                             @error('cantidad_litros')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                             @enderror
                                         </div>
                                     </div>
@@ -127,19 +124,14 @@
                                                 <i class="fas fa-dollar-sign text-success mr-1"></i>
                                                 Precio por Litro <strong style="color:red;">(*)</strong>
                                             </label>
-                                            <input type="number" 
-                                                   class="form-control @error('precio_litro') is-invalid @enderror" 
-                                                   name="precio_litro" 
-                                                   id="precio_litro" 
-                                                   value="{{ old('precio_litro') }}"
-                                                   placeholder="0.00"
-                                                   step="0.01"
-                                                   min="0"
-                                                   required>
+                                            <input type="number"
+                                                class="form-control @error('precio_litro') is-invalid @enderror"
+                                                name="precio_litro" id="precio_litro" value="{{ old('precio_litro') }}"
+                                                placeholder="0.00" step="0.01" min="0" required>
                                             @error('precio_litro')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                             @enderror
                                         </div>
                                     </div>
@@ -151,20 +143,14 @@
                                                 <i class="fas fa-money-bill-wave text-danger mr-1"></i>
                                                 Costo Total <strong style="color:red;">(*)</strong>
                                             </label>
-                                            <input type="number" 
-                                                   class="form-control @error('costo_total') is-invalid @enderror" 
-                                                   name="costo_total" 
-                                                   id="costo_total" 
-                                                   value="{{ old('costo_total') }}"
-                                                   placeholder="0.00"
-                                                   step="0.01"
-                                                   min="0"
-                                                   readonly
-                                                   required>
+                                            <input type="number"
+                                                class="form-control @error('costo_total') is-invalid @enderror"
+                                                name="costo_total" id="costo_total" value="{{ old('costo_total') }}"
+                                                placeholder="0.00" step="0.01" min="0" readonly required>
                                             @error('costo_total')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
                                             @enderror
                                             <small class="form-text text-muted">
                                                 <i class="fas fa-info-circle"></i> Se calcula automáticamente
@@ -173,9 +159,11 @@
                                     </div>
                                 </div>
 
+
                                 <div class="alert alert-info mt-3">
                                     <i class="fas fa-info-circle mr-2"></i>
-                                    <strong>Nota:</strong> Los campos marcados con <strong style="color:red;">(*)</strong> son obligatorios.
+                                    <strong>Nota:</strong> Los campos marcados con <strong
+                                        style="color:red;">(*)</strong> son obligatorios.
                                 </div>
                             </div>
 
@@ -199,11 +187,11 @@
 
 <!-- <script src="{{ asset('js/recarga_combustibles/create.js') }}"> -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     const cantidadInput = document.getElementById('cantidad_litros');
     const precioInput = document.getElementById('precio_litro');
     const costoTotalInput = document.getElementById('costo_total');
-    
+
     // Función para calcular el costo total
     function calcularCostoTotal() {
         const cantidad = parseFloat(cantidadInput.value) || 0;
@@ -211,7 +199,7 @@
         const total = cantidad * precio;
         costoTotalInput.value = total.toFixed(2);
     }
-    
+
     // Agregar eventos para calcular automáticamente
     cantidadInput.addEventListener('input', calcularCostoTotal);
     precioInput.addEventListener('input', calcularCostoTotal);

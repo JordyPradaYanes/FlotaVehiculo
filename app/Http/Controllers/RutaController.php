@@ -29,6 +29,9 @@ class RutaController extends Controller
      */
     public function store(Request $request)
     {
+        $rutas = Ruta::create($request->all());
+        return redirect()->route('rutas.index')->with('successMsg', 'Ruta creada exitosamente.');
+        /*
         try{
             $validated = $request->validate([
                 'nombre_ruta' => 'required|string|max:255',
@@ -57,7 +60,7 @@ class RutaController extends Controller
             return redirect()->back()
                 ->with('error', 'Error al crear la ruta en la base de datos.')
                 ->withInput();
-        }
+        }*/
     }
 
     /**
