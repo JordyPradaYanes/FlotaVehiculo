@@ -67,16 +67,23 @@
         <li class="nav-item dropdown user-menu">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                 <img src="{{ asset('backend/dist/img/yo.jpg') }}" class="user-image img-circle elevation-2" alt="Usuario">
-                <span class="d-none d-md-inline">{{ Auth::user()->name ?? 'Usuario' }}</span>
+                <span class="d-none d-md-inline">{{ Auth::user()->name ?? 'Usuario Invitado' }}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                 <!-- User image -->
                 <li class="user-header bg-primary">
                     <img src="{{ asset('backend/dist/img/yo.jpg') }}" class="img-circle elevation-2" alt="Usuario">
                     <p>
-                        {{ Auth::user()->name ?? 'Usuario' }}
-                        <small>{{ Auth::user()->email ?? 'usuario@ejemplo.com' }}</small>
-                        <small>Miembro desde {{ Auth::user()->created_at ? Auth::user()->created_at->format('M. Y') : 'Ene. 2024' }}</small>
+                        {{-- CAMBIO 2: Aplicado Nullsafe --}}
+                        {{ Auth::user()?->name ?? 'Usuario Invitado' }}
+                        {{-- CAMBIO 3: Aplicado Nullsafe --}}
+                        <small>{{ Auth::user()?->email ?? 'usuario@ejemplo.com' }}</small>
+                        {{-- CAMBIO 4: Uso de @auth o Nullsafe para created_at --}}
+                        @auth
+                            <small>Miembro desde {{ Auth::user()->created_at?->format('M. Y') }}</small>
+                        @else
+                            <small>Miembro desde Ene. 2024</small>
+                        @endauth
                     </p>
                 </li>
                 <!-- Menu Body -->

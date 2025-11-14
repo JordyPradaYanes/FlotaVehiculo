@@ -25,6 +25,7 @@ class VehiculoFactory extends Factory
             'año' => $this->faker->year(),
             'color' => $this->faker->safeColorName(),
             'kilometraje' => $this->faker->randomFloat(2, 0, 200000),
+            'imagen' => $this->faker->imageUrl(640, 480, 'vehicles', true),
             'estado' => $this->faker->randomElement(['activo', 'inactivo', 'mantenimiento']),
             'registrado_por' => $this->faker->name()
         ];

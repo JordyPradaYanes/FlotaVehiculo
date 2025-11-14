@@ -66,6 +66,7 @@
     <!-- overlayScrollbars -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.1/js/jquery.overlayScrollbars.min.js">
     </script>
+    <script src="{{asset('backend/dist/js/selectors.js')}}"></script>
 
     @stack('scripts')
 

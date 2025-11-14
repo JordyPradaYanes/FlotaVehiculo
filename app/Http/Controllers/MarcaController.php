@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Marca;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
+use App\Http\Requests\MarcaRequest;
 
 class MarcaController extends Controller
 {
@@ -23,6 +24,12 @@ class MarcaController extends Controller
 
     public function store(Request $request)
     {
+        $marca = Marca::create($request->All());
+        return redirect()->route('marcas.index')
+            ->with('successMsg', 'Marca creada exitosamente.');
+
+        
+        /*
         try {
             $validated = $request->validate([
                 'nombre' => 'required|string|max:255',
@@ -30,7 +37,7 @@ class MarcaController extends Controller
                 'estado' => 'required|boolean'
             ]);
 
-            $validated['registrado_por'] = auth()->user()->name;
+            
 
             // Crear la marca con los datos validados
             $marca = Marca::create($validated);
@@ -55,6 +62,7 @@ class MarcaController extends Controller
                 ->with('error', 'Error inesperado al crear la marca.')
                 ->withInput();
         }
+        */
     }
 
     public function show(string $id)

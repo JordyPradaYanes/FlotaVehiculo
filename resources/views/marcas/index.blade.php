@@ -74,9 +74,9 @@
                                             <th>
                                                 <i class="fas fa-building text-muted"></i> Nombre
                                             </th>
-                                            <th>
+                                            <!-- <th>
                                                 <i class="fas fa-user text-muted"></i> Registrado por
-                                            </th>
+                                            </th> -->
                                             <th>
                                                 <i class="fas fa-globe-americas text-muted"></i> País Origen
                                             </th>
@@ -97,9 +97,9 @@
                                             <td>
                                                 <span class="font-weight-bold text-dark">{{ $marca->nombre }}</span>
                                             </td>
-                                            <td>
+                                            <!-- <td>
                                                 <span class="text-secondary">{{ $marca->registrado_por }}</span>
-                                            </td>
+                                            </td> -->
                                             <td>
                                                 <i class="fas fa-map-marker-alt text-danger mr-1"></i>
                                                 {{ $marca->pais_origen }}

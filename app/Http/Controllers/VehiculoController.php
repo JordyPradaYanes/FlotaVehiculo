@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Vehiculo;
 use App\Models\Marca;
 use App\Models\Tipo_Vehiculo;
+use App\Http\Requests\VehiculoRequest;
 
 class VehiculoController extends Controller
 {
@@ -23,26 +24,33 @@ class VehiculoController extends Controller
      */
     public function create()
     {
-        $marcas = Marca::all();
-        $tipo_vehiculos = Tipo_Vehiculo::all();
+        $marcas = Marca::all()->unique('nombre');
+        $tipo_vehiculos = Tipo_Vehiculo::all()->unique('nombre');
+
         return view('vehiculos.create', compact('marcas', 'tipo_vehiculos'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(VehiculoRequest $request)
     {
+
+        $vehiculos = Vehiculo::create($request->All());
+        return redirect()->route('vehiculos.index')
+            ->with('successMsg', 'Vehículo creado exitosamente.');
+        /*
         try{
             $validated = $request->validate([
                 'marca_id' => 'required|exists:marcas,id',
                 'tipo_vehiculo_id' => 'required|exists:tipo_vehiculos,id',
-                'placa' => 'required|string|max:20|unique:vehiculos,placa',
+                'placa' => 'required|string|max:10|unique:vehiculos,placa',
                 'modelo' => 'required|string|max:100',
                 'año' => 'required|integer|min:1900|max:' . date('Y'),
                 'color' => 'required|string|max:50',
                 'kilometraje' => 'required|numeric|min:0',
                 'estado' => 'required|boolean',
+                'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
             $validated['registrado_por'] = auth()->user()->name;
@@ -61,6 +69,8 @@ class VehiculoController extends Controller
                 ->with('error', 'Error al crear el vehículo en la base de datos.')
                 ->withInput();
         }
+
+        */
     }
 
     /**

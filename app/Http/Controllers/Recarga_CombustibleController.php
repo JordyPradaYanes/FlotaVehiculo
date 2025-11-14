@@ -35,7 +35,7 @@ class Recarga_CombustibleController extends Controller
             $validated = $request->validate([
                 'cantidad_litros' => 'required|numeric|min:0',
                 'precio_por_litro' => 'required|numeric|min:0',
-                'cost_total' => 'required|numeric|min:0',
+                'costo_total' => 'required|numeric|min:0',
                 'estacion_servicio' => 'required|string|max:255'
             ]);
 

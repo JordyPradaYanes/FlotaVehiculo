@@ -17,6 +17,7 @@ return new class extends Migration
             $table->year('año');
             $table->string('color');
             $table->decimal('kilometraje', 10, 2)->default(0);
+            $table->string('imagen')->nullable();
             $table->string('estado');
             $table->string('registrado_por');
             $table->timestamps();

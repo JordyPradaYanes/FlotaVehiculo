@@ -66,7 +66,8 @@
                                     </div>
                                 </div>
                                 <input type="hidden" class="form-control" name="estado" value="1">
-                                {{-- Eliminado campo registrado_por porque ahora se asigna automáticamente en el controlador --}}
+                                <input type="hidden" class="form-control" name="registrado_por"
+                                    value="{{ auth()->user()->id }}">
                             </div>
                             <div class="card-footer">
                                 <div class="row">
