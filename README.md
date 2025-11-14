@@ -112,3 +112,23 @@ Sigue estos pasos para configurar el proyecto en tu entorno de desarrollo local:
 ## 📄 Licencia
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
+
+## Corrección del Botón de Eliminar
+
+Se ha corregido un problema en el botón de eliminar de la vista de conductores, que no mostraba la confirmación de SweetAlert antes de eliminar un registro.
+
+### El Problema
+
+El archivo `public/backend/dist/js/conductores.js` no incluía la lógica para inicializar la confirmación de eliminación con SweetAlert2. Aunque se cargaba un script genérico (`delete-confirm.js`), el script específico de la vista (`conductores.js`) no invocaba la funcionalidad de confirmación, a diferencia de la sección de "Marcas", que sí funcionaba correctamente.
+
+### La Solución
+
+Para solucionar este problema, se ha replicado la funcionalidad de confirmación de eliminación del archivo `marcas.js` al archivo `conductores.js`. Se añadió la función `initializeDeleteConfirmation()`, que se encarga de:
+
+1.  Seleccionar todos los formularios con la clase `.delete-form`.
+2.  Añadir un listener al evento `submit`.
+3.  Prevenir el envío automático del formulario.
+4.  Mostrar un diálogo de confirmación de SweetAlert2, personalizado con el nombre del conductor a eliminar.
+5.  Enviar el formulario solo si el usuario confirma la acción.
+
+Este cambio asegura que la experiencia de usuario sea consistente en toda la aplicación, mostrando siempre una confirmación antes de realizar una acción destructiva.
