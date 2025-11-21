@@ -1,110 +1,137 @@
 @extends('layouts.app')
 
-@section('title','Crear Contrato')
+@section('title', 'Crear Contrato')
 
 @section('content')
-<div class="content-wrapper">
-    <section class="content-header">
-        <div class="container-fluid">
-        </div>
-    </section>
+    <div class="content-wrapper pb-4">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h1 class="m-0"><i class="fas fa-file-contract mr-2"></i>Nuevo Contrato</h1>
+                    <a href="{{ route('contratos.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i> Volver
+                    </a>
+                </div>
+            </div>
+        </section>
 
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header bg-secondary">
-                            <h3>@yield('title')</h3>
-                        </div>
-                        <form method="POST" action="{{ route('contratos.store') }}">
-                            @csrf
-                            <div class="card-body">
-
-                                {{-- MENSAJES DE ERROR --}}
-                                @if(session('error'))
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    {{ session('error') }}
-                                    <button type="button" class="close" data-dismiss="alert">
-                                        <span>&times;</span>
-                                    </button>
-                                </div>
-                                @endif
-
-                                @if($errors->any())
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <ul class="mb-0">
-                                        @foreach($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                    <button type="button" class="close" data-dismiss="alert">
-                                        <span>&times;</span>
-                                    </button>
-                                </div>
-                                @endif
-
-
-                                {{-- FECHA INICIO --}}
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Fecha de Inicio <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="date" class="form-control" name="fecha_inicio"
-                                                value="{{ old('fecha_inicio') }}" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- FECHA FINAL (OPCIONAL) --}}
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Fecha Final</label>
-                                            <input type="date" class="form-control" name="fecha_final"
-                                                value="{{ old('fecha_final') }}">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- SALARIO --}}
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Salario <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="number" class="form-control" name="salario" min="0" step="0.01"
-                                                placeholder="Ejemplo: 1500000" value="{{ old('salario') }}" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- CAMPOS OCULTOS --}}
-                                <input type="hidden" name="estado" value="1">
-                                <input type="hidden" name="registrado_por" value="{{ Auth::user()->name }}">
-
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="card-title mb-0">
+                                    <i class="fas fa-plus-circle mr-2"></i>Registrar Nuevo Contrato
+                                </h3>
                             </div>
 
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-lg-2 col-xs-4">
-                                        <button type="submit" class="btn btn-primary btn-block btn-flat">
-                                            Registrar
+                            <form method="POST" action="{{ route('contratos.store') }}">
+                                @csrf
+                                <div class="card-body">
+                                    {{-- Mensajes de error --}}
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <h5><i class="icon fas fa-ban"></i> Por favor corrige los siguientes errores:
+                                            </h5>
+                                            <ul class="mb-0">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    @endif
+
+                                    <div class="row">
+                                        {{-- Fecha Inicio --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="fecha_inicio">
+                                                    <i class="fas fa-calendar-check text-success mr-1"></i>
+                                                    Fecha de Inicio <strong style="color:red;">(*)</strong>
+                                                </label>
+                                                <input type="date"
+                                                    class="form-control @error('fecha_inicio') is-invalid @enderror"
+                                                    name="fecha_inicio" id="fecha_inicio" value="{{ old('fecha_inicio') }}"
+                                                    required>
+                                                @error('fecha_inicio')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        {{-- Fecha Final --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="fecha_final">
+                                                    <i class="fas fa-calendar-times text-warning mr-1"></i>
+                                                    Fecha Final
+                                                </label>
+                                                <input type="date"
+                                                    class="form-control @error('fecha_final') is-invalid @enderror"
+                                                    name="fecha_final" id="fecha_final" value="{{ old('fecha_final') }}">
+                                                @error('fecha_final')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        {{-- Salario --}}
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="salario">
+                                                    <i class="fas fa-dollar-sign text-primary mr-1"></i>
+                                                    Salario <strong style="color:red;">(*)</strong>
+                                                </label>
+                                                <input type="number"
+                                                    class="form-control @error('salario') is-invalid @enderror"
+                                                    name="salario" id="salario" min="0" step="0.01"
+                                                    value="{{ old('salario') }}" placeholder="Ej: 1500000" required>
+                                                @error('salario')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- Campos ocultos --}}
+                                    <input type="hidden" name="estado" value="1">
+                                    <input type="hidden" name="registrado_por" value="{{ Auth::user()->name }}">
+
+                                    <div class="alert alert-info mt-3">
+                                        <i class="fas fa-info-circle mr-2"></i>
+                                        <strong>Nota:</strong> Los campos marcados con <strong
+                                            style="color:red;">(*)</strong> son obligatorios.
+                                    </div>
+                                </div>
+
+                                <div class="card-footer bg-light">
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{{ route('contratos.index') }}" class="btn btn-secondary">
+                                            <i class="fas fa-times mr-1"></i> Cancelar
+                                        </a>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save mr-1"></i> Guardar Contrato
                                         </button>
                                     </div>
-                                    <div class="col-lg-2 col-xs-4">
-                                        <a href="{{ route('contratos.index') }}"
-                                            class="btn btn-danger btn-block btn-flat">Atrás</a>
-                                    </div>
                                 </div>
-                            </div>
+                            </form>
 
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
+        </section>
+    </div>
 @endsection

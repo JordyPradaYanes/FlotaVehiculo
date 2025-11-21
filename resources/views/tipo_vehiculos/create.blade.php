@@ -1,121 +1,178 @@
 @extends('layouts.app')
 
-@section('title','Crear Tipo de Vehículo')
+@section('title', 'Crear Tipo de Vehículo')
 
 @section('content')
-<div class="content-wrapper">
-    <section class="content-header">
-        <div class="container-fluid">
-        </div>
-    </section>
+    <div class="content-wrapper pb-4">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h1 class="m-0"><i class="fas fa-truck mr-2"></i>Nuevo Tipo de Vehículo</h1>
+                    <a href="{{ route('tipo_vehiculos.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i> Volver
+                    </a>
+                </div>
+            </div>
+        </section>
 
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header bg-secondary">
-                            <h3>@yield('title')</h3>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="card-title mb-0">
+                                    <i class="fas fa-plus-circle mr-2"></i>Registrar Nuevo Tipo de Vehículo
+                                </h3>
+                            </div>
+
+                            <form method="POST" action="{{ route('tipo_vehiculos.store') }}">
+                                @csrf
+                                <div class="card-body">
+                                    {{-- Mensajes de error --}}
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <h5><i class="icon fas fa-ban"></i> Por favor corrige los siguientes errores:
+                                            </h5>
+                                            <ul class="mb-0">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    @endif
+
+                                    <div class="row">
+                                        {{-- Nombre --}}
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="nombre">
+                                                    <i class="fas fa-tag text-primary mr-1"></i>
+                                                    Nombre <strong style="color:red;">(*)</strong>
+                                                </label>
+                                                <input type="text"
+                                                    class="form-control @error('nombre') is-invalid @enderror"
+                                                    name="nombre" id="nombre" value="{{ old('nombre') }}"
+                                                    placeholder="Ej: Sedán" required>
+                                                @error('nombre')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        {{-- Descripción --}}
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="descripcion">
+                                                    <i class="fas fa-align-left text-info mr-1"></i>
+                                                    Descripción <strong style="color:red;">(*)</strong>
+                                                </label>
+                                                <textarea class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" id="descripcion"
+                                                    rows="3" placeholder="Ej: Vehículo de 4 puertas" required>{{ old('descripcion') }}</textarea>
+                                                @error('descripcion')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        {{-- Capacidad de Pasajeros --}}
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="capacidad_pasajero">
+                                                    <i class="fas fa-users text-success mr-1"></i>
+                                                    Capacidad de Pasajeros <strong style="color:red;">(*)</strong>
+                                                </label>
+                                                <input type="number"
+                                                    class="form-control @error('capacidad_pasajero') is-invalid @enderror"
+                                                    name="capacidad_pasajero" id="capacidad_pasajero"
+                                                    value="{{ old('capacidad_pasajero') }}" placeholder="Ej: 5"
+                                                    min="1" required>
+                                                @error('capacidad_pasajero')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        {{-- Capacidad de Carga --}}
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="capacidad_carga">
+                                                    <i class="fas fa-box text-warning mr-1"></i>
+                                                    Capacidad de Carga (kg) <strong style="color:red;">(*)</strong>
+                                                </label>
+                                                <input type="number"
+                                                    class="form-control @error('capacidad_carga') is-invalid @enderror"
+                                                    name="capacidad_carga" id="capacidad_carga"
+                                                    value="{{ old('capacidad_carga') }}" placeholder="Ej: 500"
+                                                    min="0" required>
+                                                @error('capacidad_carga')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        {{-- Capacidad de Gasolina --}}
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="capacidad_gasolina">
+                                                    <i class="fas fa-gas-pump text-danger mr-1"></i>
+                                                    Capacidad de Gasolina (L) <strong style="color:red;">(*)</strong>
+                                                </label>
+                                                <input type="number"
+                                                    class="form-control @error('capacidad_gasolina') is-invalid @enderror"
+                                                    name="capacidad_gasolina" id="capacidad_gasolina"
+                                                    value="{{ old('capacidad_gasolina') }}" placeholder="Ej: 50"
+                                                    min="0" required>
+                                                @error('capacidad_gasolina')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{-- Campo oculto --}}
+                                    <input type="hidden" name="estado" value="1">
+
+                                    <div class="alert alert-info mt-3">
+                                        <i class="fas fa-info-circle mr-2"></i>
+                                        <strong>Nota:</strong> Los campos marcados con <strong
+                                            style="color:red;">(*)</strong> son obligatorios.
+                                    </div>
+                                </div>
+
+                                <div class="card-footer bg-light">
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{{ route('tipo_vehiculos.index') }}" class="btn btn-secondary">
+                                            <i class="fas fa-times mr-1"></i> Cancelar
+                                        </a>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save mr-1"></i> Guardar Tipo de Vehículo
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
                         </div>
-                        <form method="POST" action="{{ route('tipo_vehiculos.store') }}">
-                            @csrf
-                            <div class="card-body">
-                                @if(session('error'))
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        {{ session('error') }}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-
-                                @if($errors->any())
-                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                        <ul class="mb-0">
-                                            @foreach($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                @endif
-
-                                <div class="row">
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Nombre <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="text" class="form-control" name="nombre"
-                                                placeholder="Por ejemplo, Sedán" autocomplete="off"
-                                                value="{{ old('nombre') }}" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Descripción <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <textarea class="form-control" name="descripcion"
-                                                placeholder="Por ejemplo, Vehículo de 4 puertas"
-                                                required>{{ old('descripcion') }}</textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Capacidad de Pasajeros <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="number" class="form-control" name="capacidad_pasajero"
-                                                placeholder="Por ejemplo, 5" autocomplete="off"
-                                                value="{{ old('capacidad_pasajero') }}" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Capacidad de Carga (en kg)<strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="number" class="form-control" name="capacidad_carga"
-                                                placeholder="Por ejemplo, 500" autocomplete="off"
-                                                value="{{ old('capacidad_carga') }}" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Capacidad de Gasolina (en litros)<strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="number" class="form-control" name="capacidad_gasolina"
-                                                placeholder="Por ejemplo, 50" autocomplete="off"
-                                                value="{{ old('capacidad_gasolina') }}" required>
-                                        </div>
-                                    </div>
-                                </div>
-                                <input type="hidden" class="form-control" name="estado" value="1">
-                            </div>
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-lg-2 col-xs-4">
-                                        <button type="submit"
-                                            class="btn btn-primary btn-block btn-flat">Registrar</button>
-                                    </div>
-                                    <div class="col-lg-2 col-xs-4">
-                                        <a href="{{ route('tipo_vehiculos.index') }}"
-                                            class="btn btn-danger btn-block btn-flat">Atrás</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
+        </section>
+    </div>
 @endsection

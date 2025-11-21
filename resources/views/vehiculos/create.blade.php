@@ -241,7 +241,7 @@
                                                        accept="image/jpeg,image/png,image/jpg,image/gif">
                                                 <label class="custom-file-label" for="imagen">Seleccionar imagen...</label>
                                             </div>
-                                            <small class="form-text text-muted">Formatos permitidos: JPG, JPEG, PNG, GIF. Tamaño máximo: 2MB</small>
+                                            <small class="form-text text-muted">Formatos permitidos: JPG, JPEG, PNG, GIF. Tamaño máximo: 10MB</small>
                                             @error('imagen')
                                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                                             @enderror

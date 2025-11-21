@@ -31,7 +31,7 @@ class VehiculoRequest extends FormRequest
                 'color'             => 'required|string|max:255',
                 'kilometraje'       => 'nullable|numeric|min:0',
                 'estado'            => 'required|boolean',
-                'imagen'            => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+                'imagen'            => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240'
             ];
         }
 
@@ -49,7 +49,7 @@ class VehiculoRequest extends FormRequest
                 'color'             => 'required|string|max:255',
                 'kilometraje'       => 'nullable|numeric|min:0',
                 'estado'            => 'required|boolean',
-                'imagen'            => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+                'imagen'            => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240'
             ];
         }
 

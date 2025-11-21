@@ -8,9 +8,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title', 'Dashboard') - FlotaVehiculo</title>
 
-    <!-- Google Font: Source Sans Pro -->
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('backend/dist/img/escudo.png') }}"> 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
@@ -54,7 +55,7 @@
 
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
-    $.widget.bridge('uibutton', $.ui.button)
+        $.widget.bridge('uibutton', $.ui.button)
     </script>
 
     <!-- Bootstrap 4 -->
@@ -66,7 +67,7 @@
     <!-- overlayScrollbars -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.13.1/js/jquery.overlayScrollbars.min.js">
     </script>
-    <script src="{{asset('backend/dist/js/selectors.js')}}"></script>
+    <script src="{{ asset('backend/dist/js/selectors.js') }}"></script>
 
     @stack('scripts')
 

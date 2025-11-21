@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light elevation-1">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
@@ -7,25 +7,16 @@
                 <i class="fas fa-bars"></i>
             </a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('home') }}" class="nav-link">
-                <i class="fas fa-home mr-1"></i>Inicio
-            </a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">
-                <i class="fas fa-envelope mr-1"></i>Contacto
-            </a>
-        </li>
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-        <!-- Agregada barra de búsqueda rápida -->
+        <!-- Barra de búsqueda rápida mejorada -->
         <li class="nav-item d-none d-md-block">
-            <form class="form-inline">
-                <div class="input-group input-group-sm">
-                    <input class="form-control form-control-navbar" type="search" placeholder="Buscar..." aria-label="Buscar">
+            <form class="form-inline" action="#" method="GET">
+                <div class="input-group input-group-sm modern-search">
+                    <input class="form-control form-control-navbar" type="search" name="search"
+                        placeholder="Buscar vehículos, conductores..." aria-label="Buscar">
                     <div class="input-group-append">
                         <button class="btn btn-navbar" type="submit">
                             <i class="fas fa-search"></i>
@@ -35,76 +26,93 @@
             </form>
         </li>
 
-        <!-- Agregado dropdown de notificaciones -->
+        <!-- Notificaciones dinámicas -->
         <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#" title="Notificaciones">
-                <i class="far fa-bell"></i>
-                <span class="badge badge-warning navbar-badge">3</span>
+                <i class="far fa-bell" style="font-size: 1.2rem;"></i>
+                @php
+                    $notificaciones = $licenciasPorVencer ?? collect();
+                    $totalNotificaciones = $notificaciones->count();
+                @endphp
+                @if ($totalNotificaciones > 0)
+                    <span class="badge badge-danger navbar-badge animated-badge">{{ $totalNotificaciones }}</span>
+                @endif
             </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <span class="dropdown-item dropdown-header">3 Notificaciones</span>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right modern-dropdown">
+                <span class="dropdown-item dropdown-header"
+                    style="background: #667eea; color: white; font-weight: 600;">
+                    <i class="fas fa-bell mr-1"></i> {{ $totalNotificaciones }} Notificaciones
+                </span>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-car mr-2"></i> Nuevo vehículo registrado
-                    <span class="float-right text-muted text-sm">hace 3 min</span>
+
+                @forelse($notificaciones as $licencia)
+                    <a href="{{ route('licencias.index') }}" class="dropdown-item notification-item">
+                        <i class="fas fa-exclamation-circle text-warning mr-2"></i>
+                        Licencia <strong>{{ $licencia->numero_licencia }}</strong> vence pronto
+                        <span class="float-right text-muted text-sm">
+                            {{ \Carbon\Carbon::parse($licencia->fecha_vencimiento)->diffForHumans() }}
+                        </span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                @empty
+                    <div class="dropdown-item text-center text-muted py-3">
+                        <i class="fas fa-check-circle text-success mr-2"></i>
+                        No hay notificaciones pendientes
+                    </div>
+                @endforelse
+
+                <a href="{{ route('licencias.index') }}" class="dropdown-item dropdown-footer"
+                    style="background: #f8f9fa; font-weight: 500;">
+                    Ver todas las licencias
                 </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-gas-pump mr-2"></i> Recarga de combustible pendiente
-                    <span class="float-right text-muted text-sm">hace 2 horas</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-route mr-2"></i> Viaje completado
-                    <span class="float-right text-muted text-sm">hace 1 día</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item dropdown-footer">Ver todas las notificaciones</a>
             </div>
         </li>
 
-        <!-- Mejorado dropdown de perfil de usuario con mejor estructura -->
+        <!-- Dropdown de perfil de usuario mejorado -->
         <li class="nav-item dropdown user-menu">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                <img src="{{ asset('backend/dist/img/yo.jpg') }}" class="user-image img-circle elevation-2" alt="Usuario">
-                <span class="d-none d-md-inline">{{ Auth::user()->name ?? 'Usuario Invitado' }}</span>
+            <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" data-toggle="dropdown">
+                <img src="{{ asset('backend/dist/img/yo.jpg') }}" class="user-image-modern img-circle elevation-2"
+                    alt="Usuario">
+                <span class="d-none d-md-inline ml-2"
+                    style="font-weight: 500;">{{ Auth::user()->name ?? 'Usuario' }}</span>
+                <i class="fas fa-chevron-down ml-2" style="font-size: 0.8rem;"></i>
             </a>
-            <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <!-- User image -->
+            <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right modern-dropdown">
+                <!-- User header -->
                 <li class="user-header bg-primary">
-                    <img src="{{ asset('backend/dist/img/yo.jpg') }}" class="img-circle elevation-2" alt="Usuario">
-                    <p>
-                        {{-- CAMBIO 2: Aplicado Nullsafe --}}
-                        {{ Auth::user()?->name ?? 'Usuario Invitado' }}
-                        {{-- CAMBIO 3: Aplicado Nullsafe --}}
-                        <small>{{ Auth::user()?->email ?? 'usuario@ejemplo.com' }}</small>
-                        {{-- CAMBIO 4: Uso de @auth o Nullsafe para created_at --}}
-                        @auth
-                            <small>Miembro desde {{ Auth::user()->created_at?->format('M. Y') }}</small>
-                        @else
-                            <small>Miembro desde Ene. 2024</small>
-                        @endauth
+                    <img src="{{ asset('backend/dist/img/yo.jpg') }}" class="img-circle elevation-3" alt="Usuario">
+                    <p class="mb-1">
+                        {{ Auth::user()->name ?? 'Usuario Invitado' }}
                     </p>
+                    <small class="text-muted">{{ Auth::user()->email ?? 'usuario@ejemplo.com' }}</small>
+                    @auth
+                        <small class="d-block mt-1" style="opacity: 0.8;">
+                            <i class="fas fa-calendar-alt mr-1"></i>
+                            Miembro desde {{ Auth::user()->created_at?->format('M Y') }}
+                        </small>
+                    @endauth
                 </li>
+
                 <!-- Menu Body -->
-                <li class="user-body">
+                <li class="user-body-modern">
                     <div class="row">
-                        <div class="col-12 text-center mb-2">
-                            <a href="#" class="btn btn-default btn-flat">
+                        <div class="col-12">
+                            <a href="#" class="btn btn-outline-primary btn-sm btn-block mb-2">
                                 <i class="fas fa-user mr-2"></i>Mi Perfil
                             </a>
                         </div>
-                        <div class="col-12 text-center">
-                            <a href="#" class="btn btn-default btn-flat">
+                        <div class="col-12">
+                            <a href="#" class="btn btn-outline-secondary btn-sm btn-block">
                                 <i class="fas fa-cog mr-2"></i>Configuración
                             </a>
                         </div>
                     </div>
                 </li>
-                <!-- Menu Footer-->
-                <li class="user-footer">
-                    <a href="{{ route('logout') }}" class="btn btn-default btn-flat btn-block"
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+
+                <!-- Menu Footer -->
+                <li class="user-footer-modern">
+                    <a href="{{ route('logout') }}" class="btn btn-danger btn-sm btn-block"
+                        onclick="event.preventDefault(); if(confirm('¿Estás seguro de cerrar sesión?')) { document.getElementById('logout-form').submit(); }">
                         <i class="fas fa-sign-out-alt mr-2"></i>Cerrar Sesión
                     </a>
                     <form id="logout-form" method="POST" action="{{ route('logout') }}" style="display: none">
@@ -113,124 +121,188 @@
                 </li>
             </ul>
         </li>
-
     </ul>
 </nav>
 
-<!-- Agregados estilos personalizados para mejorar la apariencia -->
+<!-- Estilos mejorados para el navbar moderno -->
 <style>
-    /* Mejoras visuales para el navbar */
+    /* Navbar principal limpio */
+    .main-header.navbar {
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    /* Links del navbar */
     .navbar-nav .nav-link {
         display: flex;
         align-items: center;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+        border-radius: 6px;
+        margin: 0 0.25rem;
+    }
+
+    .navbar-nav .nav-link:hover {
+        background-color: #f8f9fa;
+    }
+
+    /* Imagen de usuario mejorada */
+    .user-image-modern {
+        width: 32px;
+        height: 32px;
         transition: all 0.3s ease;
     }
-    
-    .navbar-nav .nav-link:hover {
-        background-color: rgba(0,0,0,0.05);
-        border-radius: 4px;
+
+    .user-image-modern:hover {
+        transform: scale(1.05);
     }
-    
-    /* Estilos para la imagen de usuario en el navbar */
-    .user-image {
-        width: 30px;
-        height: 30px;
-        margin-right: 8px;
-    }
-    
-    /* Mejora del dropdown de usuario */
-    .user-menu .dropdown-menu {
+
+    /* Dropdown moderno */
+    .modern-dropdown {
         border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         border: none;
+        overflow: hidden;
+        min-width: 300px;
     }
-    
-    .user-header {
-        padding: 20px;
+
+    /* Header del dropdown de usuario */
+    .user-header-modern {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 25px;
         text-align: center;
-        border-radius: 8px 8px 0 0;
-    }
-    
-    .user-header img {
-        width: 90px;
-        height: 90px;
-        border: 3px solid rgba(255,255,255,0.3);
-        margin-bottom: 10px;
-    }
-    
-    .user-header p {
         color: white;
+    }
+
+    .user-header-modern img {
+        width: 80px;
+        height: 80px;
+        border: 3px solid rgba(255, 255, 255, 0.4);
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .user-header-modern img:hover {
+        border-color: rgba(255, 255, 255, 0.8);
+        transform: scale(1.05);
+    }
+
+    .user-header-modern p {
         margin: 0;
-        font-size: 16px;
-        font-weight: 500;
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
     }
-    
-    .user-header small {
-        display: block;
-        font-size: 12px;
-        margin-top: 5px;
-        opacity: 0.9;
+
+    .user-header-modern small {
+        font-size: 13px;
+        opacity: 0.95;
     }
-    
-    .user-body {
+
+    /* Body del dropdown */
+    .user-body-modern {
+        padding: 20px;
+        background-color: #f8f9fa;
+    }
+
+    /* Footer del dropdown */
+    .user-footer-modern {
         padding: 15px;
         background-color: #f8f9fa;
     }
-    
-    .user-body .btn {
-        margin: 5px 0;
-        width: 100%;
+
+    /* Búsqueda moderna */
+    .modern-search .form-control-navbar {
+        border-radius: 20px 0 0 20px;
+        padding-left: 15px;
+        font-size: 14px;
+        border: 1px solid #ced4da;
+        transition: all 0.3s ease;
     }
-    
-    .user-footer {
-        padding: 10px;
-        background-color: #f8f9fa;
-        border-radius: 0 0 8px 8px;
+
+    .modern-search .form-control-navbar:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
     }
-    
-    /* Mejora de notificaciones */
-    .navbar-badge {
+
+    .modern-search .btn-navbar {
+        border-radius: 0 20px 20px 0;
+        padding: 0 15px;
+        border: 1px solid #ced4da;
+        border-left: none;
+        background: white;
+        color: #007bff;
+        transition: all 0.3s ease;
+    }
+
+    .modern-search .btn-navbar:hover {
+        background: #007bff;
+        color: white;
+    }
+
+    /* Badge de notificaciones animado */
+    .animated-badge {
         font-size: 10px;
         font-weight: 700;
-        padding: 2px 5px;
+        padding: 3px 6px;
         position: absolute;
         right: 5px;
-        top: 8px;
+        top: 5px;
+        animation: pulse-badge 2s infinite;
+        box-shadow: 0 2px 8px rgba(220, 53, 69, 0.4);
     }
-    
-    /* Animación para el badge de notificaciones */
-    @keyframes pulse {
-        0% {
-            transform: scale(1);
-        }
-        50% {
-            transform: scale(1.1);
-        }
+
+    @keyframes pulse-badge {
+
+        0%,
         100% {
             transform: scale(1);
         }
+
+        50% {
+            transform: scale(1.15);
+        }
     }
-    
-    .navbar-badge {
-        animation: pulse 2s infinite;
+
+    /* Items de notificación */
+    .notification-item {
+        padding: 12px 15px;
+        transition: all 0.2s ease;
+        border-left: 3px solid transparent;
     }
-    
-    /* Mejora del buscador */
-    .form-control-navbar {
-        border-radius: 20px 0 0 20px;
-        border: 1px solid #dee2e6;
+
+    .notification-item:hover {
+        background-color: #f8f9fa;
+        border-left-color: #667eea;
+        padding-left: 18px;
     }
-    
-    .btn-navbar {
-        border-radius: 0 20px 20px 0;
-        border: 1px solid #dee2e6;
-        border-left: none;
+
+    /* Botones del dropdown */
+    .user-body-modern .btn {
+        transition: all 0.3s ease;
     }
-    
+
+    .user-body-modern .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
-        .user-image {
+        .modern-search {
+            display: none !important;
+        }
+
+        .navbar-nav .nav-link {
+            padding: 0.5rem 0.75rem;
+        }
+
+        .user-image-modern {
             margin-right: 0;
         }
+    }
+
+    /* Smooth scroll */
+    * {
+        scroll-behavior: smooth;
     }
 </style>

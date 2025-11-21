@@ -17,6 +17,7 @@ class Recarga_CombustibleFactory extends Factory
     public function definition(): array
     {
         return [
+            'vehiculo_id' => \App\Models\Vehiculo::factory(),
             'cantidad_litros' => $this->faker->randomFloat(2, 10, 100),
             'precio_litro' => $this->faker->randomFloat(2, 1, 5),
             'costo_total' => function (array $attributes) {

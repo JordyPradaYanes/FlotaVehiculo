@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::create('recarga_combustibles', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('vehiculo_id')->constrained('vehiculos');
             $table->decimal('cantidad_litros', 10, 2);
             $table->decimal('precio_litro', 10, 2);
             $table->decimal('costo_total', 10, 2);

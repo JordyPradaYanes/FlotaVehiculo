@@ -1,143 +1,187 @@
 @extends('layouts.app')
 
-@section('title','Crear Licencia')
+@section('title', 'Crear Licencia')
 
 @section('content')
-<div class="content-wrapper">
-    <section class="content-header">
-        <div class="container-fluid">
-        </div>
-    </section>
+    <div class="content-wrapper pb-4">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h1 class="m-0"><i class="fas fa-id-card-alt mr-2"></i>Nueva Licencia</h1>
+                    <a href="{{ route('licencias.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left mr-1"></i> Volver
+                    </a>
+                </div>
+            </div>
+        </section>
 
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header bg-secondary">
-                            <h3>@yield('title')</h3>
-                        </div>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-primary text-white">
+                                <h3 class="card-title mb-0">
+                                    <i class="fas fa-plus-circle mr-2"></i>Registrar Nueva Licencia
+                                </h3>
+                            </div>
 
-                        <form method="POST" action="{{ route('licencias.store') }}">
-                            @csrf
-                            <div class="card-body">
-
-                                {{-- Mensajes de error --}}
-                                @if(session('error'))
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    {{ session('error') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                @endif
-
-                                @if($errors->any())
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    <ul class="mb-0">
-                                        @foreach($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                @endif
-
-                                {{-- Número de licencia --}}
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Número de Licencia <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="text" class="form-control" name="numero_licencia"
-                                                placeholder="Ej: LIC-1234-5678" autocomplete="off"
-                                                value="{{ old('numero_licencia') }}" required>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- Tipo de licencia --}}
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label class="control-label">Tipo de Licencia <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <select name="tipo_licencia" class="form-control" required>
-                                                <option value="">Seleccione...</option>
-                                                @foreach(['A1','A2','B1','B2','C1','C2'] as $tipo)
-                                                <option value="{{ $tipo }}"
-                                                    {{ old('tipo_licencia') == $tipo ? 'selected' : '' }}>
-                                                    {{ $tipo }}
-                                                </option>
+                            <form method="POST" action="{{ route('licencias.store') }}">
+                                @csrf
+                                <div class="card-body">
+                                    {{-- Mensajes de error --}}
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <h5><i class="icon fas fa-ban"></i> Por favor corrige los siguientes errores:
+                                            </h5>
+                                            <ul class="mb-0">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
                                                 @endforeach
-                                            </select>
+                                            </ul>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    @endif
+
+                                    <div class="row">
+                                        {{-- Número de licencia --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="numero_licencia">
+                                                    <i class="fas fa-hashtag text-primary mr-1"></i>
+                                                    Número de Licencia <strong style="color:red;">(*)</strong>
+                                                </label>
+                                                <input type="text"
+                                                    class="form-control @error('numero_licencia') is-invalid @enderror"
+                                                    name="numero_licencia" id="numero_licencia"
+                                                    value="{{ old('numero_licencia') }}" placeholder="Ej: LIC-1234-5678"
+                                                    required>
+                                                @error('numero_licencia')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        {{-- Tipo de licencia --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="tipo_licencia">
+                                                    <i class="fas fa-list-alt text-info mr-1"></i>
+                                                    Tipo de Licencia <strong style="color:red;">(*)</strong>
+                                                </label>
+                                                <select name="tipo_licencia" id="tipo_licencia"
+                                                    class="form-control @error('tipo_licencia') is-invalid @enderror"
+                                                    required>
+                                                    <option value="">-- Seleccione un tipo --</option>
+                                                    @foreach (['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] as $tipo)
+                                                        <option value="{{ $tipo }}"
+                                                            {{ old('tipo_licencia') == $tipo ? 'selected' : '' }}>
+                                                            {{ $tipo }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('tipo_licencia')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {{-- Fecha de expedición --}}
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label class="control-label">Fecha de Expedición <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="date" name="fecha_expedicion" class="form-control"
-                                                value="{{ old('fecha_expedicion') }}" required>
+                                    <div class="row">
+                                        {{-- Fecha de expedición --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="fecha_expedicion">
+                                                    <i class="fas fa-calendar-check text-success mr-1"></i>
+                                                    Fecha de Expedición <strong style="color:red;">(*)</strong>
+                                                </label>
+                                                <input type="date"
+                                                    class="form-control @error('fecha_expedicion') is-invalid @enderror"
+                                                    name="fecha_expedicion" id="fecha_expedicion"
+                                                    value="{{ old('fecha_expedicion') }}" required>
+                                                @error('fecha_expedicion')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        {{-- Fecha de vencimiento --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="fecha_vencimiento">
+                                                    <i class="fas fa-calendar-times text-danger mr-1"></i>
+                                                    Fecha de Vencimiento <strong style="color:red;">(*)</strong>
+                                                </label>
+                                                <input type="date"
+                                                    class="form-control @error('fecha_vencimiento') is-invalid @enderror"
+                                                    name="fecha_vencimiento" id="fecha_vencimiento"
+                                                    value="{{ old('fecha_vencimiento') }}" required>
+                                                @error('fecha_vencimiento')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {{-- Fecha de vencimiento --}}
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <label class="control-label">Fecha de Vencimiento <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="date" name="fecha_vencimiento" class="form-control"
-                                                value="{{ old('fecha_vencimiento') }}" required>
+                                    <div class="row">
+                                        {{-- Entidad emisora --}}
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="entidad_emisora">
+                                                    <i class="fas fa-building text-warning mr-1"></i>
+                                                    Entidad Emisora <strong style="color:red;">(*)</strong>
+                                                </label>
+                                                <input type="text"
+                                                    class="form-control @error('entidad_emisora') is-invalid @enderror"
+                                                    name="entidad_emisora" id="entidad_emisora"
+                                                    value="{{ old('entidad_emisora') }}"
+                                                    placeholder="Ej: Secretaría de Tránsito de Medellín" required>
+                                                @error('entidad_emisora')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {{-- Entidad emisora --}}
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="form-group label-floating">
-                                            <label class="control-label">Entidad Emisora <strong
-                                                    style="color:red;">(*)</strong></label>
-                                            <input type="text" name="entidad_emisora" class="form-control"
-                                                placeholder="Ej: Secretaría de Tránsito de Medellín" autocomplete="off"
-                                                value="{{ old('entidad_emisora') }}" required>
-                                        </div>
+                                    {{-- Campos ocultos --}}
+                                    <input type="hidden" name="estado" value="1">
+                                    <input type="hidden" name="registrado_por" value="{{ Auth::user()->name }}">
+
+                                    <div class="alert alert-info mt-3">
+                                        <i class="fas fa-info-circle mr-2"></i>
+                                        <strong>Nota:</strong> Los campos marcados con <strong
+                                            style="color:red;">(*)</strong> son obligatorios.
                                     </div>
                                 </div>
 
-                                {{-- Hidden fields --}}
-                                <input type="hidden" name="estado" value="1">
-                                <input type="hidden" name="registrado_por" value="{{ Auth::user()->name }}">
-
-                            </div>
-
-                            <div class="card-footer">
-                                <div class="row">
-                                    <div class="col-lg-2 col-xs-4">
-                                        <button type="submit"
-                                            class="btn btn-primary btn-block btn-flat">Registrar</button>
-                                    </div>
-                                    <div class="col-lg-2 col-xs-4">
-                                        <a href="{{ route('licencias.index') }}"
-                                            class="btn btn-danger btn-block btn-flat">Atrás</a>
+                                <div class="card-footer bg-light">
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{{ route('licencias.index') }}" class="btn btn-secondary">
+                                            <i class="fas fa-times mr-1"></i> Cancelar
+                                        </a>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save mr-1"></i> Guardar Licencia
+                                        </button>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
 
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
+        </section>
+    </div>
 @endsection
