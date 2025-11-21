@@ -127,6 +127,11 @@ class VehiculoController extends Controller
     public function destroy(Vehiculo $vehiculo)
     {
         try{
+            // Eliminar imagen si existe
+            if ($vehiculo->imagen && file_exists(public_path('uploads/vehiculos/' . $vehiculo->imagen))) {
+                unlink(public_path('uploads/vehiculos/' . $vehiculo->imagen));
+            }
+
             $vehiculo->delete();
             return redirect()->route('vehiculos.index')
                 ->with('successMsg', 'Vehículo eliminado exitosamente.');
