@@ -4,47 +4,51 @@ Este es un sistema de gestión de flotas de vehículos desarrollado con el frame
 
 ## ✨ Características Principales
 
-*   **Gestión Integral de Vehículos:**
-    *   Registro detallado de vehículos, incluyendo placa, modelo, año, color y kilometraje.
-    *   Clasificación por marca y tipo para una organización más eficiente.
-    *   Seguimiento del estado actual de cada vehículo (disponible, en viaje, en mantenimiento).
+-   **Gestión Integral de Vehículos:**
 
-*   **Administración Completa de Conductores:**
-    *   Registro de conductores con su información personal y de contacto.
-    *   Gestión del ciclo de vida de contratos y licencias de conducir, asegurando que todo esté al día.
+    -   Registro detallado de vehículos, incluyendo placa, modelo, año, color y kilometraje.
+    -   Clasificación por marca y tipo para una organización más eficiente.
+    -   Seguimiento del estado actual de cada vehículo (disponible, en viaje, en mantenimiento).
 
-*   **Planificación y Seguimiento de Viajes:**
-    *   Creación y gestión de rutas personalizadas.
-    *   Asignación de viajes a conductores y vehículos específicos.
-    *   Seguimiento de cada viaje con detalles como recorrido, tiempo estimado y costo total.
+-   **Administración Completa de Conductores:**
 
-*   **Control de Combustible:**
-    *   Registro de cada recarga de combustible, asociándola a un vehículo para un control de gastos preciso.
+    -   Registro de conductores con su información personal y de contacto.
+    -   Gestión del ciclo de vida de contratos y licencias de conducir, asegurando que todo esté al día.
 
-*   **Administración General del Sistema:**
-    *   Gestión de empresas o clientes para un entorno multi-tenant.
-    *   Administración centralizada de catálogos como marcas, tipos de vehículos, y tipos de contrato.
+-   **Planificación y Seguimiento de Viajes:**
+
+    -   Creación y gestión de rutas personalizadas.
+    -   Asignación de viajes a conductores y vehículos específicos.
+    -   Seguimiento de cada viaje con detalles como recorrido, tiempo estimado y costo total.
+
+-   **Control de Combustible:**
+
+    -   Registro de cada recarga de combustible, asociándola a un vehículo para un control de gastos preciso.
+
+-   **Administración General del Sistema:**
+    -   Gestión de empresas o clientes para un entorno multi-tenant.
+    -   Administración centralizada de catálogos como marcas, tipos de vehículos, y tipos de contrato.
 
 ## 🗃️ Modelo de Datos
 
 El sistema se estructura en torno a los siguientes modelos principales:
 
-*   **Vehiculo:** Representa un vehículo de la flota.
-    *   Se relaciona con `Marca` y `Tipo_Vehiculo`.
-    *   Registra `Viaje` y `Recarga_Combustible`.
-*   **Conductor:** Representa a un conductor.
-    *   Asociado a `Viaje` y gestiona `Conductor_Contrato` y `Conductor_Licencia`.
-*   **Viaje:** Modela un viaje, conectando `Vehiculo`, `Conductor` y `Ruta`.
-*   **Empresa:** Gestiona la información de las empresas o clientes.
-*   **Ruta:** Define las rutas para los viajes.
-*   **Contrato y Licencia:** Administran los contratos y licencias de los conductores.
+-   **Vehiculo:** Representa un vehículo de la flota.
+    -   Se relaciona con `Marca` y `Tipo_Vehiculo`.
+    -   Registra `Viaje` y `Recarga_Combustible`.
+-   **Conductor:** Representa a un conductor.
+    -   Asociado a `Viaje` y gestiona `Conductor_Contrato` y `Conductor_Licencia`.
+-   **Viaje:** Modela un viaje, conectando `Vehiculo`, `Conductor` y `Ruta`.
+-   **Empresa:** Gestiona la información de las empresas o clientes.
+-   **Ruta:** Define las rutas para los viajes.
+-   **Contrato y Licencia:** Administran los contratos y licencias de los conductores.
 
 ## 🛠️ Tecnologías Utilizadas
 
-*   **Backend:** PHP, Laravel
-*   **Frontend:** Blade, Vite.js (según la configuración por defecto de Laravel)
-*   **Base de datos:** Compatible con MySQL, PostgreSQL, SQLite, SQL Server.
-*   **Gestor de dependencias:** Composer
+-   **Backend:** PHP, Laravel
+-   **Frontend:** Blade, Vite.js (según la configuración por defecto de Laravel)
+-   **Base de datos:** Compatible con MySQL, PostgreSQL, SQLite, SQL Server.
+-   **Gestor de dependencias:** Composer
 
 ## 🚀 Instalación
 
@@ -52,53 +56,59 @@ Sigue estos pasos para configurar el proyecto en tu entorno de desarrollo local:
 
 ### Requisitos Previos
 
-*   PHP >= 8.1
-*   Composer
-*   Node.js & npm
-*   Un servidor de base de datos (MySQL, PostgreSQL, etc.)
+-   PHP >= 8.1
+-   Composer
+-   Node.js & npm
+-   Un servidor de base de datos (MySQL, PostgreSQL, etc.)
 
 ### Pasos de Instalación
 
 1.  **Clonar el repositorio:**
+
     ```bash
     git clone https://github.com/JordyPradaYanes/FlotaVehiculo.git
     cd FlotaVehiculo
     ```
 
 2.  **Instalar dependencias de PHP:**
+
     ```bash
     composer install
     ```
 
 3.  **Instalar dependencias de Node.js:**
+
     ```bash
     npm install
     ```
 
 4.  **Configurar el entorno:**
-    *   Copia el archivo de ejemplo `.env.example` a `.env`:
+
+    -   Copia el archivo de ejemplo `.env.example` a `.env`:
         ```bash
         cp .env.example .env
         ```
-    *   Genera la clave de la aplicación:
+    -   Genera la clave de la aplicación:
         ```bash
         php artisan key:generate
         ```
 
 5.  **Configurar la base de datos:**
-    *   Abre el archivo `.env` y configura los detalles de tu base de datos (DB_DATABASE, DB_USERNAME, DB_PASSWORD).
+
+    -   Abre el archivo `.env` y configura los detalles de tu base de datos (DB_DATABASE, DB_USERNAME, DB_PASSWORD).
 
 6.  **Ejecutar las migraciones:**
-    *   Esto creará la estructura de la base de datos necesaria para la aplicación.
+    -   Esto creará la estructura de la base de datos necesaria para la aplicación.
         ```bash
         php artisan migrate
         ```
 7.  **(Opcional) Ejecutar los seeders:**
-    *   Para poblar la base de datos con datos de ejemplo, ejecuta:
+    -   Para poblar la base de datos con datos de ejemplo, ejecuta:
         ```bash
         php artisan db:seed
         ```
 8.  **Compilar los assets:**
+
     ```bash
     npm run dev
     ```
@@ -132,3 +142,31 @@ Para solucionar este problema, se ha replicado la funcionalidad de confirmación
 5.  Enviar el formulario solo si el usuario confirma la acción.
 
 Este cambio asegura que la experiencia de usuario sea consistente en toda la aplicación, mostrando siempre una confirmación antes de realizar una acción destructiva.
+
+## 📸 Funcionalidad de Imágenes en Vehículos
+
+Se ha implementado la capacidad de subir y visualizar imágenes para los vehículos. Esta funcionalidad abarca cambios en la base de datos, modelo, controlador y vistas.
+
+### 1. Base de Datos y Modelo
+
+-   **Migración:** Se añadió el campo `imagen` (nullable) a la tabla `vehiculos`.
+-   **Modelo (`Vehiculo.php`):** Se actualizó la propiedad `$fillable` para incluir el campo `imagen`, permitiendo la asignación masiva.
+
+### 2. Controlador (`VehiculoController.php`)
+
+-   **Método `store`:** Se implementó la lógica para manejar la subida de archivos.
+    -   Se genera un nombre único para cada imagen utilizando el slug de la placa, la fecha actual y un identificador único (`uniqid`).
+    -   Las imágenes se guardan en la carpeta `public/uploads/vehiculos`.
+    -   Se valida que el directorio exista, y si no, se crea automáticamente con permisos 0777.
+    -   En la base de datos solo se almacena el nombre del archivo.
+
+### 3. Vistas
+
+-   **Crear Vehículo (`create.blade.php`):**
+    -   Se añadió el atributo `enctype="multipart/form-data"` al formulario.
+    -   Se integró un campo de entrada de archivo (`input type="file"`) con validación de formatos (JPG, PNG, GIF).
+    -   **JavaScript:** Se agregó funcionalidad para mostrar una vista previa de la imagen seleccionada y actualizar el nombre del archivo en el input.
+-   **Listado de Vehículos (`index.blade.php`):**
+    -   Se agregó una columna "Imagen" a la tabla.
+    -   Se muestran miniaturas de las imágenes de los vehículos.
+    -   Se implementó un **Modal** que permite ver la imagen en tamaño completo al hacer clic sobre la miniatura.
