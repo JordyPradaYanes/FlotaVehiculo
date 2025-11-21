@@ -7,6 +7,9 @@ use App\Models\Vehiculo;
 use App\Models\Marca;
 use App\Models\Tipo_Vehiculo;
 use App\Http\Requests\VehiculoRequest;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
+
 
 class VehiculoController extends Controller
 {
@@ -35,8 +38,29 @@ class VehiculoController extends Controller
      */
     public function store(VehiculoRequest $request)
     {
+        // Manejar la subida de imagen
+        $image = $request->file('imagen');
+        $slug = Str::slug($request->placa);
+        
+        if (isset($image))
+        {
+            $currentDate = Carbon::now()->toDateString();
+            $imagename = $slug.'-'.$currentDate.'-'. uniqid() .'.'. $image->getClientOriginalExtension();
 
-        $vehiculos = Vehiculo::create($request->All());
+            if (!file_exists('uploads/vehiculos'))
+            {
+                mkdir('uploads/vehiculos', 0777, true);
+            }
+            $image->move('uploads/vehiculos', $imagename);
+        } else {
+            $imagename = "";
+        }
+        
+        // Crear el vehículo con la imagen
+        $vehiculo = Vehiculo::create(array_merge($request->except('imagen'), [
+            'imagen' => $imagename
+        ]));
+
         return redirect()->route('vehiculos.index')
             ->with('successMsg', 'Vehículo creado exitosamente.');
         /*

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('kilometraje', 10, 2)->default(0);
             $table->string('estado');
             $table->string('registrado_por');
+            $table->string('imagen')->nullable();
             $table->timestamps();
         });
     }

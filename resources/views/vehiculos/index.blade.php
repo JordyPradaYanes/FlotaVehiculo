@@ -65,6 +65,9 @@
                                             <th class="text-center" style="width: 60px;">
                                                 <i class="fas fa-hashtag text-muted"></i> ID
                                             </th>
+                                            <th class="text-center" style="width: 80px;">
+                                                <i class="fas fa-image text-muted"></i> Imagen
+                                            </th>
                                             <th>
                                                 <i class="fas fa-id-card text-muted"></i> Placa
                                             </th>
@@ -138,6 +141,21 @@
                                         <tr>
                                             <td class="text-center font-weight-bold text-muted">
                                                 {{ $vehiculo->id }}
+                                            </td>
+                                            <td class="text-center">
+                                                @if($vehiculo->imagen && file_exists(public_path('uploads/vehiculos/'.$vehiculo->imagen)))
+                                                    <img src="{{ asset('uploads/vehiculos/'.$vehiculo->imagen) }}" 
+                                                         alt="Imagen de {{ $vehiculo->placa }}" 
+                                                         class="img-thumbnail" 
+                                                         style="width: 60px; height: 60px; object-fit: cover; cursor: pointer;"
+                                                         data-toggle="modal" 
+                                                         data-target="#imageModal{{ $vehiculo->id }}">
+                                                @else
+                                                    <div class="bg-light d-flex align-items-center justify-content-center" 
+                                                         style="width: 60px; height: 60px; border-radius: 4px;">
+                                                        <i class="fas fa-car text-muted"></i>
+                                                    </div>
+                                                @endif
                                             </td>
                                             <td>
                                                 <span class="font-weight-bold text-dark">{{ $vehiculo->placa }}</span>
@@ -216,6 +234,30 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        
+                                        {{-- Modal para ver imagen completa --}}
+                                        @if($vehiculo->imagen && file_exists(public_path('uploads/vehiculos/'.$vehiculo->imagen)))
+                                        <div class="modal fade" id="imageModal{{ $vehiculo->id }}" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel{{ $vehiculo->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="imageModalLabel{{ $vehiculo->id }}">
+                                                            Imagen del Vehículo - {{ $vehiculo->placa }}
+                                                        </h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body text-center">
+                                                        <img src="{{ asset('uploads/vehiculos/'.$vehiculo->imagen) }}" 
+                                                             alt="Imagen de {{ $vehiculo->placa }}" 
+                                                             class="img-fluid" 
+                                                             style="max-height: 500px;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endif
                                         @endforeach
                                     </tbody>
                                 </table>

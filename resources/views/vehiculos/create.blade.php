@@ -31,7 +31,7 @@
                             </h3>
                         </div>
                         
-                        <form method="POST" action="{{ route('vehiculos.store') }}" id="vehiculoForm">
+                        <form method="POST" action="{{ route('vehiculos.store') }}" id="vehiculoForm" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
                                 {{-- Mensajes de error --}}
@@ -218,6 +218,42 @@
                                     </div>
                                 </div>
 
+                                {{-- Campo de Imagen --}}
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <h5 class="text-primary border-bottom pb-2">
+                                            <i class="fas fa-image"></i> Imagen del Vehículo
+                                        </h5>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">
+                                                <i class="fas fa-camera"></i> Imagen
+                                            </label>
+                                            <div class="custom-file">
+                                                <input type="file" 
+                                                       class="custom-file-input @error('imagen') is-invalid @enderror" 
+                                                       name="imagen" 
+                                                       id="imagen"
+                                                       accept="image/jpeg,image/png,image/jpg,image/gif">
+                                                <label class="custom-file-label" for="imagen">Seleccionar imagen...</label>
+                                            </div>
+                                            <small class="form-text text-muted">Formatos permitidos: JPG, JPEG, PNG, GIF. Tamaño máximo: 2MB</small>
+                                            @error('imagen')
+                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                            @enderror
+                                            
+                                            {{-- Vista previa de la imagen --}}
+                                            <div id="imagePreview" class="mt-3" style="display: none;">
+                                                <img src="" alt="Vista previa" class="img-fluid" style="max-width: 300px; height: auto; border: 1px solid #ddd; border-radius: 5px;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <input type="hidden" name="estado" value="1">
                                 <input type="hidden" name="registrado_por" value="{{ Auth::user()->name }}">
 
@@ -259,6 +295,25 @@
         // Convertir placa a mayúsculas automáticamente
         $('#placa').on('input', function() {
             this.value = this.value.toUpperCase();
+        });
+
+        // Actualizar label del input file y mostrar preview
+        $('#imagen').on('change', function() {
+            const fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').html(fileName || 'Seleccionar imagen...');
+            
+            // Mostrar vista previa
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imagePreview').show();
+                    $('#imagePreview img').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(file);
+            } else {
+                $('#imagePreview').hide();
+            }
         });
 
         // Validación adicional del formulario

@@ -20,7 +20,8 @@ class Vehiculo extends Model
         'color',
         'kilometraje',
         'estado',
-        'registrado_por'
+        'registrado_por',
+        'imagen'
     ];
     protected $guarded=[ 'id',
     'created_at',
