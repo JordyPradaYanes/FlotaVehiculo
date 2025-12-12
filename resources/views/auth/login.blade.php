@@ -8,7 +8,7 @@
 
 @section('content')
 
-    <body class="login-page">
+    <div class="login-page">
         <div class="login-container animate-fadeIn">
             <div class="login-left">
                 <div class="icon-truck">
@@ -27,7 +27,7 @@
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
 
-                    <div class="form-group">
+                    <div class="form-group mb-4">
                         <i class="fas fa-envelope input-icon"></i>
                         <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
                             placeholder="Correo electrónico" value="{{ old('email') }}" required autofocus>
@@ -38,7 +38,7 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group mb-4">
                         <i class="fas fa-lock input-icon"></i>
                         <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
                             placeholder="Contraseña" required>
@@ -49,7 +49,7 @@
                         @enderror
                     </div>
 
-                    <div class="remember-me d-flex align-items-center">
+                    <div class="remember-me d-flex align-items-center mb-4">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" name="remember" id="remember"
                                 {{ old('remember') ? 'checked' : '' }}>
@@ -60,7 +60,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-login btn-block w-100">
-                        <i class="fas fa-sign-in-alt mr-2"></i>Iniciar Sesión
+                        <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
                     </button>
                 </form>
 
@@ -69,38 +69,38 @@
                         <span>O continúa con</span>
                     </div>
 
-                    <div class="row">
+                    <div class="row g-2">
                         <div class="col-6">
-                            <a href="#" class="btn btn-facebook btn-social btn-block text-white w-100">
-                                <i class="fab fa-facebook-f mr-1"></i>Facebook
+                            <a href="#" class="btn btn-facebook btn-social w-100 text-dark">
+                                <i class="fab fa-facebook-f me-2"></i>Facebook
                             </a>
                         </div>
                         <div class="col-6">
-                            <a href="#" class="btn btn-google btn-social btn-block text-white w-100">
-                                <i class="fab fa-google mr-1"></i>Google
+                            <a href="#" class="btn btn-google btn-social w-100 text-dark">
+                                <i class="fab fa-google me-2"></i>Google
                             </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="login-footer">
+                <div class="login-footer d-flex justify-content-between">
                     @if (Route::has('password.request'))
-                        <p>
-                            <a href="{{ route('password.request') }}">
-                                <i class="fas fa-key"></i>¿Contraseña?
+                        <p class="mb-0">
+                            <a href="{{ route('password.request') }}" class="text-decoration-none">
+                                <i class="fas fa-key me-1"></i>¿Contraseña?
                             </a>
                         </p>
                     @endif
 
                     @if (Route::has('register'))
-                        <p>
-                            <a href="{{ route('register') }}">
-                                <i class="fas fa-user-plus"></i>Crear cuenta
+                        <p class="mb-0">
+                            <a href="{{ route('register') }}" class="text-decoration-none">
+                                <i class="fas fa-user-plus me-1"></i>Crear cuenta
                             </a>
                         </p>
                     @endif
                 </div>
             </div>
         </div>
-    </body>
+    </div>
 @endsection
