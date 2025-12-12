@@ -36,52 +36,18 @@
     {{-- @vite(['resources/sass/app.scss', 'resources/js/app.js']) --}}
 
     <!-- Estilos globales para páginas de autenticación -->
+    <!-- Estilos globales para páginas de autenticación -->
     <style>
-        /* Asegurar que todo el fondo sea transparente */
+        /* Asegurar que el body ocupe todo el alto pero sin forzar background */
         html,
         body {
             height: 100%;
             margin: 0;
             padding: 0;
-            background: transparent !important;
-        }
-
-        body.login-page {
-            background: linear-gradient(135deg, #0A0A0A 0%, #1a1a1a 50%, #2c2c2c 100%) !important;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Efecto de partículas doradas */
-        body.login-page::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image:
-                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 215, 0, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(212, 175, 55, 0.06) 0%, transparent 50%);
-            pointer-events: none;
         }
 
         #app {
-            background: transparent !important;
             height: 100%;
-        }
-
-        /* Eliminar el fondo blanco del main */
-        main,
-        main.d-flex,
-        .min-vh-100 {
-            background: transparent !important;
-        }
-
-        /* Forzar transparencia en todos los contenedores */
-        .d-flex.align-items-center.justify-content-center {
-            background: transparent !important;
         }
     </style>
 

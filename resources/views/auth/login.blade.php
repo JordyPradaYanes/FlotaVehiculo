@@ -18,7 +18,7 @@
                 <p class="subtitle">Sistema de Gestión de Flota Premium</p>
             </div>
 
-            <div class="login-right" style="scroll">
+            <div class="login-right">
                 <div class="welcome-text">
                     <h4>¡Bienvenido!</h4>
                     <p>Ingresa tus credenciales para continuar</p>
@@ -87,7 +87,7 @@
                     @if (Route::has('password.request'))
                         <p>
                             <a href="{{ route('password.request') }}">
-                                <i class="fas fa-key"></i>¿Olvidaste tu contraseña?
+                                <i class="fas fa-key"></i>¿Contraseña?
                             </a>
                         </p>
                     @endif
@@ -95,7 +95,7 @@
                     @if (Route::has('register'))
                         <p>
                             <a href="{{ route('register') }}">
-                                <i class="fas fa-user-plus"></i>Crear nueva cuenta
+                                <i class="fas fa-user-plus"></i>Crear cuenta
                             </a>
                         </p>
                     @endif
