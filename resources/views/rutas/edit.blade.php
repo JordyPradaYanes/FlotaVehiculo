@@ -115,11 +115,11 @@
                                                     <i class="fas fa-clock text-success mr-1"></i>
                                                     Tiempo Estimado (hrs) <strong style="color:red;">(*)</strong>
                                                 </label>
-                                                <input type="number"
+                                                <input type="time"
                                                     class="form-control @error('tiempo_estimado') is-invalid @enderror"
                                                     name="tiempo_estimado" id="tiempo_estimado"
                                                     value="{{ old('tiempo_estimado', $ruta->tiempo_estimado) }}"
-                                                    placeholder="Ej: 2.5" min="0" step="0.01" required>
+                                                    step="1" required>
                                                 @error('tiempo_estimado')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>

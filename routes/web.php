@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Conductores
     Route::resource('conductores', ConductorController::class);
-    Route::post('conductores/cambio-estado/{conductor}', [ConductorController::class, 'cambioEstado'])
+    Route::post('conductores/{conductor}/cambio-estado', [ConductorController::class, 'cambioEstado'])
     ->name('conductores.cambioEstado');
 
     // Contratos
