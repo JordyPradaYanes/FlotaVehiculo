@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Conductor;
+use App\Http\Requests\ConductorRequest;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 
@@ -30,9 +31,9 @@ class ConductorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ConductorRequest $request)
     {
-        $conductor = Conductor::create($request->All());
+        $conductor = Conductor::create($request->all());
         return redirect()->route('conductores.index')
             ->with('successMsg', 'Conductor creado exitosamente.');
         /*
@@ -86,15 +87,33 @@ class ConductorController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $conductor = Conductor::findOrFail($id);
+        return view('conductores.edit', compact('conductor'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ConductorRequest $request, string $id)
     {
-        //
+        try {
+            $conductor = Conductor::findOrFail($id);
+            $conductor->update($request->all());
+            
+            return redirect()->route('conductores.index')
+                ->with('successMsg', 'Conductor actualizado exitosamente.');
+                
+        } catch (QueryException $e) {
+            Log::error('Error al actualizar el conductor: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al actualizar el conductor en la base de datos.')
+                ->withInput();
+        } catch (\Exception $e) {
+            Log::error('Error inesperado al actualizar el conductor: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error inesperado al actualizar el conductor.')
+                ->withInput();
+        }
     }
 
     /**

@@ -47,12 +47,30 @@ class Tipo_VehiculoController extends Controller
 
     public function edit(string $id)
     {
-        //
+        $tipo_vehiculo = Tipo_Vehiculo::findOrFail($id);
+        return view('tipo_vehiculos.edit', compact('tipo_vehiculo'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(Tipo_VehiculoRequest $request, string $id)
     {
-        //
+        try {
+            $tipo_vehiculo = Tipo_Vehiculo::findOrFail($id);
+            $tipo_vehiculo->update($request->all());
+            
+            return redirect()->route('tipo_vehiculos.index')
+                ->with('successMsg', 'Tipo de Vehículo actualizado exitosamente.');
+                
+        } catch (QueryException $e) {
+            Log::error('Error al actualizar el tipo de vehículo: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al actualizar el tipo de vehículo en la base de datos.')
+                ->withInput();
+        } catch (Exception $e) {
+            Log::error('Error inesperado al actualizar el tipo de vehículo: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error inesperado al actualizar el tipo de vehículo.')
+                ->withInput();
+        }
     }
 
     public function destroy(Tipo_Vehiculo $tipo_vehiculo)
@@ -66,6 +84,25 @@ class Tipo_VehiculoController extends Controller
         } catch (Exception $e) {
             Log::error('Error inesperado al eliminar el tipo de vehículo: ' . $e->getMessage());
             return redirect()->route('tipo_vehiculos.index')->withErrors('Ocurrió un error inesperado al eliminar el registro. Comuníquese con el Administrador');
+        }
+    }
+    public function cambioEstado(Tipo_Vehiculo $tipo_vehiculo)
+    {
+        try {
+            $tipo_vehiculo->estado = !$tipo_vehiculo->estado;
+            $tipo_vehiculo->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Estado del tipo de vehículo actualizado exitosamente.',
+                'nuevo_estado' => $tipo_vehiculo->estado
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error al cambiar estado del tipo de vehículo: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cambiar el estado del tipo de vehículo.'
+            ], 500);
         }
     }
 }

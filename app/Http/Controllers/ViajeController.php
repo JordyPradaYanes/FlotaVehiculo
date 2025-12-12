@@ -7,6 +7,10 @@ use App\Models\Viaje;
 use App\Models\Ruta;
 use App\Models\Vehiculo;
 use App\Models\Conductor;
+use App\Http\Requests\ViajeRequest;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Database\QueryException;
+use Exception;
 
 class ViajeController extends Controller
 {
@@ -33,36 +37,12 @@ class ViajeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ViajeRequest $request)
     {
-        try{
-            $validated = $request->validate([
-                'vehiculo_id' => 'required|exists:vehiculos,id',
-                'conductor_id' => 'required|exists:conductores,id',
-                'ruta_id' => 'required|exists:rutas,id',
-                'descripcion' => 'nullable|string',
-                'recorrido' => 'required|numeric|min:0',
-                'tiempo_estimado' => 'required|integer|min:0',
-                'costo_total' => 'required|numeric|min:0',
-                'estado' => 'required|boolean',
-            ]);
-
-            $validated['registrado_por'] = auth()->user()->name;
-
-            Viaje::create($validated);
-
-            return redirect()->route('viajes.index')
-                ->with('successMsg', 'Viaje creado exitosamente.');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return redirect()->back()
-                ->withErrors($e->errors())
-                ->withInput();
-        } catch (QueryException $e) {
-            Log::error('Error al crear el viaje: ' . $e->getMessage());
-            return redirect()->back()
-                ->with('error', 'Error al crear el viaje en la base de datos.')
-                ->withInput();
-        }
+        $request->validated();
+        Viaje::create($request->validated());
+        return redirect()->route('viajes.index')
+            ->with('successMsg', 'Viaje creado exitosamente.');
     }
 
     /**
@@ -78,15 +58,36 @@ class ViajeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $viaje = Viaje::findOrFail($id);
+        $rutas = Ruta::all();
+        $vehiculos = Vehiculo::all();
+        $conductores = Conductor::all();
+        return view('viajes.edit', compact('viaje', 'rutas', 'vehiculos', 'conductores'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ViajeRequest $request, string $id)
     {
-        //
+        try {
+            $viaje = Viaje::findOrFail($id);
+            $viaje->update($request->validated());
+            
+            return redirect()->route('viajes.index')
+                ->with('successMsg', 'Viaje actualizado exitosamente.');
+                
+        } catch (QueryException $e) {
+            Log::error('Error al actualizar el viaje: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al actualizar el viaje en la base de datos.')
+                ->withInput();
+        } catch (Exception $e) {
+            Log::error('Error inesperado al actualizar el viaje: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error inesperado al actualizar el viaje.')
+                ->withInput();
+        }
     }
 
     /**

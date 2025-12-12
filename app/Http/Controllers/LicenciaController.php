@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Licencia;
 use App\Models\Conductor;
+use App\Http\Requests\LicenciaRequest;
+use Illuminate\Database\QueryException;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class LicenciaController extends Controller
 {
@@ -29,7 +33,7 @@ class LicenciaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(LicenciaRequest $request)
     {
         $licencia = Licencia::create($request->All());
         return redirect()->route('licencias.index')
@@ -79,15 +83,34 @@ class LicenciaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $licencia = Licencia::findOrFail($id);
+        $conductores = Conductor::all();
+        return view('licencias.edit', compact('licencia', 'conductores'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(LicenciaRequest $request, string $id)
     {
-        //
+        try {
+            $licencia = Licencia::findOrFail($id);
+            $licencia->update($request->all());
+            
+            return redirect()->route('licencias.index')
+                ->with('successMsg', 'Licencia actualizada exitosamente.');
+                
+        } catch (QueryException $e) {
+            Log::error('Error al actualizar la licencia: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al actualizar la licencia en la base de datos.')
+                ->withInput();
+        } catch (Exception $e) {
+            Log::error('Error inesperado al actualizar la licencia: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error inesperado al actualizar la licencia.')
+                ->withInput();
+        }
     }
 
     /**
@@ -100,7 +123,7 @@ class LicenciaController extends Controller
             return redirect()->route('licencias.index')
                 ->with('successMsg', 'Licencia eliminada exitosamente.');
         } catch (\Exception $e) {
-            \Log::error('Error al eliminar la licencia: ' . $e->getMessage());
+            Log::error('Error al eliminar la licencia: ' . $e->getMessage());
             return redirect()->route('licencias.index')
                 ->with('error', 'Error al eliminar la licencia.');
         }
@@ -118,7 +141,7 @@ class LicenciaController extends Controller
                 'nuevo_estado' => $licencia->estado
             ]);
         } catch (\Exception $e) {
-            \Log::error('Error al cambiar estado de la licencia: ' . $e->getMessage());
+            Log::error('Error al cambiar estado de la licencia: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Error al cambiar el estado de la licencia.'

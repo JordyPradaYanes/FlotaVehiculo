@@ -117,7 +117,7 @@
                                                     class="form-control @error('capacidad_carga') is-invalid @enderror"
                                                     name="capacidad_carga" id="capacidad_carga"
                                                     value="{{ old('capacidad_carga') }}" placeholder="Ej: 500"
-                                                    min="0" required>
+                                                    min="0" step="0.01" required>
                                                 @error('capacidad_carga')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -137,7 +137,7 @@
                                                     class="form-control @error('capacidad_gasolina') is-invalid @enderror"
                                                     name="capacidad_gasolina" id="capacidad_gasolina"
                                                     value="{{ old('capacidad_gasolina') }}" placeholder="Ej: 50"
-                                                    min="0" required>
+                                                    min="0" step="0.01" required>
                                                 @error('capacidad_gasolina')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -149,6 +149,7 @@
 
                                     {{-- Campo oculto --}}
                                     <input type="hidden" name="estado" value="1">
+                                    <input type="hidden" name="registrado_por" value="{{ Auth::user()->name }}">
 
                                     <div class="alert alert-info mt-3">
                                         <i class="fas fa-info-circle mr-2"></i>

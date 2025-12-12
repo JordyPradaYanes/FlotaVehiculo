@@ -11,7 +11,7 @@
     <title>@yield('title', 'Dashboard') - FlotaVehiculo</title>
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('backend/dist/img/escudo.png') }}"> 
+    <link rel="icon" type="image/png" href="{{ asset('backend/dist/img/escudo.png') }}">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
@@ -23,6 +23,15 @@
 
     <!-- AdminLTE Theme style -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+
+    <!-- Luxury Theme - Custom Design System -->
+    <link rel="stylesheet" href="{{ asset('backend/dist/css/luxury-theme.css') }}">
+
+    <!-- Sidebar Styles -->
+    <link rel="stylesheet" href="{{ asset('backend/dist/css/sidebar.css') }}">
+
+    <!-- Topbar Styles -->
+    <link rel="stylesheet" href="{{ asset('backend/dist/css/topbar.css') }}">
 
     <!-- overlayScrollbars -->
     <link rel="stylesheet"

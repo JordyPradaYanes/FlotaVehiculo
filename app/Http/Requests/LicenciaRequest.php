@@ -13,7 +13,7 @@ class LicenciaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class LicenciaRequest extends FormRequest
                 'fecha_expedicion' => 'required|date',
                 'fecha_vencimiento' => 'required|date|after:fecha_expedicion',
                 'entidad_emisora' => 'required|string|max:100',
-                'estado' => 'required|boolean'
+                'estado' => 'required'
             ];
         }elseif(request()->isMethod('put') || request()->isMethod('patch')){
             $licenciaId = $this->route('licencia');
@@ -40,9 +40,10 @@ class LicenciaRequest extends FormRequest
                 'fecha_expedicion' => 'required|date',
                 'fecha_vencimiento' => 'required|date|after:fecha_expedicion',
                 'entidad_emisora' => 'required|string|max:100',
-                'estado' => 'required|boolean'
+                'estado' => 'required'
             ];
         }
+        return [];
     }
     public function messages(): array
     {

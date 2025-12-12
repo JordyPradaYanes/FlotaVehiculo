@@ -9,6 +9,9 @@ use App\Models\Tipo_Vehiculo;
 use App\Http\Requests\VehiculoRequest;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 
 class VehiculoController extends Controller
@@ -110,15 +113,62 @@ class VehiculoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $vehiculo = Vehiculo::findOrFail($id);
+        $marcas = Marca::all()->unique('nombre');
+        $tipo_vehiculos = Tipo_Vehiculo::all()->unique('nombre');
+
+        return view('vehiculos.edit', compact('vehiculo', 'marcas', 'tipo_vehiculos'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(VehiculoRequest $request, string $id)
     {
-        //
+        try {
+            $vehiculo = Vehiculo::findOrFail($id);
+            
+            // Manejar la actualización de imagen
+            $imagename = $vehiculo->imagen; // Mantener la imagen actual por defecto
+            
+            if ($request->hasFile('imagen')) {
+                $image = $request->file('imagen');
+                $slug = Str::slug($request->placa);
+                $currentDate = Carbon::now()->toDateString();
+                $imagename = $slug . '-' . $currentDate . '-' . uniqid() . '.' . $image->getClientOriginalExtension();
+                
+                // Eliminar imagen anterior si existe
+                if ($vehiculo->imagen && file_exists(public_path('uploads/vehiculos/' . $vehiculo->imagen))) {
+                    unlink(public_path('uploads/vehiculos/' . $vehiculo->imagen));
+                }
+                
+                // Crear directorio si no existe
+                if (!file_exists('uploads/vehiculos')) {
+                    mkdir('uploads/vehiculos', 0777, true);
+                }
+                
+                $image->move('uploads/vehiculos', $imagename);
+            }
+            
+            // Actualizar el vehículo
+            $vehiculo->update(array_merge($request->except('imagen'), [
+                'imagen' => $imagename
+            ]));
+            
+            return redirect()->route('vehiculos.index')
+                ->with('successMsg', 'Vehículo actualizado exitosamente.');
+                
+        } catch (QueryException $e) {
+            Log::error('Error al actualizar el vehículo: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al actualizar el vehículo en la base de datos.')
+                ->withInput();
+        } catch (Exception $e) {
+            Log::error('Error inesperado al actualizar el vehículo: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error inesperado al actualizar el vehículo.')
+                ->withInput();
+        }
     }
 
     /**
@@ -143,6 +193,25 @@ class VehiculoController extends Controller
             Log::error('Error inesperado al eliminar el vehículo: ' . $e->getMessage());
             return redirect()->route('vehiculos.index')
                 ->with('error', 'Error inesperado al eliminar el vehículo.');
+        }
+    }
+    public function cambioEstado(Vehiculo $vehiculo)
+    {
+        try {
+            $vehiculo->estado = !$vehiculo->estado;
+            $vehiculo->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Estado del vehículo actualizado exitosamente.',
+                'nuevo_estado' => $vehiculo->estado
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error al cambiar estado del vehículo: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cambiar el estado del vehículo.'
+            ], 500);
         }
     }
 }

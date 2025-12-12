@@ -29,13 +29,22 @@ class MarcaRequest extends FormRequest
                 'estado' => 'required|boolean'
             ];
         }elseif(request()->isMethod('put') || request()->isMethod('patch')){
-            $marcaId = $this->route('marca');
+            $marca = $this->route('marca');
+            \Illuminate\Support\Facades\Log::info('Marca Update Debug:', [
+                'route_param_marca' => $marca,
+                'full_route_params' => $this->route()->parameters(),
+                'is_object' => is_object($marca),
+                'type' => gettype($marca)
+            ]);
+            $marcaId = is_object($marca) ? $marca->id : $marca;
+            
             return [
-                'nombre' => 'required|string|max:255|unique:marcas,nombre,' . $marcaId,
+                'nombre' => 'required|string|max:255',
                 'pais_origen' => 'required|string|max:255',
-                'estado' => 'required|boolean'
+                'estado' => 'required'
             ];
         }
+        return [];
     }
     public function messages(): array
     {

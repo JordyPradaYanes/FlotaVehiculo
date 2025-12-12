@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
-class VehiculoRequest extends FormRequest
+class Tipo_VehiculoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,33 +20,32 @@ class VehiculoRequest extends FormRequest
      */
     public function rules(): array
     {
-        // Crear (POST)
+        Log::info('Tipo_VehiculoRequest rules executing');
+
         if ($this->isMethod('post')) {
             return [
-                'marca_id'          => 'required|exists:marcas,id',
-                'tipo_vehiculo_id'  => 'required|exists:tipo_vehiculos,id',
-                'placa'             => 'required|string|max:10|unique:vehiculos,placa',
-                'modelo'            => 'required|string|max:255',
-                'año'               => 'required|integer|min:1900|max:' . (date('Y') + 1),
-                'color'             => 'required|string|max:255',
-                'kilometraje'       => 'required|numeric|min:0',
-                'estado'            => 'required|boolean'
+                'nombre'             => 'required|string|max:255|unique:tipo_vehiculos,nombre',
+                'descripcion'        => 'required|string|max:255',
+                'capacidad_pasajero' => 'required|integer|min:1',
+                'capacidad_carga'    => 'required|numeric|min:0',
+                'capacidad_gasolina' => 'required|numeric|min:0',
+                'estado'             => 'required|in:0,1'
             ];
         }
 
-        // Actualizar (PUT / PATCH)
         if ($this->isMethod('put') || $this->isMethod('patch')) {
-            $vehiculoId = $this->route('vehiculo');
+            $tipoVehiculo = $this->route('tipo_vehiculo');
+            $id = is_object($tipoVehiculo) ? $tipoVehiculo->id : $tipoVehiculo;
+
+            Log::info('Tipo_VehiculoRequest updating ID: ' . $id);
 
             return [
-                'marca_id'          => 'required|exists:marcas,id',
-                'tipo_vehiculo_id'  => 'required|exists:tipo_vehiculos,id', // ✅ CORREGIDO
-                'placa'             => 'required|string|max:10|unique:vehiculos,placa,' . $vehiculoId,
-                'modelo'            => 'required|string|max:255',
-                'año'               => 'required|integer|min:1900|max:' . (date('Y') + 1),
-                'color'             => 'required|string|max:255',
-                'kilometraje'       => 'required|numeric|min:0',
-                'estado'            => 'required|boolean'
+                'nombre'             => 'required|string|max:255|unique:tipo_vehiculos,nombre,' . $id,
+                'descripcion'        => 'required|string|max:255',
+                'capacidad_pasajero' => 'required|integer|min:1',
+                'capacidad_carga'    => 'required|numeric|min:0',
+                'capacidad_gasolina' => 'required|numeric|min:0',
+                'estado'             => 'required|in:0,1'
             ];
         }
 
@@ -58,22 +58,21 @@ class VehiculoRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'marca_id.required' => 'La marca es obligatoria.',
-            'marca_id.exists' => 'La marca seleccionada no existe.',
-            'tipo_vehiculo_id.required' => 'El tipo de vehículo es obligatorio.',
-            'tipo_vehiculo_id.exists' => 'El tipo de vehículo seleccionado no existe.',
-            'placa.required' => 'La placa es obligatoria.',
-            'placa.unique' => 'Esta placa ya está registrada.',
-            'placa.max' => 'La placa no puede tener más de 10 caracteres.',
-            'modelo.required' => 'El modelo es obligatorio.',
-            'año.required' => 'El año es obligatorio.',
-            'año.integer' => 'El año debe ser un número entero.',
-            'año.min' => 'El año debe ser mayor o igual a 1900.',
-            'año.max' => 'El año no puede ser mayor al año actual.',
-            'color.required' => 'El color es obligatorio.',
-            'kilometraje.required' => 'El kilometraje es obligatorio.',
-            'kilometraje.numeric' => 'El kilometraje debe ser un número.',
-            'kilometraje.min' => 'El kilometraje no puede ser negativo.',
+            'nombre.required'             => 'El nombre es obligatorio.',
+            'nombre.unique'               => 'Este tipo de vehículo ya está registrado.',
+            'nombre.max'                  => 'El nombre no puede exceder los 255 caracteres.',
+            'descripcion.required'        => 'La descripción es obligatoria.',
+            'capacidad_pasajero.required' => 'La capacidad de pasajeros es obligatoria.',
+            'capacidad_pasajero.integer'  => 'La capacidad de pasajeros debe ser un número entero.',
+            'capacidad_pasajero.min'      => 'La capacidad de pasajeros debe ser al menos 1.',
+            'capacidad_carga.required'    => 'La capacidad de carga es obligatoria.',
+            'capacidad_carga.numeric'     => 'La capacidad de carga debe ser un número.',
+            'capacidad_carga.min'         => 'La capacidad de carga no puede ser negativa.',
+            'capacidad_gasolina.required' => 'La capacidad de gasolina es obligatoria.',
+            'capacidad_gasolina.numeric'  => 'La capacidad de gasolina debe ser un número.',
+            'capacidad_gasolina.min'      => 'La capacidad de gasolina no puede ser negativa.',
+            'estado.required'             => 'El estado es obligatorio.',
+            'estado.in'                   => 'El estado debe ser válido.'
         ];
     }
 }

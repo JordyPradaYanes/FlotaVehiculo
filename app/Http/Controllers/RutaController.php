@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ruta;
+use App\Http\Requests\RutaRequest;
+use Illuminate\Database\QueryException;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class RutaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $rutas = Ruta::paginate(10);
@@ -27,7 +29,7 @@ class RutaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RutaRequest $request)
     {
         $rutas = Ruta::create($request->all());
         return redirect()->route('rutas.index')->with('successMsg', 'Ruta creada exitosamente.');
@@ -76,15 +78,33 @@ class RutaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $ruta = Ruta::findOrFail($id);
+        return view('rutas.edit', compact('ruta'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(RutaRequest $request, string $id)
     {
-        //
+        try {
+            $ruta = Ruta::findOrFail($id);
+            $ruta->update($request->all());
+            
+            return redirect()->route('rutas.index')
+                ->with('successMsg', 'Ruta actualizada exitosamente.');
+                
+        } catch (QueryException $e) {
+            Log::error('Error al actualizar la ruta: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al actualizar la ruta en la base de datos.')
+                ->withInput();
+        } catch (Exception $e) {
+            Log::error('Error inesperado al actualizar la ruta: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error inesperado al actualizar la ruta.')
+                ->withInput();
+        }
     }
 
     /**
@@ -97,7 +117,7 @@ class RutaController extends Controller
             return redirect()->route('rutas.index')
                 ->with('successMsg', 'Ruta eliminada exitosamente.');
         } catch (\Exception $e) {
-            \Log::error('Error al eliminar la ruta: ' . $e->getMessage());
+            Log::error('Error al eliminar la ruta: ' . $e->getMessage());
             return redirect()->route('rutas.index')
                 ->with('error', 'Error al eliminar la ruta.');
         }
@@ -115,7 +135,7 @@ class RutaController extends Controller
                 'nuevo_estado' => $ruta->estado
             ]);
         } catch (\Exception $e) {
-            \Log::error('Error al cambiar estado de la ruta: ' . $e->getMessage());
+            Log::error('Error al cambiar estado de la ruta: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'message' => 'Error al cambiar el estado de la ruta.'

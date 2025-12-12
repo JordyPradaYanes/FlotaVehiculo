@@ -17,13 +17,20 @@ class VehiculoFactory extends Factory
      */
     public function definition(): array
     {
+        $coloresDisponibles = [
+            'Rojo', 'Azul', 'Verde', 'Amarillo', 'Negro', 'Blanco', 
+            'Gris', 'Plateado', 'Dorado', 'Naranja', 'Morado', 'Rosa',
+            'Café', 'Beige', 'Verde Claro', 'Azul Claro', 'Gris Oscuro',
+            'Rojo Oscuro', 'Azul Oscuro', 'Verde Oscuro', 'Marrón'
+        ];
+        
         return [
             'marca_id' => Marca::inRandomOrder()->first()->id,
             'tipo_vehiculo_id' => Tipo_Vehiculo::inRandomOrder()->first()->id,
             'placa' => strtoupper($this->faker->bothify('???-###')),
             'modelo' => $this->faker->word(),
             'año' => $this->faker->year(),
-            'color' => $this->faker->safeColorName(),
+            'color' => $this->faker->randomElement($coloresDisponibles),
             'kilometraje' => $this->faker->randomFloat(2, 0, 200000),
             'estado' => $this->faker->randomElement(['activo', 'inactivo', 'mantenimiento']),
             'registrado_por' => $this->faker->name()

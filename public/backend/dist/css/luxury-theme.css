@@ -1,0 +1,638 @@
+/**
+ * ============================================
+ * CLEAN PROFESSIONAL THEME - FlotaVehiculo
+ * Light, Modern & Intuitive Design
+ * ============================================
+ */
+
+/* ============================================
+   IMPORTAR FUENTES PREMIUM
+   ============================================ */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap");
+
+/* ============================================
+   VARIABLES CSS - PALETA PROFESIONAL
+   ============================================ */
+:root {
+    /* Colores Principales - Azul Profesional */
+    --primary-blue: #3498db;
+    --primary-blue-light: #5dade2;
+    --primary-blue-dark: #2563eb;
+    --primary-blue-glow: rgba(52, 152, 219, 0.15);
+
+    /* Colores Base - Blancos y Grises */
+    --white: #ffffff;
+    --gray-50: #f8f9fa;
+    --gray-100: #f1f3f5;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+
+    /* Colores de Texto */
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --text-muted: #adb5bd;
+
+    /* Estados */
+    --success: #28a745;
+    --success-light: #48c774;
+    --warning: #ffc107;
+    --warning-light: #ffd43b;
+    --danger: #dc3545;
+    --danger-light: #ff6b6b;
+    --info: #17a2b8;
+    --info-light: #3bc9db;
+
+    /* Sombras y Elevaciones */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.12);
+    --shadow-blue: 0 4px 12px rgba(52, 152, 219, 0.2);
+    --shadow-blue-lg: 0 8px 20px rgba(52, 152, 219, 0.25);
+
+    /* Gradientes */
+    --gradient-blue: linear-gradient(
+        135deg,
+        var(--primary-blue-dark) 0%,
+        var(--primary-blue) 50%,
+        var(--primary-blue-light) 100%
+    );
+    --gradient-light: linear-gradient(
+        180deg,
+        var(--white) 0%,
+        var(--gray-50) 100%
+    );
+    --gradient-subtle: linear-gradient(
+        135deg,
+        rgba(52, 152, 219, 0.05) 0%,
+        rgba(255, 255, 255, 1) 100%
+    );
+
+    /* Tipografía */
+    --font-display: "Poppins", sans-serif;
+    --font-body: "Inter", sans-serif;
+
+    /* Espaciado */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+
+    /* Bordes */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 16px;
+    --border-radius-full: 9999px;
+
+    /* Transiciones */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* ============================================
+   RESET Y BASE
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--gray-50);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   TIPOGRAFÍA
+   ============================================ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: var(--spacing-md);
+}
+
+h1 {
+    font-size: 2.25rem;
+    color: var(--primary-blue-dark);
+    font-weight: 700;
+}
+
+h2 {
+    font-size: 1.875rem;
+    color: var(--gray-800);
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: var(--gray-800);
+}
+
+h4 {
+    font-size: 1.25rem;
+    color: var(--gray-700);
+}
+
+p {
+    margin-bottom: var(--spacing-md);
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   BOTONES
+   ============================================ */
+.btn-luxury {
+    font-family: var(--font-body);
+    font-weight: 600;
+    padding: 0.625rem 1.25rem;
+    border-radius: var(--border-radius-md);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-size: 0.875rem;
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-luxury:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--primary-blue-glow);
+}
+
+.btn-luxury-primary {
+    background: var(--primary-blue);
+    color: var(--white);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-luxury-primary:hover {
+    background: var(--primary-blue-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-blue);
+}
+
+.btn-luxury-secondary {
+    background: var(--white);
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-luxury-secondary:hover {
+    background: var(--primary-blue);
+    color: var(--white);
+    transform: translateY(-1px);
+}
+
+.btn-luxury-outline {
+    background: transparent;
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+}
+
+.btn-luxury-outline:hover {
+    background: var(--primary-blue);
+    color: var(--white);
+    transform: translateY(-1px);
+}
+
+.btn-luxury-danger {
+    background: var(--danger);
+    color: var(--white);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-luxury-danger:hover {
+    background: var(--danger-light);
+    transform: translateY(-1px);
+}
+
+.btn-luxury-success {
+    background: var(--success);
+    color: var(--white);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-luxury-success:hover {
+    background: var(--success-light);
+    transform: translateY(-1px);
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
+.card-luxury {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: all var(--transition-base);
+    border: 1px solid var(--gray-200);
+}
+
+.card-luxury:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-blue-light);
+}
+
+.card-luxury-header {
+    background: var(--gradient-light);
+    padding: var(--spacing-lg);
+    border-bottom: 2px solid var(--primary-blue);
+}
+
+.card-luxury-body {
+    padding: var(--spacing-lg);
+}
+
+.card-luxury-footer {
+    background: var(--gray-50);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-top: 1px solid var(--gray-200);
+}
+
+/* Card con acento azul */
+.card-luxury-blue {
+    border-left: 4px solid var(--primary-blue);
+    box-shadow: var(--shadow-md);
+}
+
+/* ============================================
+   INPUTS Y FORMULARIOS
+   ============================================ */
+.input-luxury {
+    width: 100%;
+    padding: 0.625rem 1rem;
+    background: var(--white);
+    border: 2px solid var(--gray-300);
+    border-radius: var(--border-radius-md);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    transition: all var(--transition-base);
+}
+
+.input-luxury::placeholder {
+    color: var(--gray-500);
+}
+
+.input-luxury:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px var(--primary-blue-glow);
+    background: var(--white);
+}
+
+.input-luxury:hover {
+    border-color: var(--gray-400);
+}
+
+.form-group-luxury {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-label-luxury {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.form-label-luxury .required {
+    color: var(--danger);
+    margin-left: 0.25rem;
+}
+
+/* ============================================
+   BADGES Y PILLS
+   ============================================ */
+.badge-luxury {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: var(--border-radius-full);
+    font-family: var(--font-body);
+}
+
+.badge-luxury-blue {
+    background: var(--primary-blue);
+    color: var(--white);
+}
+
+.badge-luxury-success {
+    background: var(--success);
+    color: var(--white);
+}
+
+.badge-luxury-warning {
+    background: var(--warning);
+    color: var(--gray-900);
+}
+
+.badge-luxury-danger {
+    background: var(--danger);
+    color: var(--white);
+}
+
+.badge-luxury-info {
+    background: var(--info);
+    color: var(--white);
+}
+
+.badge-luxury-light {
+    background: var(--gray-200);
+    color: var(--text-primary);
+}
+
+/* ============================================
+   TABLAS
+   ============================================ */
+.table-luxury {
+    width: 100%;
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+}
+
+.table-luxury thead {
+    background: var(--gradient-blue);
+}
+
+.table-luxury thead th {
+    padding: var(--spacing-md) var(--spacing-lg);
+    color: var(--white);
+    font-weight: 600;
+    font-size: 0.875rem;
+    font-family: var(--font-body);
+    text-align: left;
+}
+
+.table-luxury tbody tr {
+    border-bottom: 1px solid var(--gray-200);
+    transition: all var(--transition-fast);
+}
+
+.table-luxury tbody tr:hover {
+    background: var(--gray-50);
+}
+
+.table-luxury tbody tr:last-child {
+    border-bottom: none;
+}
+
+.table-luxury tbody td {
+    padding: var(--spacing-md) var(--spacing-lg);
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   MODALES
+   ============================================ */
+.modal-luxury .modal-content {
+    background: var(--white);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-xl);
+}
+
+.modal-luxury .modal-header {
+    background: var(--gradient-light);
+    border-bottom: 2px solid var(--primary-blue);
+    padding: var(--spacing-lg);
+}
+
+.modal-luxury .modal-title {
+    color: var(--primary-blue-dark);
+    font-family: var(--font-display);
+    font-weight: 600;
+}
+
+.modal-luxury .modal-body {
+    padding: var(--spacing-xl);
+    color: var(--text-secondary);
+}
+
+.modal-luxury .modal-footer {
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-200);
+    padding: var(--spacing-lg);
+}
+
+/* ============================================
+   ALERTS
+   ============================================ */
+.alert-luxury {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    border-left: 4px solid;
+    margin-bottom: var(--spacing-md);
+    font-family: var(--font-body);
+}
+
+.alert-luxury-success {
+    background: rgba(40, 167, 69, 0.1);
+    border-color: var(--success);
+    color: var(--success);
+}
+
+.alert-luxury-warning {
+    background: rgba(255, 193, 7, 0.1);
+    border-color: var(--warning);
+    color: #856404;
+}
+
+.alert-luxury-danger {
+    background: rgba(220, 53, 69, 0.1);
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+.alert-luxury-info {
+    background: rgba(23, 162, 184, 0.1);
+    border-color: var(--info);
+    color: var(--info);
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.4s ease-out;
+}
+
+.animate-slideInLeft {
+    animation: slideInLeft 0.4s ease-out;
+}
+
+.animate-slideInRight {
+    animation: slideInRight 0.4s ease-out;
+}
+
+/* ============================================
+   SCROLLBAR PERSONALIZADO
+   ============================================ */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--gray-100);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-blue);
+    border-radius: var(--border-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-blue-dark);
+}
+
+/* ============================================
+   UTILIDADES
+   ============================================ */
+.text-blue {
+    color: var(--primary-blue) !important;
+}
+
+.text-primary {
+    color: var(--text-primary) !important;
+}
+
+.text-secondary {
+    color: var(--text-secondary) !important;
+}
+
+.bg-white {
+    background-color: var(--white) !important;
+}
+
+.bg-light {
+    background-color: var(--gray-50) !important;
+}
+
+.bg-gradient-blue {
+    background: var(--gradient-blue) !important;
+}
+
+.border-blue {
+    border-color: var(--primary-blue) !important;
+}
+
+.shadow-sm {
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.shadow-md {
+    box-shadow: var(--shadow-md) !important;
+}
+
+.shadow-blue {
+    box-shadow: var(--shadow-blue) !important;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.875rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    .btn-luxury {
+        padding: 0.5rem 1rem;
+        font-size: 0.8125rem;
+    }
+
+    .card-luxury-header,
+    .card-luxury-body {
+        padding: var(--spacing-md);
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    .btn-luxury {
+        padding: 0.5rem 0.875rem;
+        font-size: 0.75rem;
+    }
+}

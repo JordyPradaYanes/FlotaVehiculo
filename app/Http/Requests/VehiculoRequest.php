@@ -30,8 +30,8 @@ class VehiculoRequest extends FormRequest
                 'año'               => 'required|integer|min:1900|max:' . date('Y'),
                 'color'             => 'required|string|max:255',
                 'kilometraje'       => 'nullable|numeric|min:0',
-                'estado'            => 'required|boolean',
-                'imagen'            => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240'
+                'estado'            => 'required|in:activo,inactivo,mantenimiento',
+                'imagen'            => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240'
             ];
         }
 
@@ -48,8 +48,8 @@ class VehiculoRequest extends FormRequest
                 'año'               => 'required|integer|min:1900|max:' . date('Y'),
                 'color'             => 'required|string|max:255',
                 'kilometraje'       => 'nullable|numeric|min:0',
-                'estado'            => 'required|boolean',
-                'imagen'            => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240'
+                'estado'            => 'required',
+                'imagen'            => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240'
             ];
         }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Contrato;
 use App\Models\Conductor;
+use App\Http\Requests\ContratoRequest;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 
@@ -25,9 +26,9 @@ class ContratoController extends Controller
         return view('contratos.create', compact('conductores'));
     }
 
-    public function store(Request $request)
+    public function store(ContratoRequest $request)
     {
-        $contrato = Contrato::create($request->All());
+        $contrato = Contrato::create($request->all());
         return redirect()->route('contratos.index')
             ->with('successMsg', 'Contrato creado exitosamente.');
         /*
@@ -58,6 +59,41 @@ class ContratoController extends Controller
                 ->with('error', 'Error al crear el contrato en la base de datos.')
                 ->withInput();
         }*/
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $contrato = Contrato::findOrFail($id);
+        $conductores = Conductor::all();
+        return view('contratos.edit', compact('contrato', 'conductores'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(ContratoRequest $request, string $id)
+    {
+        try {
+            $contrato = Contrato::findOrFail($id);
+            $contrato->update($request->all());
+            
+            return redirect()->route('contratos.index')
+                ->with('successMsg', 'Contrato actualizado exitosamente.');
+                
+        } catch (QueryException $e) {
+            Log::error('Error al actualizar el contrato: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al actualizar el contrato en la base de datos.')
+                ->withInput();
+        } catch (\Exception $e) {
+            Log::error('Error inesperado al actualizar el contrato: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error inesperado al actualizar el contrato.')
+                ->withInput();
+        }
     }
 
     /**

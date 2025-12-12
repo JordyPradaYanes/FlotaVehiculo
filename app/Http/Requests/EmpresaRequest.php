@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use app\Models\Empresa;
+use Illuminate\Support\Facades\Log;
 
 class EmpresaRequest extends FormRequest
 {
@@ -12,7 +13,7 @@ class EmpresaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,6 +23,11 @@ class EmpresaRequest extends FormRequest
      */
     public function rules(): array
     {
+        // DEBUG
+        Log::info('=== DEBUG EMPRESA REQUEST ===');
+        Log::info('Método HTTP: ' . $this->method());
+        Log::info('Estado raw: ' . $this->input('estado'));
+        
         if(request()->isMethod('post')){
             return[
                 'nit' => 'required|string|max:20|unique:empresas,nit',
@@ -29,19 +35,22 @@ class EmpresaRequest extends FormRequest
                 'direccion' => 'required|string|max:500',
                 'telefono' => 'required|string|max:20',
                 'email' => 'required|email|max:255|unique:empresas,email',
-                'estado' => 'required|boolean'
+                'estado' => 'required|in:0,1'
             ];
         }elseif(request()->isMethod('put') || request()->isMethod('patch')){
             $empresaId = $this->route('empresa');
+            Log::info('ID de empresa: ' . $empresaId);
+            
             return[
                 'nit' => 'required|string|max:20|unique:empresas,nit,' . $empresaId,
                 'nombre' => 'required|string|max:255|unique:empresas,nombre,' . $empresaId,
                 'direccion' => 'required|string|max:500',
                 'telefono' => 'required|string|max:20',
                 'email' => 'required|email|max:255|unique:empresas,email,' . $empresaId,
-                'estado' => 'required|boolean'
+                'estado' => 'required|in:0,1'
             ];
         }
+        return [];
     }
     public function messages(): array
     {
@@ -65,7 +74,7 @@ class EmpresaRequest extends FormRequest
             'email.max' => 'El correo electrónico no debe exceder los 255 caracteres.',
             'email.unique' => 'El correo electrónico ya existe.',
             'estado.required' => 'El estado es obligatorio.',
-            'estado.boolean' => 'El estado debe ser verdadero o falso.'
+            'estado.in' => 'El estado debe ser 0 o 1.'
         ];
     }
 }

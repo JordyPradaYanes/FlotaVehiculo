@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
+use Exception;
+use Illuminate\Support\Facades\Log;
 use App\Models\Vehiculo;
 use App\Models\Conductor;
 use App\Models\Viaje;
@@ -36,34 +39,30 @@ class HomeController extends Controller
     {
         // Estadísticas principales
         $totalVehiculos = Vehiculo::count();
-        $conductoresActivos = Conductor::where('estado', 'activo')->count();
+        $conductoresActivos = Conductor::whereIn('estado', ['1', 'activo', 'Activo'])->count();
         
-        // Viajes del mes actual
-        $viajesDelMes = Viaje::whereYear('created_at', Carbon::now()->year)
-                            ->whereMonth('created_at', Carbon::now()->month)
-                            ->count();
+        // Total de Viajes (Histórico)
+        $viajesDelMes = Viaje::count();
         
-        // Gasto en combustible del mes actual
-        $gastoCombustibleMes = Recarga_Combustible::whereYear('created_at', Carbon::now()->year)
-                                                  ->whereMonth('created_at', Carbon::now()->month)
-                                                  ->sum('costo_total');
+        // Gasto Total en combustible (Histórico)
+        $gastoCombustibleMes = Recarga_Combustible::sum('costo_total');
         
         // Estadísticas adicionales
         $totalEmpresas = Empresa::count();
-        $rutasActivas = Ruta::where('estado', 1)->count();
+        $rutasActivas = Ruta::whereIn('estado', ['1', 'activo', 'Activo'])->count();
         
         // Licencias vigentes (fecha de vencimiento mayor a hoy)
         $licenciasVigentes = Licencia::where('fecha_vencimiento', '>', Carbon::now())
-                                      ->where('estado', 1)
+                                      ->whereIn('estado', ['1', 'activo', 'Activo'])
                                       ->count();
         
         // Contratos activos
-        $contratosActivos = Contrato::where('estado', 1)->count();
+        $contratosActivos = Contrato::whereIn('estado', ['1', 'activo', 'Activo'])->count();
         
         // Licencias por vencer en los próximos 30 días
         $licenciasPorVencer = Licencia::where('fecha_vencimiento', '>', Carbon::now())
                                        ->where('fecha_vencimiento', '<=', Carbon::now()->addDays(30))
-                                       ->where('estado', 1)
+                                       ->whereIn('estado', ['1', 'activo', 'Activo'])
                                        ->limit(5)
                                        ->get();
         

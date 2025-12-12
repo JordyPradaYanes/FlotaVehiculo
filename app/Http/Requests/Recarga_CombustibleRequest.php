@@ -28,19 +28,24 @@ class Recarga_CombustibleRequest extends FormRequest
                 'precio_litro' => 'required|numeric|min:0',
                 'costo_total' => 'required|numeric|min:0',
                 'estacion_servicio' => 'required|string|max:255',
-                'estado' => 'required|boolean'
+                'estado' => 'required|in:0,1'
             ];
         }elseif(request()->isMethod('put') || request()->isMethod('patch')){
-            $marcaId = $this->route('recarga_combustible');
+            $recargaCombustible = $this->route('recarga_combustible');
+            
+            // Handle if route param is object or ID
+            $id = is_object($recargaCombustible) ? $recargaCombustible->id : $recargaCombustible;
+
             return [
                 'vehiculo_id' => 'required|exists:vehiculos,id',
                 'cantidad_litros' => 'required|numeric|min:0',
                 'precio_litro' => 'required|numeric|min:0',
                 'costo_total' => 'required|numeric|min:0',
                 'estacion_servicio' => 'required|string|max:255',
-                'estado' => 'required|boolean'
+                'estado' => 'required|in:0,1'
             ];
         }
+        return [];
     }
     public function messages(): array
     {

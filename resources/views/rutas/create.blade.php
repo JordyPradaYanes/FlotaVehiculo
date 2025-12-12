@@ -148,6 +148,7 @@
 
                                     {{-- Campo oculto --}}
                                     <input type="hidden" name="estado" value="1">
+                                    <input type="hidden" name="registrado_por" value="{{ Auth::user()->name }}">
 
                                     <div class="alert alert-info mt-3">
                                         <i class="fas fa-info-circle mr-2"></i>

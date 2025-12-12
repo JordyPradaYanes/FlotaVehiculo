@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Marca;
+use App\Http\Requests\MarcaRequest;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
-use App\Http\Requests\MarcaRequest;
 
 class MarcaController extends Controller
 {
@@ -22,7 +22,7 @@ class MarcaController extends Controller
         return view('marcas.create');
     }
 
-    public function store(Request $request)
+    public function store(MarcaRequest $request)
     {
         $marca = Marca::create($request->All());
         return redirect()->route('marcas.index')
@@ -72,12 +72,30 @@ class MarcaController extends Controller
 
     public function edit(string $id)
     {
-        //
+        $marca = Marca::findOrFail($id);
+        return view('marcas.edit', compact('marca'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(MarcaRequest $request, string $id)
     {
-        //
+        try {
+            $marca = Marca::findOrFail($id);
+            $marca->update($request->all());
+            
+            return redirect()->route('marcas.index')
+                ->with('successMsg', 'Marca actualizada exitosamente.');
+                
+        } catch (QueryException $e) {
+            Log::error('Error al actualizar la marca: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al actualizar la marca en la base de datos.')
+                ->withInput();
+        } catch (\Exception $e) {
+            Log::error('Error inesperado al actualizar la marca: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error inesperado al actualizar la marca.')
+                ->withInput();
+        }
     }
 
     public function destroy($id)

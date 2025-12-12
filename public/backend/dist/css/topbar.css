@@ -1,0 +1,237 @@
+/* ============================================
+   TOPBAR CLEAN PROFESSIONAL STYLES
+   ============================================ */
+
+/* Navbar principal con tema limpio */
+.navbar-luxury {
+    background: var(--white) !important;
+    border-bottom: 1px solid var(--gray-200) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Links del navbar */
+.nav-link-luxury-topbar {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 1rem !important;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    margin: 0 0.25rem;
+    color: var(--text-secondary) !important;
+}
+
+.nav-link-luxury-topbar:hover {
+    background-color: var(--gray-50) !important;
+    color: var(--primary-blue) !important;
+}
+
+.nav-link-luxury-topbar i {
+    color: var(--primary-blue);
+    transition: all 0.3s ease;
+}
+
+.nav-link-luxury-topbar:hover i {
+    color: var(--primary-blue-dark);
+    transform: scale(1.1);
+}
+
+/* Imagen de usuario mejorada */
+.user-image-luxury {
+    width: 35px;
+    height: 35px;
+    transition: all 0.3s ease;
+    border: 2px solid var(--primary-blue);
+    box-shadow: 0 2px 4px rgba(52, 152, 219, 0.2);
+}
+
+.user-image-luxury:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+
+.user-name-luxury {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+}
+
+/* Dropdown moderno limpio */
+.dropdown-luxury {
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    min-width: 320px;
+    background: var(--white);
+}
+
+/* Header del dropdown */
+.dropdown-header-luxury {
+    background: var(--gradient-blue);
+    padding: 1rem;
+    text-align: center;
+    color: var(--white);
+    font-weight: 700;
+    font-size: 1rem;
+    font-family: var(--font-body);
+    display: block;
+}
+
+/* Header del dropdown de usuario */
+.user-header-luxury {
+    background: var(--gradient-light);
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--primary-blue);
+}
+
+.user-header-luxury img {
+    width: 85px;
+    height: 85px;
+    border: 3px solid var(--primary-blue);
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+.user-header-luxury img:hover {
+    border-color: var(--primary-blue-dark);
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(52, 152, 219, 0.3);
+}
+
+.user-header-luxury p {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--primary-blue-dark);
+    font-family: var(--font-display);
+}
+
+.user-header-luxury small {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Body del dropdown */
+.user-body-luxury {
+    padding: 1.5rem;
+    background-color: var(--white);
+}
+
+/* Footer del dropdown */
+.user-footer-luxury {
+    padding: 1rem 1.5rem;
+    background-color: var(--gray-50);
+}
+
+.dropdown-footer-luxury {
+    display: block;
+    background: var(--gray-50);
+    font-weight: 600;
+    padding: 0.75rem;
+    text-align: center;
+    color: var(--primary-blue);
+    transition: all 0.3s ease;
+}
+
+.dropdown-footer-luxury:hover {
+    background: var(--gray-100);
+    color: var(--primary-blue-dark);
+    text-decoration: none;
+}
+
+/* Búsqueda moderna limpia */
+.search-luxury .search-input-topbar {
+    border-radius: 25px 0 0 25px;
+    padding-left: 1rem;
+    font-size: 0.9rem;
+    border: 1px solid var(--gray-300);
+    transition: all 0.3s ease;
+    background: var(--gray-50);
+    color: var(--text-primary);
+}
+
+.search-luxury .search-input-topbar::placeholder {
+    color: var(--gray-500);
+}
+
+.search-luxury .search-input-topbar:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px var(--primary-blue-glow);
+    background: var(--white);
+    color: var(--text-primary);
+}
+
+.search-luxury .search-btn-luxury {
+    border-radius: 0 25px 25px 0;
+    padding: 0 1rem;
+    border: 1px solid var(--primary-blue);
+    border-left: none;
+    background: var(--primary-blue);
+    color: var(--white);
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.search-luxury .search-btn-luxury:hover {
+    background: var(--primary-blue-dark);
+    color: var(--white);
+}
+
+/* Badge de notificaciones */
+.navbar-badge-luxury {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.25rem 0.45rem;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    box-shadow: 0 2px 4px rgba(52, 152, 219, 0.3);
+}
+
+/* Items de notificación */
+.notification-item-luxury {
+    padding: 0.85rem 1rem;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+    color: var(--text-secondary);
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-100);
+}
+
+.notification-item-luxury:hover {
+    background-color: var(--gray-50);
+    border-left-color: var(--primary-blue);
+    padding-left: 1.3rem;
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+/* Botones del dropdown */
+.user-body-luxury .btn {
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.user-body-luxury .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .search-luxury {
+        display: none !important;
+    }
+
+    .nav-link-luxury-topbar {
+        padding: 0.5rem 0.75rem !important;
+    }
+
+    .user-name-luxury {
+        display: none !important;
+    }
+}

@@ -21,7 +21,7 @@ class ConductorFactory extends Factory
             'apellido' => $this->faker->lastName(),
             'documento' => $this->faker->unique()->numerify('##########'),
             'fecha_nacimiento' => $this->faker->date(),
-            'estado' => $this->faker->randomElement(['activo', 'inactivo']),
+            'estado' => $this->faker->randomElement([1, 0]),
             'registrado_por' => $this->faker->name()
         ];
     }

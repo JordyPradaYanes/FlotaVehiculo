@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use app\Models\Conductor;
+use Illuminate\Support\Facades\Log;
 
 class ConductorRequest extends FormRequest
 {
@@ -12,7 +13,7 @@ class ConductorRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -28,18 +29,39 @@ class ConductorRequest extends FormRequest
                 'apellido' => 'required|string|max:255',
                 'documento' => 'required|string|max:255|unique:conductores,documento',
                 'fecha_nacimiento' => 'required|date',
-                'estado' => 'required|boolean'
+                'estado' => 'required|in:0,1'
             ];
         }elseif(request()->isMethod('put') || request()->isMethod('patch')){
-            $conductorId = $this->route('conductor');
+            // Obtener el ID del conductor desde la ruta
+            $conductor = $this->route('conductore');
+            
+            // Debug: ver qué tipo de dato es
+            Log::info('=== DEBUG CONDUCTOR UPDATE ===');
+            Log::info('Conductor route param type: ' . gettype($conductor));
+            Log::info('Conductor route param value: ' . print_r($conductor, true));
+            
+            // Extraer el ID correctamente
+            if (is_object($conductor)) {
+                $conductorId = $conductor->id;
+            } elseif (is_numeric($conductor)) {
+                $conductorId = $conductor;
+            } else {
+                // Intentar obtener desde la URL
+                $conductorId = request()->route()->parameter('conductore');
+            }
+            
+            Log::info('Conductor ID final: ' . $conductorId);
+            Log::info('Documento recibido: ' . $this->input('documento'));
+            
             return [
                 'nombre' => 'required|string|max:255',
                 'apellido' => 'required|string|max:255',
-                'documento' => 'required|string|max:255|unique:conductores,documento,' . $conductorId,
+                'documento' => 'required|string|max:255|unique:conductores,documento,' . $conductorId . ',id',
                 'fecha_nacimiento' => 'required|date',
-                'estado' => 'required|boolean'
+                'estado' => 'required'
             ]; 
         }
+        return [];
     }
     public function messages(): array
     {
@@ -57,7 +79,7 @@ class ConductorRequest extends FormRequest
             'fecha_nacimiento.required' => 'La fecha de nacimiento es obligatoria.',
             'fecha_nacimiento.date' => 'La fecha de nacimiento no es una fecha válida.',
             'estado.required' => 'El estado es obligatorio.',
-            'estado.boolean' => 'El estado debe ser verdadero o falso.'
+            'estado.in' => 'El estado debe ser 0 o 1.'
         ];
     }
 }

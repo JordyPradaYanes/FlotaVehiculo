@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Empresa;
+use App\Http\Requests\EmpresaRequest;
+use Illuminate\Database\QueryException;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class EmpresaController extends Controller
 {
@@ -27,7 +31,7 @@ class EmpresaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(EmpresaRequest $request)
     {   
         $empresa = Empresa::create($request->All());
         return redirect()->route('empresas.index')
@@ -74,15 +78,39 @@ class EmpresaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $empresa = Empresa::findOrFail($id);
+        return view('empresas.edit', compact('empresa'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(EmpresaRequest $request, string $id)
     {
-        //
+        // DEBUG: Ver qué valor llega
+        Log::info('=== DEBUG EMPRESA UPDATE ===');
+        Log::info('Estado recibido: ' . $request->input('estado'));
+        Log::info('Tipo de estado: ' . gettype($request->input('estado')));
+        Log::info('Todos los datos: ', $request->all());
+        
+        try {
+            $empresa = Empresa::findOrFail($id);
+            $empresa->update($request->all());
+            
+            return redirect()->route('empresas.index')
+                ->with('successMsg', 'Empresa actualizada exitosamente.');
+                
+        } catch (QueryException $e) {
+            Log::error('Error al actualizar la empresa: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al actualizar la empresa en la base de datos.')
+                ->withInput();
+        } catch (Exception $e) {
+            Log::error('Error inesperado al actualizar la empresa: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error inesperado al actualizar la empresa.')
+                ->withInput();
+        }
     }
 
     /**

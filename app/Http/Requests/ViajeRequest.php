@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+
 
 class ViajeRequest extends FormRequest
 {
@@ -50,5 +52,8 @@ class ViajeRequest extends FormRequest
                 'estado' => 'required|boolean',
             ];
         }
+
+        // Default: return empty array for other HTTP methods
+        return [];
     }
 }

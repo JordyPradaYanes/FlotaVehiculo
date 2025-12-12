@@ -20,7 +20,7 @@ class ContratoFactory extends Factory
             'fecha_inicio' => $this->faker->date(),
             'fecha_final' => $this->faker->date(),
             'salario' => $this->faker->randomFloat(2, 1000, 10000),
-            'estado' => $this->faker->randomElement(['activo', 'inactivo', 'suspendido']),
+            'estado' => $this->faker->randomElement([1, 0]),
             'registrado_por' => $this->faker->name(),
         ];
     }

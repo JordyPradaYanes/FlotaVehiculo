@@ -22,7 +22,7 @@ class RutaFactory extends Factory
             'distancia_en_km' => $this->faker->randomFloat(2, 1, 1000),
             'tiempo_estimado' => $this->faker->randomFloat(2, 0.5, 20),
             'costo_peaje' => $this->faker->randomFloat(2, 0, 100),
-            'estado' => $this->faker->randomElement(['activo', 'inactivo']),
+            'estado' => $this->faker->randomElement([1, 0]),
             'registrado_por' => $this->faker->name()
         ];
     }

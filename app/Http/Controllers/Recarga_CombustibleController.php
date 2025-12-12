@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Recarga_Combustible;
+use Illuminate\Database\QueryException;
+use Exception;
+use Illuminate\Support\Facades\Log;
 use App\Models\Vehiculo;
+use App\Http\Requests\Recarga_CombustibleRequest;
 
 class Recarga_CombustibleController extends Controller
 {
@@ -29,7 +33,7 @@ class Recarga_CombustibleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Recarga_CombustibleRequest $request)
     {  
         $recarga_combustible = Recarga_Combustible::create($request->All());
         return redirect()->route('recarga_combustibles.index')
@@ -77,15 +81,34 @@ class Recarga_CombustibleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $recarga_combustible = Recarga_Combustible::findOrFail($id);
+        $vehiculos = Vehiculo::all();
+        return view('recarga_combustibles.edit', compact('recarga_combustible', 'vehiculos'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Recarga_CombustibleRequest $request, string $id)
     {
-        //
+        try {
+            $recarga_combustible = Recarga_Combustible::findOrFail($id);
+            $recarga_combustible->update($request->all());
+            
+            return redirect()->route('recarga_combustibles.index')
+                ->with('successMsg', 'Recarga de combustible actualizada exitosamente.');
+                
+        } catch (QueryException $e) {
+            Log::error('Error al actualizar la recarga de combustible: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error al actualizar la recarga de combustible en la base de datos.')
+                ->withInput();
+        } catch (Exception $e) {
+            Log::error('Error inesperado al actualizar la recarga de combustible: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Error inesperado al actualizar la recarga de combustible.')
+                ->withInput();
+        }
     }
 
     /**

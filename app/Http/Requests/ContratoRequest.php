@@ -12,7 +12,7 @@ class ContratoRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -27,7 +27,7 @@ class ContratoRequest extends FormRequest
                 'fecha_inicio' => 'required|date',
                 'fecha_final' => 'required|date|after:fecha_inicio',
                 'salario' => 'required|numeric|min:0',
-                'estado' => 'required|boolean'
+                'estado' => 'required|in:0,1'
             ];
         }elseif(request()->isMethod('put') || request()->isMethod('patch')){
             $contratoId = $this->route('contrato');
@@ -35,9 +35,10 @@ class ContratoRequest extends FormRequest
                 'fecha_inicio' => 'required|date',
                 'fecha_final' => 'required|date|after:fecha_inicio',
                 'salario' => 'required|numeric|min:0',
-                'estado' => 'required|boolean'
+                'estado' => 'required'
             ];
         }
+        return [];
     }
     public function messages(): array
     {
