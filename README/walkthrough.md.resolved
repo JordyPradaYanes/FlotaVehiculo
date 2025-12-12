@@ -1,0 +1,31 @@
+# Fix for Visual Discrepancies on Railway
+
+The issue where "it doesn't look like local" on Railway is caused by **Mixed Content**.
+Your local environment uses `http://`, but Railway uses `https://`. Laravel was generating `http://` links for your CSS files, and the browser blocked them on the secure Railway site.
+
+I have updated your application to force `https://` links when running in production.
+
+## Changes Made
+
+### Forced HTTPS Scheme
+In [AppServiceProvider.php](file:///c:/xampp/htdocs/FlotaVehiculo/app/Providers/AppServiceProvider.php):
+```php
+if($this->app->environment('production')) {
+    URL::forceScheme('https');
+}
+```
+This tells Laravel "even if you think we are on HTTP, generate HTTPS links because we are behind a secure proxy".
+
+## Verified Items
+- **Syntax Check**: [AppServiceProvider.php](file:///c:/xampp/htdocs/FlotaVehiculo/app/Providers/AppServiceProvider.php) has no syntax errors.
+- **Git Tracking**: Confirmed that [public/backend/dist/css/luxury-theme.css](file:///c:/xampp/htdocs/FlotaVehiculo/public/backend/dist/css/luxury-theme.css) is NOT ignored by git, so your styles are correctly included in the repository.
+
+## Next Steps for You
+1. **Commit and Push**:
+   ```bash
+   git add app/Providers/AppServiceProvider.php
+   git commit -m "Fix: Force HTTPS in production to resolve mixed content"
+   git push
+   ```
+2. **Deploy**: Wait for Railway to redeploy.
+3. **Verify**: Open your Railway URL. The site should now look correct with all styles loaded.
