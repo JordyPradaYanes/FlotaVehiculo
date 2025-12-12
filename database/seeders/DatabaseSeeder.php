@@ -25,8 +25,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
+        // User::factory(10)->create();
         Marca::factory(10)->create();
+        if (Tipo_Vehiculo::count() == 0) {
+           $this->call(TipoVehiculoSeeder::class);
+        }
         Tipo_Vehiculo::factory(10)->create();
         Vehiculo::factory(10)->create();
         Recarga_Combustible::factory(10)->create();

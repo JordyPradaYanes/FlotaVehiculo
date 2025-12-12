@@ -105,6 +105,25 @@
                                             </div>
                                         </div>
 
+                                        {{-- Fecha de Nacimiento --}}
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="fecha_nacimiento">
+                                                    <i class="fas fa-birthday-cake text-danger mr-1"></i>
+                                                    Fecha de Nacimiento <strong style="color:red;">(*)</strong>
+                                                </label>
+                                                <input type="date"
+                                                    class="form-control @error('fecha_nacimiento') is-invalid @enderror"
+                                                    name="fecha_nacimiento" id="fecha_nacimiento"
+                                                    value="{{ old('fecha_nacimiento') }}" required>
+                                                @error('fecha_nacimiento')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
                                         {{-- Fecha de contrato --}}
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -126,7 +145,7 @@
                                     </div>
 
                                     {{-- Campos ocultos --}}
-                                    <input type="hidden" name="estado" value="activo">
+                                    <input type="hidden" name="estado" value="1">
                                     <input type="hidden" name="registrado_por" value="{{ Auth::user()->name }}">
 
                                     <div class="alert alert-info mt-3">

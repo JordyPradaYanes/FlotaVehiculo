@@ -39,6 +39,7 @@
 .user-image-luxury {
     width: 35px;
     height: 35px;
+    object-fit: cover;
     transition: all 0.3s ease;
     border: 2px solid var(--primary-blue);
     box-shadow: 0 2px 4px rgba(52, 152, 219, 0.2);
